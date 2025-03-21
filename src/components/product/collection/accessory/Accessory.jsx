@@ -85,7 +85,7 @@ const Accessory = () => {
     },
   ]);
   return (
-    <div className="accessory">
+    <div data-aos="fade-up" className="accessory">
       <div className="accessory-advertise">
         <div className="accessory-advertise__left">
           <p className="accessory-advertise__logo">
@@ -150,7 +150,7 @@ const Accessory = () => {
           </li>
         </ul>
       </div>
-      <div className="accessory-products__list">
+      <div data-aos="fade-up" className="accessory-products__list">
         {listProduct.map((product, index) => (
           <ProductItem key={index} product={product} />
         ))}
