@@ -229,7 +229,7 @@ const HeaderDesktop = () => {
             <MdOutlineAccountCircle className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Tài khoản</p>
           </div>
-          <div className="header-desktop__group-icon-item">
+          <div className="header-desktop__group-icon-item" onClick={() => navigate("/cart")}>
             <GrCart className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Giỏ hàng</p>
           </div>
