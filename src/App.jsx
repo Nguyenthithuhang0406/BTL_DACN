@@ -7,6 +7,7 @@ import "aos/dist/aos.css";
 import DetailProduct from "./pages/product/DetailProduct/DetailProduct";
 import Search from "./pages/product/search/Search";
 import Cart from "./pages/cart/Cart";
+import Auth from "./pages/auth/Auth";
 
 const App = () => {
   useEffect(() => {
@@ -32,6 +33,10 @@ const App = () => {
     {
       path: "/cart",
       element: <Cart/>
+    },
+    {
+      path: "/auth",
+      element: <Auth/>,
     }
   ]);
   return <>{routes}</>;
