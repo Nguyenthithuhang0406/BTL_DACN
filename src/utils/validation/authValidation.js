@@ -2,33 +2,38 @@
 import * as Yup from "yup";
 
 export const registerValidationSchema = Yup.object().shape({
-  fullName: Yup.string()
-    .required("Họ tên không được để trống")
-    .min(2, "Họ tên phải có ít nhất 2 ký tự")
-    .max(50, "Họ tên không được quá 50 ký tự"),
+  firtName: Yup.string().required("Họ không được để trống"),
+  lastName: Yup.string().required("Tên không được để trống"),
   email: Yup.string()
     .email("Địa chỉ email không hợp lệ")
     .required("Email không được để trống")
     .max(100, "Email không được quá 100 ký tự"),
+  userName: Yup.string()
+    .required("Tên đăng nhập không được để trống")
+    .min(5, "Tên đăng nhập phải có ít nhất 5 ký tự")
+    .max(20, "Tên đăng nhập không được quá 20 ký tự"),
   password: Yup.string()
     .required("Mật khẩu không được để trống")
     .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
-    .max(20, "Mật khẩu không được quá 20 ký tự")
-    .matches(/[a-zA-Z]/, "Mật khẩu chỉ được chứa các ký tự Latin."),
-  phoneNumber: Yup.string()
-    .required("Số điện thoại không được để trống")
-    .matches(/^\d+$/, "Số điện thoại chỉ được chứa các ký tự số.")
-    .max(10, "Số điện thoại phải có ít nhất 10 chữ số"),
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
+      "Mật khẩu phải chứa ít nhất 1 chữ in hoa, 1 chữ in thường, 1 ký tự đặc biệt"
+    ),
+  confirmPassword: Yup.string()
+    .required("Xác nhận mật khẩu không được để trống")
+    .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp"),
 });
 
 export const loginValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Email không hợp lệ")
-    .required("Email không được để trống")
-    .max(100, "Email không được quá 100 ký tự"),
+  userName: Yup.string()
+    .required("Tên đăng nhập không được để trống")
+    .min(5, "Tên đăng nhập phải có ít nhất 5 ký tự")
+    .max(20, "Tên đăng nhập không được quá 20 ký tự"),
   password: Yup.string()
     .required("Mật khẩu không được để trống")
     .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
-    .max(20, "Mật khẩu không được quá 20 ký tự")
-    .matches(/[a-zA-Z]/, "Mật khẩu chỉ được chứa các ký tự Latin."),
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
+      "Mật khẩu phải chứa ít nhất 1 chữ in hoa, 1 chữ in thường, 1 ký tự đặc biệt"
+    ),
 });

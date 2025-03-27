@@ -11,8 +11,14 @@ import LoginForm from "@/components/auth/login/LoginForm";
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   return (
-    <div className="auth">
-      <div className="auth-container">
+    <div
+      className="auth"
+      style={isLogin ? { height: "100vh" } : { height: "130vh" }}
+    >
+      <div
+        className="auth-container"
+        style={isLogin ? { height: "700px" } : { height: "900px" }}
+      >
         <div className="auth-container_left">
           <img className="line-top" src={lineTop} />
           <img className="line-bottom" src={lineTop} />

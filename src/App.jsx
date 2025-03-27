@@ -37,7 +37,7 @@ const App = () => {
     {
       path: "/auth",
       element: <Auth/>,
-    }
+    },
   ]);
   return <>{routes}</>;
 };

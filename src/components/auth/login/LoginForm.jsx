@@ -6,10 +6,13 @@ import { FcGoogle } from "react-icons/fc";
 
 import "./LoginForm.scss";
 import { loginValidationSchema } from "@/utils/validation/authValidation";
+import ForgotPassword from "../forgotPassword/ForgotPassword";
 const LoginForm = ({ setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isFogotPassword, setIsForgotPassword] = useState(false);
+
   const initiateValues = {
-    email: "",
+    userName: "",
     password: "",
   };
 
@@ -29,12 +32,16 @@ const LoginForm = ({ setIsLogin }) => {
           {({ handleSubmit, errors, values }) => (
             <Form onSubmit={handleSubmit}>
               <div className="login-form_item">
-                <label className="login-form_title" htmlFor="email">
-                  Email
+                <label className="login-form_title" htmlFor="userName">
+                  Tên đăng nhập
                 </label>
-                <Field className="login-form_input" type="email" name="email" />
+                <Field
+                  className="login-form_input"
+                  type="text"
+                  name="userName"
+                />
                 <ErrorMessage
-                  name="email"
+                  name="userName"
                   component="div"
                   style={{ color: "red", fontSize: "12px" }}
                 />
@@ -70,6 +77,13 @@ const LoginForm = ({ setIsLogin }) => {
                 Bạn chưa có tài khoản?{" "}
                 <span onClick={() => setIsLogin(false)}>Đăng ký</span>
               </p>
+              <p
+                className="p_forgotPassword"
+                onClick={() => setIsForgotPassword(true)}
+              >
+                Quên mật khẩu?
+              </p>
+              {isFogotPassword && <ForgotPassword />}
               <p>Hoặc</p>
               <div className="login-gg">
                 <button>

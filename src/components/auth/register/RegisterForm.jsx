@@ -8,10 +8,12 @@ import "./RegisterForm.scss";
 import { registerValidationSchema } from "@/utils/validation/authValidation";
 const RegisterForm = ({ setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const initiateValues = {
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    phoneNumber: "",
+    userName: "",
     password: "",
     confirmPassword: "",
   };
@@ -32,16 +34,31 @@ const RegisterForm = ({ setIsLogin }) => {
           {({ handleSubmit, errors, values }) => (
             <Form onSubmit={handleSubmit}>
               <div className="register-form_item">
-                <label className="register-form_title" htmlFor="fullName">
-                  Họ và tên
+                <label className="register-form_title" htmlFor="firstName">
+                  Họ
                 </label>
                 <Field
                   className="register-form_input"
                   type="text"
-                  name="fullName"
+                  name="firstName"
                 />
                 <ErrorMessage
-                  name="fullName"
+                  name="firstName"
+                  component="div"
+                  style={{ color: "red", fontSize: "12px" }}
+                />
+              </div>
+              <div className="register-form_item">
+                <label className="register-form_title" htmlFor="lastName">
+                  Tên
+                </label>
+                <Field
+                  className="register-form_input"
+                  type="text"
+                  name="lastName"
+                />
+                <ErrorMessage
+                  name="lastName"
                   component="div"
                   style={{ color: "red", fontSize: "12px" }}
                 />
@@ -62,16 +79,16 @@ const RegisterForm = ({ setIsLogin }) => {
                 />
               </div>
               <div className="register-form_item">
-                <label className="register-form_title" htmlFor="phoneNumber">
-                  Số điện thoại
+                <label className="register-form_title" htmlFor="userName">
+                  Tên đăng nhập
                 </label>
                 <Field
                   className="register-form_input"
                   type="text"
-                  name="phoneNumber"
+                  name="userName"
                 />
                 <ErrorMessage
-                  name="phoneNumber"
+                  name="userName"
                   component="div"
                   style={{ color: "red", fontSize: "12px" }}
                 />
@@ -102,22 +119,35 @@ const RegisterForm = ({ setIsLogin }) => {
                   />
                 )}
               </div>
-              {/* <div className="register-form_item password">
-              <label className="register-form_title" htmlFor="confirmPassword">
-                Xác nhận lại mật khẩu
-              </label>
-              <Field
-                className="register-form_input"
-                type="password"
-                name="confirmPassword"
-              />
-              <ErrorMessage
-                name="confirmPassword"
-                component="div"
-                style={{ color: "red", fontSize: "12px" }}
-              />
-              <FaEyeSlash className="eye" />
-            </div> */}
+              <div className="register-form_item password">
+                <label
+                  className="register-form_title"
+                  htmlFor="confirmPassword"
+                >
+                  Xác nhận lại mật khẩu
+                </label>
+                <Field
+                  className="register-form_input"
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                />
+                <ErrorMessage
+                  name="confirmPassword"
+                  component="div"
+                  style={{ color: "red", fontSize: "12px" }}
+                />
+                {showConfirmPassword ? (
+                  <FaRegEye
+                    className="eye"
+                    onClick={() => showConfirmPassword(false)}
+                  />
+                ) : (
+                  <FaEyeSlash
+                    className="eye"
+                    onClick={() => setShowConfirmPassword(true)}
+                  />
+                )}
+              </div>
               <button type="submit">Đăng ký</button>
               <p>
                 Bạn đã có tài khoản?{" "}
