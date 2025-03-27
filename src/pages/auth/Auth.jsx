@@ -19,16 +19,16 @@ const Auth = () => {
           <img className="line-left" src={lineLeft} />
           <img className="line-right" src={lineLeft} />
           {isLogin ? (
-            <LoginForm setIsLogin={setIsLogin} isLogin={isLogin} />
+            <NoLoginForm setIsLogin={setIsLogin} />
           ) : (
-            <NoRegister setIsLogin={setIsLogin} isLogin={isLogin} />
+            <NoRegister setIsLogin={setIsLogin} />
           )}
         </div>
         <div className="auth-container_right">
           {isLogin ? (
-            <NoLoginForm setIsLogin={setIsLogin} isLogin={isLogin} />
+            <LoginForm setIsLogin={setIsLogin} />
           ) : (
-            <RegisterForm setIsLogin={setIsLogin} isLogin={isLogin} />
+            <RegisterForm setIsLogin={setIsLogin} />
           )}
         </div>
       </div>

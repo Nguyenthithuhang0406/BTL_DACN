@@ -2,10 +2,11 @@
 import React from "react";
 
 import "./NoLoginForm.scss";
-const NoLoginForm = ({ setIsLogin, isLogin }) => {
+const NoLoginForm = ({ setIsLogin}) => {
   return (
     <div
-      className={`no-login ${isLogin ? "translate-left" : "translate-other"}`}
+      data-aos="fade-left"
+      className={`no-login `}
     >
       <h1>Đăng ký</h1>
       <p>

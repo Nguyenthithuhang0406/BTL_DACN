@@ -2,12 +2,11 @@
 import React from "react";
 
 import "./NoRegister.scss";
-const NoRegister = ({ setIsLogin, isLogin }) => {
+const NoRegister = ({ setIsLogin}) => {
   return (
     <div
-      className={`no-register ${
-        isLogin ? "translate-right" : "translate-other"
-      }`}
+      data-aos="fade-left"
+      className={`no-register `}
     >
       <h1>Đăng nhập</h1>
       <p>
