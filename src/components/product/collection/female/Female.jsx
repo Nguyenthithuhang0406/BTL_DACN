@@ -216,7 +216,7 @@ const Female = () => {
           </div>
           <img
             className="female_image"
-            src="https://bizweb.dktcdn.net/100/534/571/themes/972900/assets/img_product_banner_1.jpg?1742315771967"
+            src="https://bizweb.dktcdn.net/100/534/571/themes/972900/assets/img_product_banner_2.jpg?1742401393294"
           />
         </div>
       </div>
