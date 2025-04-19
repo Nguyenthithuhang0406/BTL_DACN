@@ -1,7 +1,9 @@
 .header-desktop {
   width: 100%;
   padding: 11px 130px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 
   .header-desktop__search {
     display: flex;
@@ -62,7 +64,7 @@
         height: 30px;
         width: 30px;
 
-        .header-desktop__search-input-file{
+        .header-desktop__search-input-file {
           display: none;
         }
         .header-desktop__search-input-icon2 {
@@ -93,6 +95,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      position: relative;
 
       .header-desktop__group-icon-item {
         cursor: pointer;
@@ -116,6 +119,33 @@
           font-size: 15px;
         }
       }
+
+       .header-desktop__group-icon-item-child {
+          display: block;
+          position: absolute;
+          top: 60px;
+          left: 30%;
+          background-color: #f3f2f2;
+          border-radius: 8px;
+          z-index: 10;
+          width: 120px;
+
+          p {
+            width: 100%;
+            height: 30px;
+            padding: 0 20px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            text-align: left !important;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #fdfbfb;
+              color: #ff6347;
+            }
+          }
+        }
     }
   }
 }

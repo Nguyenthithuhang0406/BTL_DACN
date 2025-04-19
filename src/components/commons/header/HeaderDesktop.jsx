@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setInputImage, setInputValue, setResult } from "@/store/searchSlice";
@@ -15,6 +15,21 @@ import { GrCart } from "react-icons/gr";
 import "./HeaderDesktop.scss";
 const HeaderDesktop = () => {
   const [inputText, setInputText] = useState("");
+  const [isShow, setIsShow] = useState(false);
+  const childRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (childRef.current && !childRef.current.contains(event.target)) {
+        setIsShow(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [childRef]);
 
   const resultFake = [
     {
@@ -221,15 +236,33 @@ const HeaderDesktop = () => {
         </div>
 
         <div className="header-desktop__group-icon">
-          <div className="header-desktop__group-icon-item">
+          <div
+            className="header-desktop__group-icon-item"
+            onClick={() => navigate(`/followingProducts/1`)}
+          >
             <AiOutlineHeart className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Yêu thích</p>
           </div>
-          <div className="header-desktop__group-icon-item">
+          <div
+            className="header-desktop__group-icon-item"
+            onClick={() => setIsShow(!isShow)}
+          >
             <MdOutlineAccountCircle className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Tài khoản</p>
           </div>
-          <div className="header-desktop__group-icon-item" onClick={() => navigate("/cart")}>
+          {isShow && (
+            <div
+              ref={childRef}
+              className="header-desktop__group-icon-item-child"
+            >
+              <p onClick={() => navigate("/auth")}>Đăng ký</p>
+              <p onClick={() => navigate("/auth")}>Đăng nhập</p>
+            </div>
+          )}
+          <div
+            className="header-desktop__group-icon-item"
+            onClick={() => navigate("/cart")}
+          >
             <GrCart className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Giỏ hàng</p>
           </div>
@@ -238,6 +271,6 @@ const HeaderDesktop = () => {
       <Menu />
     </div>
   );
-}
+};
 
 export default HeaderDesktop;
