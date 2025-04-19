@@ -10,6 +10,7 @@ import Cart from "./pages/cart/Cart";
 import Auth from "./pages/auth/Auth";
 import ProductsByCategory from "./pages/productsByCategory/ProductsByCategory";
 import FollowingProducts from "./pages/followingProducts/FollowingProducts";
+import Order from "./pages/order/Order";
 
 const App = () => {
   useEffect(() => {
@@ -48,6 +49,10 @@ const App = () => {
       path: "/followingProducts/:id",
       element: <FollowingProducts />,
     },
+    {
+      path: "/order",
+      element: <Order/>,
+    }
   ]);
   return <>{routes}</>;
 };

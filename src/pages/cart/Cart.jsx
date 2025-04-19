@@ -1,13 +1,15 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { formatNumber } from "@/utils/function";
 
 import "./Cart.scss";
-import TitleRouter from '@/components/product/titleRouter/TitleRouter';
-import Layout from '@/components/commons/layout/Layout';
-import CartItem from '@/components/cart/CartItem';
+import TitleRouter from "@/components/product/titleRouter/TitleRouter";
+import Layout from "@/components/commons/layout/Layout";
+import CartItem from "@/components/cart/CartItem";
+import { useDispatch } from "react-redux";
+import { setOrderList, setPrice } from "@/store/orderSlice";
 
 const Cart = () => {
   const [listProducts, setListProducts] = useState([]);
@@ -67,6 +69,7 @@ const Cart = () => {
   ];
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     setListProducts(listProductsFake);
   }, []);
@@ -78,6 +81,17 @@ const Cart = () => {
     });
     setTotalPrice(total);
   }, [selectedProducts]);
+
+  const handleClickBuy = () => {
+    if (selectedProducts.length === 0) {
+      alert("Vui lòng chọn sản phẩm để thanh toán!");
+      return;
+    }
+
+    dispatch(setOrderList(selectedProducts));
+    dispatch(setPrice(totalPrice));
+    navigate("/order");
+  };
 
   return (
     <div>
@@ -106,7 +120,9 @@ const Cart = () => {
                   <button className="btn1" onClick={() => navigate("/")}>
                     Tiếp tục mua hàng
                   </button>
-                  <button className="btn2">Thanh toán ngay</button>
+                  <button className="btn2" onClick={handleClickBuy}>
+                    Thanh toán ngay
+                  </button>
                 </div>
               </div>
             </div>
@@ -115,6 +131,6 @@ const Cart = () => {
       </Layout>
     </div>
   );
-}
+};
 
 export default Cart;
