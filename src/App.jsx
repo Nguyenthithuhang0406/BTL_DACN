@@ -9,7 +9,10 @@ import Search from "./pages/product/search/Search";
 import Cart from "./pages/cart/Cart";
 import Auth from "./pages/auth/Auth";
 import ProductsByCategory from "./pages/productsByCategory/ProductsByCategory";
-
+import BlogLayout from "./components/commons/blogs/BlogLayout";
+import "./App.css";
+import ContactPage from "./pages/contact/ContactPage";
+import MarketSystemPage from "./pages/market-system/MarketSystemPage";
 const App = () => {
   useEffect(() => {
     AOS.init({
@@ -42,6 +45,18 @@ const App = () => {
     {
       path: "/productsByCategory/:categoryName",
       element: <ProductsByCategory/>
+    },
+    {
+      path: "/contact",
+      element: <ContactPage/>
+    },
+    {
+      path: "/market-system",
+      element: <MarketSystemPage/>
+    },
+    {
+      path: "/blog",
+      element:<BlogLayout/>
     }
   ]);
   return <>{routes}</>;
