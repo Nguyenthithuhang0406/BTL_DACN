@@ -93,10 +93,14 @@ const ProductAdminPage = () => {
 		setShowModal("edit");
 	};
 
+	const handleDeleteProductClick = (product) => {
+		setSelectedProduct(product);
+		setShowModal("delete");
+	};
+
 	const handleDeleteProduct = (id) => {
-		if (window.confirm("Are you sure you want to delete this product?")) {
-			setProducts(products.filter((product) => product.id !== id));
-		}
+		setProducts(products.filter((product) => product.id !== id));
+		setShowModal(null);
 	};
 
 	const handleExportExcel = () => {
@@ -177,7 +181,7 @@ const ProductAdminPage = () => {
 							onProductsPerPageChange={setProductsPerPage}
 							onViewProduct={handleViewProduct}
 							onEditProduct={handleEditProduct}
-							onDeleteProduct={handleDeleteProduct}
+							onDeleteProduct={handleDeleteProductClick}
 							onSort={handleSort}
 							sortConfig={sortConfig}
 						/>
