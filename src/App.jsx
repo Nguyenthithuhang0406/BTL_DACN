@@ -9,10 +9,12 @@ import Search from "./pages/product/search/Search";
 import Cart from "./pages/cart/Cart";
 import Auth from "./pages/auth/Auth";
 import ProductsByCategory from "./pages/productsByCategory/ProductsByCategory";
-import LayoutBlog from "./pages/blog/LayoutBlog";
 import ContactPage from "./pages/contact/ContactPage";
 import MarketSystemPage from "./pages/market-system/MarketSystemPage";
 import Order from "./pages/order/Order";
+import BlogList from "./components/blog/BlogList";
+import BlogDetail from "./components/blog/BlogDetail";
+import SearchResultPage from "./pages/blog/SearchResultPage";
 const App = () => {
   useEffect(() => {
     AOS.init({
@@ -60,7 +62,15 @@ const App = () => {
     },
     {
       path: "/blog",
-      element: <LayoutBlog/>
+      element: <BlogList/>
+    },
+    {
+      path: '/blog/:slug',
+      element:<BlogDetail/>
+    },
+    {
+      path: "/search-blog",
+      element: <SearchResultPage/>
     }
 
   ]);
