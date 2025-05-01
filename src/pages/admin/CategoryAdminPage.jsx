@@ -7,8 +7,8 @@ import CategoryFormModal from "@/components/admin/categoryAdmin/CategoryFormModa
 import DeleteConfirmModal from "@/components/admin/categoryAdmin/DeleteConfirmModal";
 import CategoryList from "@/components/admin/categoryAdmin/CategoryList";
 import CategoryFilters from "@/components/admin/categoryAdmin/CategoryFilters";
-import { categoryData } from "@/components/admin/categoryAdmin/categorydata";
-import { sortCategories } from "@/components/admin/categoryAdmin/CategoryExcel";
+import { categoryData } from "@/components/admin/categoryAdmin/categoryData";
+import { sortCategories } from "@/components/admin/categoryAdmin/categoryExcel";
 const CategoryAdminPage = () => {
 	const [categories, setCategories] = useState(categoryData);
 	const [showViewModal, setShowViewModal] = useState(false);
