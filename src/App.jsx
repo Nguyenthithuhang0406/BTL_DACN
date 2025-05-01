@@ -13,7 +13,6 @@ import LayoutBlog from "./pages/blog/LayoutBlog";
 import ContactPage from "./pages/contact/ContactPage";
 import MarketSystemPage from "./pages/market-system/MarketSystemPage";
 import Order from "./pages/order/Order";
-
 const App = () => {
   useEffect(() => {
     AOS.init({
