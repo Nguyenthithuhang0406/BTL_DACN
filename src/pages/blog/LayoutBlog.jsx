@@ -1,8 +1,11 @@
+import Layout from '@/components/commons/layout/Layout'
 import React from 'react'
 
 const LayoutBlog = ({children}) => {
   return (
-    <div>LayoutBlog</div>
+    <Layout>
+      
+    </Layout>
   )
 }
 
