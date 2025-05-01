@@ -11,7 +11,6 @@ import { categoryData } from "@/components/admin/categoryAdmin/categorydata";
 import { sortCategories } from "@/components/admin/categoryAdmin/CategoryExcel";
 const CategoryAdminPage = () => {
 	const [categories, setCategories] = useState(categoryData);
-
 	const [showViewModal, setShowViewModal] = useState(false);
 	const [showFormModal, setShowFormModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);

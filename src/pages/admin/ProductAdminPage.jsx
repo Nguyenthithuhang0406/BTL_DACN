@@ -3,7 +3,6 @@ import LayoutAdmin from "./LayoutAdmin";
 import HeaderAdmin from "@/components/admin/HeaderAdmin";
 import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react";
 import StatCard from "@/components/admin/StatCard";
-
 import { motion } from "framer-motion";
 import ProductFilters from "@/components/admin/productAdmin/ProductFilters";
 import ProductList from "@/components/admin/productAdmin/ProductList";
@@ -18,9 +17,7 @@ import { productData } from "@/components/admin/productAdmin/productData";
 import DeleteProductModal from "@/components/admin/productAdmin/DeleteProductModal";
 const ProductAdminPage = () => {
 	const [products, setProducts] = useState(productData);
-
-	// UI state
-	const [showModal, setShowModal] = useState(null); // 'view', 'add', 'edit'
+	const [showModal, setShowModal] = useState(null);
 	const [selectedProduct, setSelectedProduct] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
@@ -31,10 +28,8 @@ const ProductAdminPage = () => {
 	const [productsPerPage, setProductsPerPage] = useState(10);
 	const [statusFilter, setStatusFilter] = useState("All");
 
-	// Get status counts for filters
 	const statusCounts = getProductStatusCounts(products);
 
-	// Filtered products based on search and status
 	const filteredProducts = products.filter(
 		(product) =>
 			(product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -42,7 +37,6 @@ const ProductAdminPage = () => {
 			(statusFilter === "All" || product.status === statusFilter)
 	);
 
-	// Sorted products
 	const sortedProducts = [...filteredProducts].sort((a, b) => {
 		if (!sortConfig.key) return 0;
 		const aValue =
@@ -58,12 +52,10 @@ const ProductAdminPage = () => {
 		return 0;
 	});
 
-	// Reset page when filters or search changes
 	useEffect(() => {
 		setCurrentPage(1);
 	}, [searchQuery, statusFilter]);
 
-	// Handler functions
 	const handleSort = (key) => {
 		let direction = "asc";
 		if (sortConfig.key === key && sortConfig.direction === "asc") {
@@ -83,7 +75,6 @@ const ProductAdminPage = () => {
 	};
 
 	const handleEditProduct = (product) => {
-		// Transform product data for form
 		const formData = {
 			id: product.id,
 			name: product.name,
@@ -190,8 +181,6 @@ const ProductAdminPage = () => {
 							onSort={handleSort}
 							sortConfig={sortConfig}
 						/>
-
-						{/* View Product Modal */}
 						{showModal === "view" && selectedProduct && (
 							<ProductViewModal
 								product={selectedProduct}
@@ -200,7 +189,6 @@ const ProductAdminPage = () => {
 							/>
 						)}
 
-						{/* Add/Edit Product Modal */}
 						{(showModal === "add" || showModal === "edit") && (
 							<ProductFormModal
 								isOpen={true}

@@ -1,7 +1,6 @@
 import React from 'react';
 
 const StatusBadge = ({ status, customColors }) => {
-  // Default color mapping
   const getDefaultStatusColor = (status) => {
     switch (status) {
       case 'Active': return 'bg-green-100 text-green-800';
@@ -19,7 +18,6 @@ const StatusBadge = ({ status, customColors }) => {
     }
   };
 
-  // If custom colors provided, use them, otherwise use defaults
   const colorClasses = customColors || getDefaultStatusColor(status);
 
   return (

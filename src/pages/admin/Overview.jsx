@@ -43,7 +43,6 @@ const Overview = () => {
 							color="#10B981"
 						/>
 					</motion.div>
-
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 						<SaleOverviewChart />
 						<CategoryDistributionChart />

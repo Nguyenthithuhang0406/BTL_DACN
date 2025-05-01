@@ -8,7 +8,6 @@ export const exportCategoriesToExcel = (
 		ID: category.id,
 		Name: category.name,
 		Description: category.description || "",
-		"Display Order": category.displayOrder,
 		"Product Count": category.productCount || 0,
 		Subcategories: category.subcategories.join(", "),
 		"Last Updated": category.lastUpdated,
@@ -22,7 +21,6 @@ export const exportCategoriesToExcel = (
 		{ wch: 8 }, // ID
 		{ wch: 25 }, // Name
 		{ wch: 40 }, // Description
-		{ wch: 12 }, // Display Order
 		{ wch: 12 }, // Product Count
 		{ wch: 40 }, // Subcategories
 		{ wch: 15 }, // Last Updated

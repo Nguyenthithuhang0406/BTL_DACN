@@ -4,7 +4,6 @@ export const categoryData = [
         name: "Electronics",
         description: "Electronic devices and accessories",
         icon: "📱",
-        displayOrder: 1,
         productCount: 156,
         subcategories: ["Smartphones", "Laptops", "Tablets", "Accessories"],
         lastUpdated: "Apr 10, 2024",
@@ -14,7 +13,6 @@ export const categoryData = [
         name: "Clothing",
         description: "Apparel and fashion items",
         icon: "👕",
-        displayOrder: 2,
         productCount: 243,
         subcategories: [
             "Men's Wear",
@@ -29,7 +27,6 @@ export const categoryData = [
         name: "Home & Kitchen",
         description: "Furniture, appliances, and home decor",
         icon: "🏠",
-        displayOrder: 3,
         productCount: 189,
         subcategories: [
             "Furniture",
@@ -44,7 +41,6 @@ export const categoryData = [
         name: "Books",
         description: "Books, ebooks, and audiobooks",
         icon: "📚",
-        displayOrder: 4,
         productCount: 112,
         subcategories: [
             "Fiction",
@@ -59,7 +55,6 @@ export const categoryData = [
         name: "Sports & Outdoors",
         description: "Sporting goods and outdoor equipment",
         icon: "⚽",
-        displayOrder: 5,
         productCount: 98,
         subcategories: [
             "Exercise Equipment",
@@ -74,7 +69,6 @@ export const categoryData = [
         name: "Beauty & Personal Care",
         description: "Cosmetics, skincare, and personal grooming products",
         icon: "💄",
-        displayOrder: 6,
         productCount: 176,
         subcategories: ["Skincare", "Makeup", "Hair Care", "Fragrances"],
         lastUpdated: "Apr 3, 2024",
@@ -84,7 +78,6 @@ export const categoryData = [
         name: "Toys & Games",
         description: "Toys, games, and entertainment items for kids",
         icon: "🧸",
-        displayOrder: 7,
         productCount: 84,
         subcategories: [
             "Action Figures",
@@ -99,7 +92,6 @@ export const categoryData = [
         name: "Automotive",
         description: "Car parts, accessories, and tools",
         icon: "🚗",
-        displayOrder: 8,
         productCount: 42,
         subcategories: ["Car Parts", "Accessories", "Tools", "Electronics"],
         lastUpdated: "Mar 25, 2024",
