@@ -15,6 +15,10 @@ import Order from "./pages/order/Order";
 import BlogList from "./components/blog/BlogList";
 import BlogDetail from "./components/blog/BlogDetail";
 import SearchResultPage from "./pages/blog/SearchResultPage";
+import Overview from "./pages/admin/Overview";
+import ProductAdminPage from "./pages/admin/ProductAdminPage";
+import OrderAdminPage from "./pages/admin/OrderAdminPage";
+import CategoryAdminPage from "./pages/admin/CategoryAdminPage";
 const App = () => {
   useEffect(() => {
     AOS.init({
@@ -71,10 +75,26 @@ const App = () => {
     {
       path: "/search-blog",
       element: <SearchResultPage/>
+    },
+    {
+      path: "/admin/*",
+      element: <Overview/>
+    },
+    {
+      path: "/admin/products",
+      element: <ProductAdminPage/>
+    },
+    {
+      path: "/admin/orders",
+      element: <OrderAdminPage/>
+    },
+    {
+      path: "/admin/categories",
+      element: <CategoryAdminPage/>
     }
 
   ]);
-  return <>{routes}</>;
+  return <>{ routes}</>;
 };
 
 export default App;
