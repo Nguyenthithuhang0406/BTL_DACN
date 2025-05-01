@@ -9,8 +9,6 @@ import Search from "./pages/product/search/Search";
 import Cart from "./pages/cart/Cart";
 import Auth from "./pages/auth/Auth";
 import ProductsByCategory from "./pages/productsByCategory/ProductsByCategory";
-import FollowingProducts from "./pages/followingProducts/FollowingProducts";
-import Order from "./pages/order/Order";
 
 const App = () => {
   useEffect(() => {
@@ -43,16 +41,21 @@ const App = () => {
     },
     {
       path: "/productsByCategory/:categoryName",
-      element: <ProductsByCategory />,
+      element: <ProductsByCategory/>
     },
     {
-      path: "/followingProducts/:id",
-      element: <FollowingProducts />,
+      path: "/contact",
+      element: <ContactPage/>
+    },
+    {
+      path: "/market-system",
+      element: <MarketSystemPage/>
     },
     {
       path: "/order",
-      element: <Order/>,
+      element: <Order/>
     }
+
   ]);
   return <>{routes}</>;
 };
