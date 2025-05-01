@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -13,6 +13,7 @@ import "./DiscountedProduct.scss";
 const DiscountedProduct = () => {
   const listDiscountedProduct = [
     {
+      id: 1,
       name: "Áo khoác da lộn nam 2 lớp",
       image: [
         "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp3-2-c140d0a9-b56c-4166-8f5b-3da0c917eba6.jpg?v=1731513403483",
@@ -23,6 +24,7 @@ const DiscountedProduct = () => {
       count: 119,
     },
     {
+      id: 2,
       name: "Áo polo nam phối màu ND008",
       image: [
         "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp8-2-b6da4946-d566-436c-bb78-02b179755959.jpg?v=1731320140383",
@@ -33,6 +35,7 @@ const DiscountedProduct = () => {
       count: 148,
     },
     {
+      id: 3,
       name: "Váy liền nữ dáng dài, phối màu",
       image: [
         "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp15.jpg?v=1731125521717",
@@ -42,6 +45,7 @@ const DiscountedProduct = () => {
       count: 98,
     },
     {
+      id: 4,
       name: "Áo nỉ nữ phối lá cổ dáng relax",
       image: [
         "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp10-2.jpg?v=1731125371523",
@@ -146,6 +150,6 @@ const DiscountedProduct = () => {
       </div>
     </div>
   );
-}
+};
 
 export default DiscountedProduct;

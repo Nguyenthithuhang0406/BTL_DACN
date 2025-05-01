@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React from 'react'
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
+import React from "react";
+import Header from "../header/Header";
+import Footer from "../footer/Footer";
 
-const Layout = ({children}) => {
+const Layout = ({ children }) => {
   return (
     <div>
       <Header />
@@ -11,6 +11,6 @@ const Layout = ({children}) => {
       <Footer />
     </div>
   );
-}
+};
 
-export default Layout
+export default Layout;
