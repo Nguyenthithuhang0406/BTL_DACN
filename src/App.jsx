@@ -19,6 +19,7 @@ import Overview from "./pages/admin/Overview";
 import ProductAdminPage from "./pages/admin/ProductAdminPage";
 import OrderAdminPage from "./pages/admin/OrderAdminPage";
 import CategoryAdminPage from "./pages/admin/CategoryAdminPage";
+import { ToastContainer } from "react-toastify";
 const App = () => {
   useEffect(() => {
     AOS.init({
@@ -50,51 +51,55 @@ const App = () => {
     },
     {
       path: "/productsByCategory/:categoryName",
-      element: <ProductsByCategory/>
+      element: <ProductsByCategory />,
     },
     {
       path: "/contact",
-      element: <ContactPage/>
+      element: <ContactPage />,
     },
     {
       path: "/market-system",
-      element: <MarketSystemPage/>
+      element: <MarketSystemPage />,
     },
     {
       path: "/order",
-      element: <Order/>
+      element: <Order />,
     },
     {
       path: "/blog",
-      element: <BlogList/>
+      element: <BlogList />,
     },
     {
-      path: '/blog/:slug',
-      element:<BlogDetail/>
+      path: "/blog/:slug",
+      element: <BlogDetail />,
     },
     {
       path: "/search-blog",
-      element: <SearchResultPage/>
+      element: <SearchResultPage />,
     },
     {
       path: "/admin/*",
-      element: <Overview/>
+      element: <Overview />,
     },
     {
       path: "/admin/products",
-      element: <ProductAdminPage/>
+      element: <ProductAdminPage />,
     },
     {
       path: "/admin/orders",
-      element: <OrderAdminPage/>
+      element: <OrderAdminPage />,
     },
     {
       path: "/admin/categories",
-      element: <CategoryAdminPage/>
-    }
-
+      element: <CategoryAdminPage />,
+    },
   ]);
-  return <>{routes}</>;
+  return (
+    <>
+      <ToastContainer />
+      {routes}
+    </>
+  );
 };
 
 export default App;

@@ -1,10 +1,10 @@
-import { request } from "@/utils/axios/axios-http";
+import { publicInstance, request } from "@/utils/axios/axios-http";
 
 export const register = async (data) => {
   try {
     const { username, password, email, firstName, lastName } = data;
     
-    await request({
+    await request(publicInstance,{
       url: "/auths/register",
       method: "POST",
       data: {
