@@ -7,17 +7,44 @@ import { FcGoogle } from "react-icons/fc";
 import "./LoginForm.scss";
 import { loginValidationSchema } from "@/utils/validation/authValidation";
 import ForgotPassword from "../forgotPassword/ForgotPassword";
+import { login } from "@/api/authAPI/auth";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const LoginForm = ({ setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFogotPassword, setIsForgotPassword] = useState(false);
+  const navigate = useNavigate();
 
   const initiateValues = {
     userName: "",
     password: "",
   };
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    try {
+      const data = {
+        username: values.userName,
+        password: values.password,
+      };
+      const response = await login(data);
+      toast.success("Đăng nhập thành công");
+      navigate("/");
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        switch (error.response.status) {
+          case 500:
+            toast.error("Lỗi hệ thống");
+            break;
+          case 400:
+            toast.error("Dữ liệu không hợp lệ");
+            break;
+          default:
+            toast.error("Đã xảy ra lỗi, vui lòng kiểm tra lại kết nối!");
+        }
+      }
+      console.log(error);
+    }
   };
 
   return (
