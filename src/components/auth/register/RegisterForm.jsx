@@ -1,14 +1,16 @@
 /* eslint-disable */
-import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { toast } from "react-toastify";
+import axios from "axios";
+
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
+import { registerValidationSchema } from "@/utils/validation/authValidation";
+import { register } from "@/api/authAPI/auth";
 import { FcGoogle } from "react-icons/fc";
 
 import "./RegisterForm.scss";
-import { registerValidationSchema } from "@/utils/validation/authValidation";
-import { register } from "@/api/authAPI/auth";
-import { toast } from "react-toastify";
-import axios from "axios";
+
 const RegisterForm = ({ setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);

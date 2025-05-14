@@ -1,16 +1,17 @@
 /* eslint-disable */
-import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
-import { FaRegEye, FaEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-
-import "./LoginForm.scss";
-import { loginValidationSchema } from "@/utils/validation/authValidation";
-import ForgotPassword from "../forgotPassword/ForgotPassword";
-import { login } from "@/api/authAPI/auth";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
+import { FaRegEye, FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { loginValidationSchema } from "@/utils/validation/authValidation";
+import ForgotPassword from "../forgotPassword/ForgotPassword";
+import { login } from "@/api/authAPI/auth";
+
+import "./LoginForm.scss";
 const LoginForm = ({ setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFogotPassword, setIsForgotPassword] = useState(false);
@@ -110,7 +111,9 @@ const LoginForm = ({ setIsLogin }) => {
               >
                 Quên mật khẩu?
               </p>
-              {isFogotPassword && <ForgotPassword />}
+              {isFogotPassword && (
+                <ForgotPassword setIsForgotPassword={setIsForgotPassword} />
+              )}
               <p>Hoặc</p>
               <div className="login-gg">
                 <button>
