@@ -1,4 +1,8 @@
-import { publicInstance, request, requestWithToken } from "@/utils/axios/axios-http";
+import {
+  publicInstance,
+  request,
+  requestWithToken,
+} from "@/utils/axios/axios-http";
 
 export const register = async (data) => {
   try {
@@ -49,7 +53,7 @@ export const forgotPassword = async (data) => {
       url: "/auths/forgot-password",
       method: "POST",
       data: {
-        email, 
+        email,
         username,
       },
     });
@@ -57,7 +61,7 @@ export const forgotPassword = async (data) => {
     console.log(error);
     throw new Error("Quên mật khẩu không thành công");
   }
-}
+};
 
 export const changePassword = async (data) => {
   try {
@@ -74,4 +78,18 @@ export const changePassword = async (data) => {
     console.log(error);
     throw new Error("Đổi mật khẩu không thành công");
   }
-}
+};
+
+export const loginWithGoogle = async () => {
+  try {
+    const response = await request(publicInstance, {
+      url: "/auths/login",
+      method: "GET",
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Đăng nhập không thành công");
+  }
+};

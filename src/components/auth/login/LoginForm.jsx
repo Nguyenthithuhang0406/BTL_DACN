@@ -9,7 +9,7 @@ import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { loginValidationSchema } from "@/utils/validation/authValidation";
 import ForgotPassword from "../forgotPassword/ForgotPassword";
-import { login } from "@/api/authAPI/auth";
+import { login, loginWithGoogle } from "@/api/authAPI/auth";
 
 import "./LoginForm.scss";
 const LoginForm = ({ setIsLogin }) => {
@@ -29,7 +29,6 @@ const LoginForm = ({ setIsLogin }) => {
         password: values.password,
       };
       const response = await login(data);
-      console.log("response", response);
       toast.success("Đăng nhập thành công");
       navigate("/");
     } catch (error) {
@@ -49,6 +48,16 @@ const LoginForm = ({ setIsLogin }) => {
     }
   };
 
+  const handleLoginWithGoogle = async () => {
+    try {
+      const response = await loginWithGoogle();
+      window.open(
+        response.data
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div data-aos="fade-right" className={`login `}>
       <h1>Đăng nhập</h1>
@@ -117,7 +126,7 @@ const LoginForm = ({ setIsLogin }) => {
               )}
               <p>Hoặc</p>
               <div className="login-gg">
-                <button>
+                <button onClick={handleLoginWithGoogle}>
                   <FcGoogle />
                   <p>Đăng nhập bằng Google</p>
                 </button>
