@@ -20,6 +20,7 @@ import ProductAdminPage from "./pages/admin/ProductAdminPage";
 import OrderAdminPage from "./pages/admin/OrderAdminPage";
 import CategoryAdminPage from "./pages/admin/CategoryAdminPage";
 import { ToastContainer } from "react-toastify";
+import Profile from "./pages/profile/Profile";
 const App = () => {
   useEffect(() => {
     AOS.init({
@@ -48,6 +49,10 @@ const App = () => {
     {
       path: "/auth",
       element: <Auth />,
+    },
+    {
+      path: "/profile",
+      element: <Profile />,
     },
     {
       path: "/productsByCategory/:categoryName",

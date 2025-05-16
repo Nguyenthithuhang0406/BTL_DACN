@@ -13,10 +13,21 @@ import { MdOutlineAccountCircle } from "react-icons/md";
 import { GrCart } from "react-icons/gr";
 
 import "./HeaderDesktop.scss";
+import { toast } from "react-toastify";
 const HeaderDesktop = () => {
   const [inputText, setInputText] = useState("");
   const [isShow, setIsShow] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const childRef = useRef(null);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -203,6 +214,14 @@ const HeaderDesktop = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    toast.success("Đăng xuất thành công");
+    setIsLogin(false);
+    navigate("/auth");
+  };
+
   return (
     <div className="header-desktop">
       <div className="header-desktop__search">
@@ -250,13 +269,22 @@ const HeaderDesktop = () => {
             <MdOutlineAccountCircle className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Tài khoản</p>
           </div>
-          {isShow && (
+          {isShow && !isLogin && (
             <div
               ref={childRef}
               className="header-desktop__group-icon-item-child"
             >
               <p onClick={() => navigate("/auth")}>Đăng ký</p>
               <p onClick={() => navigate("/auth")}>Đăng nhập</p>
+            </div>
+          )}
+          {isShow && isLogin && (
+            <div
+              ref={childRef}
+              className="header-desktop__group-icon-item-child"
+            >
+              <p onClick={() => navigate("/profile")}>Trang cá nhân</p>
+              <p onClick={handleLogout}>Đăng xuất</p>
             </div>
           )}
           <div

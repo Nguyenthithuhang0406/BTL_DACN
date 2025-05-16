@@ -29,6 +29,7 @@ const LoginForm = ({ setIsLogin }) => {
         password: values.password,
       };
       const response = await login(data);
+      console.log("response", response);
       toast.success("Đăng nhập thành công");
       navigate("/");
     } catch (error) {
