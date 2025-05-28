@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { ImHeadphones } from "react-icons/im";
 import { FiPackage } from "react-icons/fi";
@@ -10,7 +10,7 @@ import { FaHeart } from "react-icons/fa6";
 import "./RightSession.scss";
 import { formatNumber } from "@/utils/function";
 
-const RightSession = ({product}) => {
+const RightSession = ({ product }) => {
   const [infoSelect, setInfoSelect] = useState({
     type: 0,
     quantity: "1",
@@ -40,6 +40,10 @@ const RightSession = ({product}) => {
     },
   ];
 
+  useEffect(() => {
+    console.log("selected", infoSelect);
+  }, [infoSelect]);
+
   return (
     <div className="right-session">
       <div className="right-session__product-name">
@@ -56,33 +60,45 @@ const RightSession = ({product}) => {
               style={{ fontSize: "24px", cursor: "pointer" }}
             />
           )}
-          <button>{product.status}</button>
+          {/* <button>{product.status}</button> */}
         </div>
       </div>
       <div className="right-session__price">
-        <span
-          className={`right-session__price__sale ${
-            product.discount > 0 ? "" : "hidden"
-          }`}
-        >
-          {formatNumber(product.price * (1 - product.discount / 100))} đ
+        <span className={`right-session__price__sale `}>
+          {/* {formatNumber(product.price * (1 - product.discount / 100))} đ */}
+          {infoSelect?.price
+            ? formatNumber(infoSelect?.price)
+            : formatNumber(product?.price)}{" "}
+          đ
         </span>
-        <span className="right-session__price__real">
+        {/* <span className="right-session__price__real">
           {formatNumber(product.price)} đ
-        </span>
+        </span> */}
       </div>
       <div className="right-session__type">
         <p>Phân loại</p>
         <div className="right-session__type__buttons">
-          {product.types.map((type, index) => (
-            <button
-              onClick={() => setInfoSelect({ ...infoSelect, type: index })}
-              key={index}
-              className={`${infoSelect.type === index ? "active" : ""}`}
-            >
-              {type}
-            </button>
-          ))}
+          {product?.variants?.map(
+            (type, index) =>
+              type.attributes &&
+              type.attributes.map((attribute, attrIndex) => (
+                <button
+                  onClick={() =>
+                    setInfoSelect({
+                      ...infoSelect,
+                      type: attribute.value,
+                      price: type.price,
+                    })
+                  }
+                  key={attrIndex}
+                  className={`${
+                    infoSelect.type === attribute.value ? "active" : ""
+                  }`}
+                >
+                  {attribute.value}
+                </button>
+              ))
+          )}
         </div>
       </div>
       <div className="right-session__quantity-group">
@@ -142,6 +158,6 @@ const RightSession = ({product}) => {
       </div>
     </div>
   );
-}
+};
 
 export default RightSession;

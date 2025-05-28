@@ -37,8 +37,11 @@ const ProductItem = ({ product }) => {
   };
 
   return (
-    <div onClick={() => navigate("/product/2")} className="product-item">
-      <button className="product-item_discount">- {product.discount}%</button>
+    <div
+      onClick={() => navigate(`/product/${product.id}`)}
+      className="product-item"
+    >
+      {/* <button className="product-item_discount">- {product.discount}%</button> */}
       <div
         className={`product-item_following ${isLiked(product) ? "active" : ""}`}
         onClick={(e) => e.stopPropagation()}
@@ -46,7 +49,9 @@ const ProductItem = ({ product }) => {
         <FaRegHeart onClick={() => handleLike(product)} />
       </div>
       <div className="product-item_img">
-        <img src={product.image[indexImage]} alt={product.name} />
+        {product.images?.length > indexImage && (
+          <img src={product.images[indexImage].imageUrl} alt={product.name} />
+        )}
       </div>
       <button
         className="product-item_add-to-card"
@@ -55,7 +60,7 @@ const ProductItem = ({ product }) => {
         Thêm vào giỏ hàng
       </button>
       <div className="product-item_img-list">
-        {product.image.map((image, index) => (
+        {product.images?.map((image, index) => (
           <div
             onMouseEnter={() => setIndexImage(index)}
             key={index}
@@ -63,21 +68,22 @@ const ProductItem = ({ product }) => {
               index === indexImage ? "active" : ""
             }`}
           >
-            <img src={image} alt={product.name} />
+            <img src={image.imageUrl} alt={product.name} />
           </div>
         ))}
       </div>
       <p className="product-item_name">{product.name}</p>
-      <p className="product-item_sold">
+      {/* <p className="product-item_sold">
         Đã bán: <span>{product.count}</span> sản phẩm
-      </p>
+      </p> */}
       <div className="product-item_price">
         <p className="product-item_price-fake">
-          {formatNumber(product.price * (1 - product.discount / 100))}đ
-        </p>
-        <p className="product-item_price-real">
+          {/* {formatNumber(product.price * (1 - product.discount / 100))}đ */}
           {formatNumber(product.price)} đ
         </p>
+        {/* <p className="product-item_price-real">
+          {formatNumber(product.price)} đ
+        </p> */}
       </div>
     </div>
   );

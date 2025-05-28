@@ -1,12 +1,33 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { listCategory } from "@/utils/const/Constant";
 import "./Category.scss";
 import { useNavigate } from "react-router-dom";
+import { getAllCategories } from "@/api/productAPI/category";
 
 const Category = () => {
-  const categorys = listCategory;
+  const [categorys, setCategorys] = useState(listCategory);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getCategorys = async () => {
+      try {
+        const data = {
+          sortedBy: "createdAt",
+          sortDirection: "desc",
+          page: 0,
+          size: 10,
+        };
+        const response = await getAllCategories(data);
+        console.log("categorys", response);
+        // setCategorys(response.data.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCategorys();
+  }, []);
+
   return (
     <div data-aos="fade-up" className="category">
       {categorys.map((item, index) => (

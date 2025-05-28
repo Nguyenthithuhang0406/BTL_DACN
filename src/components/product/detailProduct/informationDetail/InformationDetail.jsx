@@ -1,22 +1,57 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { FaStar, FaRegStar, FaRegStarHalfStroke } from "react-icons/fa6";
 
 import "./InformationDetail.scss";
+import axios from "axios";
+import {
+  getAvgRatingByProductId,
+  getReviewsByProductId,
+} from "@/api/productAPI/review";
 
-const InformationDetail = ({product}) => {
+const InformationDetail = ({ product }) => {
   const [typeMenu, setTypeMenu] = useState("info");
   const [rate, setRate] = useState(0);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    const rate = () => {
-      const sumRate = product.comments.reduce(
-        (sum, item) => sum + item.rating,
-        0
-      );
-      setRate(sumRate / product.comments.length);
+    const fetchRateAndComments = async () => {
+      try {
+        const reviewParams = {
+          productId: product.id,
+          page: 0,
+          size: 20,
+          sortBy: "createdAt",
+          sortDirection: "desc",
+        };
+
+        const [ratingAvgRes, reviewsRes] = await Promise.all([
+          getAvgRatingByProductId(product.id),
+          getReviewsByProductId(reviewParams),
+        ]);
+
+        setRate(ratingAvgRes.data);
+        setComments(reviewsRes.data.content);
+
+        console.log("Rating Average:", ratingAvgRes);
+        console.log("Comments:", reviewsRes);
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          switch (error.response.status) {
+            case 500:
+              toast.error("Lỗi hệ thống");
+              break;
+            case 404:
+              toast.error("Sản phẩm không tồn tại");
+              break;
+            default:
+              toast.error("Đã xảy ra lỗi, vui lòng kiểm tra lại kết nối!");
+          }
+        }
+      }
     };
-    rate();
+
+    fetchRateAndComments();
   }, [product]);
 
   return (
@@ -48,15 +83,18 @@ const InformationDetail = ({product}) => {
           {product.description}
         </div>
       )}
-      {typeMenu === "exchangePolicy" && (
+      {/* {typeMenu === "exchangePolicy" && (
         <div data-aos="fade-up" className="exchangePolicy">
           {product.exchangePolicy}
         </div>
-      )}
+      )} */}
       {typeMenu === "comment" &&
-        (product.comments.length === 0 ? (
+        (comments.length === 0 ? (
           <div data-aos="fade-up" className="comment__no">
             Chưa có đánh giá nào
+            <div className="comment__have__write">
+              <button>Viết đánh giá</button>
+            </div>
           </div>
         ) : (
           <div data-aos="fade-up" className="comment__have">
@@ -75,15 +113,15 @@ const InformationDetail = ({product}) => {
                 </span>
               </div>
               <div className="comment__have__rate-count">
-                <span>{product.comments.length}</span> Đánh giá
+                <span>{comments.length}</span> Đánh giá
               </div>
             </div>
             <div className="comment__have__list">
-              {product.comments.map((comment, index) => (
+              {comments.map((comment, index) => (
                 <div className="comment__have__item" key={index}>
-                  <img src={comment.avatar} alt={comment.name} />
+                  {/* <img src={comment.avatar} alt={comment.name} /> */}
                   <div className="comment__have__item-content">
-                    <p className="name">{comment.name}</p>
+                    <p className="name">{comment.fullName}</p>
                     <div className="rating">
                       {Array.from({ length: comment.rating }, (_, i) => (
                         <FaStar key={i} />
@@ -104,6 +142,6 @@ const InformationDetail = ({product}) => {
         ))}
     </div>
   );
-}
+};
 
 export default InformationDetail;
