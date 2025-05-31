@@ -98,6 +98,9 @@
       position: relative;
 
       .header-desktop__group-icon-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         cursor: pointer;
         text-align: center;
 
@@ -128,7 +131,7 @@
           background-color: #f3f2f2;
           border-radius: 8px;
           z-index: 10;
-          width: 120px;
+          width: 150px;
 
           p {
             width: 100%;

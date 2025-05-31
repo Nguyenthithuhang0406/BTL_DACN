@@ -63,8 +63,31 @@
     width: 100%;
     font-size: 15px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    .comment__have__write {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      button {
+        padding: 10px 20px;
+        background-color: #ff6347;
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #95c7fc;
+        }
+      }
+    }
   }
 
   .comment__have {

@@ -1,25 +1,63 @@
 /* eslint-disable */
-import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-
-import "./LoginForm.scss";
 import { loginValidationSchema } from "@/utils/validation/authValidation";
 import ForgotPassword from "../forgotPassword/ForgotPassword";
+import { login, loginWithGoogle } from "@/api/authAPI/auth";
+
+import "./LoginForm.scss";
 const LoginForm = ({ setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFogotPassword, setIsForgotPassword] = useState(false);
+  const navigate = useNavigate();
 
   const initiateValues = {
     userName: "",
     password: "",
   };
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    try {
+      const data = {
+        username: values.userName,
+        password: values.password,
+      };
+      const response = await login(data);
+      toast.success("Đăng nhập thành công");
+      navigate("/");
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        switch (error.response.status) {
+          case 500:
+            toast.error("Lỗi hệ thống");
+            break;
+          case 400:
+            toast.error("Dữ liệu không hợp lệ");
+            break;
+          default:
+            toast.error("Đã xảy ra lỗi, vui lòng kiểm tra lại kết nối!");
+        }
+      }
+      console.log(error);
+    }
   };
 
+  const handleLoginWithGoogle = async () => {
+    try {
+      const response = await loginWithGoogle();
+      window.open(
+        response.data
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div data-aos="fade-right" className={`login `}>
       <h1>Đăng nhập</h1>
@@ -83,10 +121,12 @@ const LoginForm = ({ setIsLogin }) => {
               >
                 Quên mật khẩu?
               </p>
-              {isFogotPassword && <ForgotPassword />}
+              {isFogotPassword && (
+                <ForgotPassword setIsForgotPassword={setIsForgotPassword} />
+              )}
               <p>Hoặc</p>
               <div className="login-gg">
-                <button>
+                <button onClick={handleLoginWithGoogle}>
                   <FcGoogle />
                   <p>Đăng nhập bằng Google</p>
                 </button>

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "./LeftSession.scss";
 
-const LeftSession = ({product}) => {
+const LeftSession = ({ product }) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
@@ -38,27 +38,28 @@ const LeftSession = ({product}) => {
     }
   }, [updateNavigation]);
 
-  useEffect(() => {
-    console.log("indexImage", indexImage);
-  }, [indexImage]);
+  // useEffect(() => {
+  //   console.log("indexImage", indexImage);
+  // }, [indexImage]);
 
   return (
     <div className="left-session">
       <div className="left-session__left-images">
-        {product.images.map((image, index) => (
-          <div
-            onClick={() => {
-              setIndexImage(index);
-              swiperRef.current?.slideTo(index);
-            }}
-            key={index}
-            className={`left-session__left-image-item ${
-              indexImage === index ? "active" : ""
-            }`}
-          >
-            <img src={image} alt="product" />
-          </div>
-        ))}
+        {product?.images?.length > 0 &&
+          product?.images?.map((image, index) => (
+            <div
+              onClick={() => {
+                setIndexImage(index);
+                swiperRef.current?.slideTo(index);
+              }}
+              key={index}
+              className={`left-session__left-image-item ${
+                indexImage === index ? "active" : ""
+              }`}
+            >
+              <img src={image.imageUrl} alt="product" />
+            </div>
+          ))}
       </div>
       <div className="swiper-images">
         <button
@@ -88,10 +89,10 @@ const LeftSession = ({product}) => {
           }}
           className="swiper-container"
         >
-          {product.images.map((image, index) => (
+          {product?.images?.map((image, index) => (
             <SwiperSlide key={index}>
               <div className="swiper-image_item">
-                <img src={image} alt="product" />
+                <img src={image.imageUrl} alt="product" />
               </div>
             </SwiperSlide>
           ))}
@@ -113,6 +114,6 @@ const LeftSession = ({product}) => {
       </div>
     </div>
   );
-}
+};
 
 export default LeftSession;

@@ -2,7 +2,7 @@
 import * as Yup from "yup";
 
 export const registerValidationSchema = Yup.object().shape({
-  firtName: Yup.string().required("Họ không được để trống"),
+  firstName: Yup.string().required("Họ không được để trống"),
   lastName: Yup.string().required("Tên không được để trống"),
   email: Yup.string()
     .email("Địa chỉ email không hợp lệ")
