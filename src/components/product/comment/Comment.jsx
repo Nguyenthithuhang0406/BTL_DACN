@@ -112,8 +112,8 @@ const Comment = () => {
 
             return {
               product: {
-                name: product.name,
-                image: product.image.length > 0 ? product.image : ["", ""],
+                name: product?.name,
+                image: product?.image?.length > 0 ? product?.image : ["", ""],
               },
               comments,
             };

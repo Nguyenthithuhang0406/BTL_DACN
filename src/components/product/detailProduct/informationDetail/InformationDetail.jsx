@@ -8,12 +8,19 @@ import {
   getAvgRatingByProductId,
   getReviewsByProductId,
 } from "@/api/productAPI/review";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const InformationDetail = ({ product }) => {
+const InformationDetail = ({
+  product,
+  setIsShowAddComment,
+  isShowAddComment,
+}) => {
   const [typeMenu, setTypeMenu] = useState("info");
   const [rate, setRate] = useState(0);
   const [comments, setComments] = useState([]);
 
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchRateAndComments = async () => {
       try {
@@ -30,7 +37,7 @@ const InformationDetail = ({ product }) => {
           getReviewsByProductId(reviewParams),
         ]);
 
-        setRate(ratingAvgRes.data);
+        setRate(ratingAvgRes.data.averageRating || 0);
         setComments(reviewsRes.data.content);
 
         console.log("Rating Average:", ratingAvgRes);
@@ -52,7 +59,18 @@ const InformationDetail = ({ product }) => {
     };
 
     fetchRateAndComments();
-  }, [product]);
+  }, [product, isShowAddComment]);
+
+  const handleClickAddComment = () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      toast.error("Bạn cần đăng nhập để thực hiện thao tác này");
+      navigate("/auth");
+      return;
+    } else {
+      setIsShowAddComment(true);
+    }
+  };
 
   return (
     <div className="infomation">
@@ -93,7 +111,7 @@ const InformationDetail = ({ product }) => {
           <div data-aos="fade-up" className="comment__no">
             Chưa có đánh giá nào
             <div className="comment__have__write">
-              <button>Viết đánh giá</button>
+              <button onClick={handleClickAddComment}>Viết đánh giá</button>
             </div>
           </div>
         ) : (
@@ -136,7 +154,7 @@ const InformationDetail = ({ product }) => {
               ))}
             </div>
             <div className="comment__have__write">
-              <button>Viết đánh giá</button>
+              <button onClick={handleClickAddComment}>Viết đánh giá</button>
             </div>
           </div>
         ))}
