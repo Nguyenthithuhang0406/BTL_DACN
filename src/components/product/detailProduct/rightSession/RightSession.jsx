@@ -13,6 +13,8 @@ import { addToCart } from "@/api/cartAPI/cart";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setQuantityOfCart } from "@/store/orderSlice";
 
 const RightSession = ({ product }) => {
   const [infoSelect, setInfoSelect] = useState({
@@ -20,6 +22,8 @@ const RightSession = ({ product }) => {
     quantity: "1",
   });
   const [isLike, setIsLike] = useState(false);
+  const dispatch = useDispatch();
+  const quantityOfCart = useSelector((state) => state.order.quantityOfCart);
 
   const benefits = [
     {
@@ -45,9 +49,9 @@ const RightSession = ({ product }) => {
   ];
 
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log("selected", infoSelect);
-  }, [infoSelect]);
+  // useEffect(() => {
+  //   console.log("selected", infoSelect);
+  // }, [infoSelect]);
 
   const handleClickAddToCart = async (e) => {
     e.stopPropagation();
@@ -58,7 +62,12 @@ const RightSession = ({ product }) => {
       };
 
       const response = await addToCart(data);
-      console.log("Product added to cart:", response);
+      // console.log("Product added to cart:", response.data.items);
+      dispatch(setQuantityOfCart(quantityOfCart + 1));
+      setInfoSelect({
+        type: 0,
+        quantity: "1",
+      });
       toast.success("Thêm sản phẩm vào giỏ hàng thành công");
     } catch (error) {
       if (error.message === "Bạn cần đăng nhập để thực hiện yêu cầu này.") {
