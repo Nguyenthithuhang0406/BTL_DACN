@@ -19,8 +19,7 @@ const Category = () => {
           size: 10,
         };
         const response = await getAllCategories(data);
-        console.log("categorys", response);
-        // setCategorys(response.data.content);
+        setCategorys(response.data.content.slice(0,8));
       } catch (error) {
         console.log(error);
       }
@@ -30,16 +29,16 @@ const Category = () => {
 
   return (
     <div data-aos="fade-up" className="category">
-      {categorys.map((item, index) => (
+      {categorys?.map((item, index) => (
         <div
           key={index}
           className="category__item"
-          onClick={() => navigate(`/productsByCategory/${item.title}`)}
+          onClick={() => navigate(`/productsByCategory/${item.id}`)}
         >
           <div className="category__item-img">
-            <img src={item.image} alt={item.title} />
+            <img src={item.imageUrl} alt={item.name} />
           </div>
-          <button className="category__item-btn">{item.title}</button>
+          <button className="category__item-btn">{item.name}</button>
         </div>
       ))}
     </div>

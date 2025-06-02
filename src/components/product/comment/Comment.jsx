@@ -120,7 +120,17 @@ const Comment = () => {
           })
         );
 
-        setReviews(listReview);
+        // Lọc ra những sản phẩm có đánh giá
+        const filteredReviews = listReview.filter(
+          (review) => review.comments.length > 0
+        );
+        // Sắp xếp theo thứ tự nhiều đánh giá nhất
+        filteredReviews.sort(
+          (a, b) => b.comments.length - a.comments.length
+        );
+
+        setReviews(filteredReviews.slice(0, 5)); // Lấy 5 sản phẩm có đánh giá nhiều nhất
+
       } catch (error) {
         console.log(error);
       }

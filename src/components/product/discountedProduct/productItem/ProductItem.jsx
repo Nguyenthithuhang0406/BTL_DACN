@@ -9,6 +9,8 @@ import { getProductById } from "@/api/productAPI/product";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { addToCart } from "@/api/cartAPI/cart";
+import { useDispatch, useSelector } from "react-redux";
+import { setQuantityOfCart } from "@/store/orderSlice";
 
 const ProductItem = ({ product }) => {
   const [indexImage, setIndexImage] = useState(0);
@@ -17,6 +19,9 @@ const ProductItem = ({ product }) => {
   const [likeProducts, setLikeProducts] = useState(
     JSON.parse(localStorage.getItem("likeProducts")) || []
   );
+
+  const dispatch = useDispatch();
+  const quantityOfCart = useSelector((state) => state.order.quantityOfCart);
 
   useEffect(() => {
     setLikeProducts(JSON.parse(localStorage.getItem("likeProducts")) || []);
@@ -51,7 +56,8 @@ const ProductItem = ({ product }) => {
       };
 
       const response = await addToCart(data);
-      console.log("Product added to cart:", response);
+      // console.log("Product added to cart:", response);
+      dispatch(setQuantityOfCart(quantityOfCart + 1));
       toast.success("Thêm sản phẩm vào giỏ hàng thành công");
     } catch (error) {
       if (error.message === "Bạn cần đăng nhập để thực hiện yêu cầu này.") {
