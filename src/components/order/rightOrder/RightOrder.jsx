@@ -16,7 +16,7 @@ const RightOrder = () => {
 
   const handleClickQuantity = (product, status) => {
     const updatedProducts = products.map((item) => {
-      if (item.id === product.id) {
+      if (item.variantId === product.variantId) {
         return {
           ...item,
           quantity:
@@ -37,10 +37,15 @@ const RightOrder = () => {
       <div className="rightOrder__list">
         {products.map((product, index) => (
           <div key={index} className="rightOrder__list-item">
-            <img src={product.image[0]} />
+            <img src={product.imageUrl} />
             <div className="rightOrder__list-item-info">
-              <p>{product.name}</p>
-              <p className="rightOrder__list-item-info-type">{product.type} </p>
+              <p>{product.productName}</p>
+              {product.attributes &&
+                product.attributes.map((attribute, index) => (
+                  <p className="rightOrder__list-item-info-type">
+                    {attribute.type}: {attribute.value}
+                  </p>
+                ))}
               <div className="rightOrder__list-item-info-price">
                 <div className="rightOrder__list-item-info-price-quantity">
                   <button
