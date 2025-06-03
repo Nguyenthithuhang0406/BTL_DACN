@@ -276,7 +276,7 @@ const HeaderDesktop = () => {
         <div className="header-desktop__group-icon">
           <div
             className="header-desktop__group-icon-item"
-            onClick={() => navigate(`/followingProducts/1`)}
+            onClick={() => navigate(`/followingProducts`)}
           >
             <AiOutlineHeart className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Yêu thích</p>
