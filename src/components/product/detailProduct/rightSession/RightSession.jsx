@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuantityOfCart } from "@/store/orderSlice";
+import { setOrderList, setQuantityOfCart } from "@/store/orderSlice";
 
 const RightSession = ({ product }) => {
   const [infoSelect, setInfoSelect] = useState({
@@ -23,6 +23,7 @@ const RightSession = ({ product }) => {
   });
   const [isLike, setIsLike] = useState(false);
   const dispatch = useDispatch();
+  const orderListProducts = useSelector((state) => state.order.orderList || []);
   const quantityOfCart = useSelector((state) => state.order.quantityOfCart);
 
   const benefits = [
@@ -49,12 +50,8 @@ const RightSession = ({ product }) => {
   ];
 
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   console.log("selected", infoSelect);
-  // }, [infoSelect]);
 
   const handleClickAddToCart = async (e) => {
-    e.stopPropagation();
     try {
       const data = {
         variantId: product.variants[0].id,
@@ -94,6 +91,37 @@ const RightSession = ({ product }) => {
       console.error("Error adding product to cart:", error);
     }
   };
+
+  const handleClickBuy = async () => {
+    const variantId = infoSelect.variantId || product.variants[0]._id;
+    const quantityToAdd = Number(infoSelect.quantity) || 1;
+
+    const existingProduct = orderListProducts.find(
+      (item) => item.variantId === variantId
+    );
+
+    let updatedProducts;
+
+    if (!existingProduct) {
+      const newProduct = {
+        ...product,
+        variantId,
+        quantity: quantityToAdd,
+      };
+      updatedProducts = [...orderListProducts, newProduct];
+    } else {
+      updatedProducts = orderListProducts.map((item) =>
+        item.variantId === variantId
+          ? { ...item, quantity: item.quantity + quantityToAdd }
+          : item
+      );
+    }
+
+    dispatch(setOrderList(updatedProducts));
+    await handleClickAddToCart();
+    navigate("/cart");
+  };
+  
 
   return (
     <div className="right-session">
@@ -198,7 +226,9 @@ const RightSession = ({ product }) => {
         >
           Thêm vào giỏ hàng
         </button>
-        <button className="right-session__button-buy">Mua ngay</button>
+        <button className="right-session__button-buy" onClick={handleClickBuy}>
+          Mua ngay
+        </button>
       </div>
       <div className="right-session__benefits">
         {benefits.map((benefit, index) => (

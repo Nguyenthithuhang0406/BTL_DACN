@@ -23,12 +23,16 @@ const HeaderDesktop = () => {
   const [isLogin, setIsLogin] = useState(false);
   const childRef = useRef(null);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       setIsLogin(true);
     } else {
       setIsLogin(false);
+      navigate("/auth");
     }
   }, []);
 
@@ -190,9 +194,6 @@ const HeaderDesktop = () => {
       count: 98,
     },
   ];
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
