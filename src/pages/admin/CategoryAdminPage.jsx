@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 import LayoutAdmin from "./LayoutAdmin";
 import HeaderAdmin from "@/components/admin/HeaderAdmin";
 import { motion } from "framer-motion";
@@ -8,52 +10,98 @@ import DeleteConfirmModal from "@/components/admin/categoryAdmin/DeleteConfirmMo
 import CategoryList from "@/components/admin/categoryAdmin/CategoryList";
 import CategoryFilters from "@/components/admin/categoryAdmin/CategoryFilters";
 import { categoryData } from "@/components/admin/categoryAdmin/categoryData";
-import { sortCategories } from "@/components/admin/categoryAdmin/categoryExcel";
+import {
+	sortCategories,
+	exportCategoriesToExcel,
+} from "@/components/admin/categoryAdmin/categoryExcel";
 const CategoryAdminPage = () => {
-	const [categories, setCategories] = useState(categoryData);
+	const [allCate, setAllCate] = useState([]);
+	const [categories, setCategories] = useState([]);
 	const [showViewModal, setShowViewModal] = useState(false);
 	const [showFormModal, setShowFormModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [selectedCategory, setSelectedCategory] = useState(null);
-	const [modalType, setModalType] = useState("add"); 
+	const [modalType, setModalType] = useState("add");
 	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
+	const [itemsPerPage, setItemsPerPage] = useState(5); // default items per page
+	const [totalItems, setTotalItems] = useState(0);
 	const [searchQuery, setSearchQuery] = useState("");
+	const [hasNext, setHasNext] = useState(true);
+	const [hasPrevious, setHasPrevious] = useState(true);
+	const [apiPage, setApiPage] = useState(0);
 	const [sortConfig, setSortConfig] = useState({
 		key: "displayOrder",
 		direction: "asc",
 	});
-	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const [sortDirection, setSortDirection] = useState("asc");
 
-	const getNewCategoryData = () => ({
-		id: `CAT-${Math.floor(1000 + Math.random() * 9000)}`,
-		name: "",
-		description: "",
-		icon: "",
-		displayOrder:
-			categories.length > 0
-				? Math.max(...categories.map((c) => Number(c.displayOrder))) + 1
-				: 1,
-		subcategories: [],
-		productCount: 0,
-		lastUpdated: new Date().toLocaleDateString("en-US", {
-			month: "short",
-			day: "2-digit",
-			year: "numeric",
-		}),
-	});
-
-	const filteredCategories = categories.filter(
-		(category) =>
-			category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			category.description
-				?.toLowerCase()
-				.includes(searchQuery.toLowerCase())
+	const [token, setToken] = useState(
+		"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJnaEZQT3RhMXhva0NVX3ZjU25Zc19TTEZMOXdrVl9aUnNVWU5nXzAtQzV3In0.eyJleHAiOjE3NDkxMzc0MjYsImlhdCI6MTc0OTEzNTYyNiwianRpIjoiY2I4MDQ2ODQtM2YzMC00MWRmLTg1MGYtMDFkNjRjMDUyODY3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9lY29tbWVyY2UiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNDIxNzU5NDUtODgxOS00MTU0LThlZTMtNWE1MDA1YTgzY2FiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWljcm8tc2VydmljZS1hcGkiLCJzZXNzaW9uX3N0YXRlIjoiZTU0MjY3NjAtYjRjMi00Y2FiLTk2MWMtY2U1ODVlMjQ4ZTBhIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1lY29tbWVyY2UiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiQURNSU4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJlNTQyNjc2MC1iNGMyLTRjYWItOTYxYy1jZTU4NWUyNDhlMGEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJhZG1pbiBhZG1pbjEyMyIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6ImFkbWluIiwiZmFtaWx5X25hbWUiOiJhZG1pbjEyMyIsImVtYWlsIjoidnRobjMwM0BnbWFpbC5jb20ifQ.lDmBMinDLgsTH906rTtboC3IM9wjm9DEtal3xn1K8Xeg9NTTs90V0ptN4rHS-VO79Aom-S9YxBgto3oA2DJS-yrjnQGTZ8Qs-pao-F7ilQx9I9n-pN8y87AWWmJ9lzSKjBbicH9REY3T87YKdFSJujXOEgvk-ymbYLNLH1JTjo4pbga6cfwlcQbJfK-9KcbdS-WFfjmlpU8eiP2PWP9wwpHlnXxjgTKnXR_f46upxS_XMby2H34Ij0LqX7SH9dU_6k2vjT1x6MprsjW41wEL70Ftg9BI4eZ0MKg6Z5d6krLWj48b6U7cE47IHv-iAz3CRfaxiioMHj9dxZ8uSgzKAg"
 	);
 
-	const sortedCategories = sortCategories(filteredCategories, sortConfig);
+	const getAllCategories = async (
+		page = 0,
+		size = itemsPerPage,
+		search = ""
+	) => {
+		try {
+			let url = `${
+				import.meta.env.VITE_API_URL
+			}/categories?sortDirection=${sortDirection}&page=${page}&size=${size}`;
+			let urlAll = `${import.meta.env.VITE_API_URL}/categories`;
+			if (search && search.length > 0) {
+				url += `&searchKeyword=${encodeURIComponent(search)}`;
+			}
+			// console.log("url allall", url);
+			// console.log("search", search);
+			const res = await axios.get(url, {
+				header: {
+					Authorization: `Bearer ${token}`,
+				}
+			});
+			const resAll = await axios.get(urlAll);
+			console.log("res", res.data.data.content);
+			setAllCate(resAll.data.data.content);
+			setCategories(res.data.data.content);
+			setApiPage(res.data.data.page);
+			setCurrentPage(apiPage + 1);
+			setTotalPages(res.data.data.totalPages);
+			setTotalItems(res.data.data.totalElements);
+			setItemsPerPage(res.data.data.size);
+			setHasNext(res.data.data.hasNext);
+			setHasPrevious(res.data.data.hasPrevious);
+		} catch (err) {
+			toast.error(`Lỗi: ${err.message} - Nguyên nhân: ${err.name} `);
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		getAllCategories(apiPage, itemsPerPage, searchQuery);
+	}, [apiPage, itemsPerPage, searchQuery]);
+
+	const handleSearchChange = (e) => {
+		setSearchQuery(e.target.value);
+		console.log("searchquery: ", searchQuery);
+	};
+
+	const getNewCategoryData = () => ({
+		name: "",
+		description: "",
+		imageUrl: "",
+	});
+	// const filteredCategories = categories.filter(
+	// 	(category) =>
+	// 		category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+	// 		category.description
+	// 			?.toLowerCase()
+	// 			.includes(searchQuery.toLowerCase())
+	// );
+
+	// const sortedCategories = sortCategories(filteredCategories, sortConfig);
 
 	useEffect(() => {
-		setCurrentPage(1);
+		setCurrentPage(0);
 	}, [searchQuery]);
 
 	const handleSort = (key) => {
@@ -62,6 +110,37 @@ const CategoryAdminPage = () => {
 			direction = "desc";
 		}
 		setSortConfig({ key, direction });
+	};
+
+
+
+	const uploadImage = async (categoryId, file) => {
+		const formData = new FormData();
+		formData.append("image", file);
+
+		console.log("formData: ", formData);
+		console.log("categoryId: ", categoryId);
+
+		try {
+			const res = await axios.put(
+				`${
+					import.meta.env.VITE_API_URL
+				}/categories/${categoryId}/upload`,
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			console.log("uploadImage res: ", res);
+			return res.data;
+		} catch (error) {
+			console.error("Upload image error:", error.response?.data);
+			throw error;
+		}
 	};
 
 	const handleViewCategory = (category) => {
@@ -76,7 +155,10 @@ const CategoryAdminPage = () => {
 	};
 
 	const handleEditCategory = (category) => {
-		setSelectedCategory({ ...category });
+		setSelectedCategory({
+			...category,
+			imageUrl: category.imageUrl || "",
+		});
 		setModalType("edit");
 		setShowFormModal(true);
 	};
@@ -86,34 +168,136 @@ const CategoryAdminPage = () => {
 		setShowDeleteModal(true);
 	};
 
-	const handleFormSubmit = (formData) => {
-		if (modalType === "add") {
-			setCategories([...categories, formData]);
-		} else {
-			setCategories(
-				categories.map((category) =>
-					category.id === formData.id ? formData : category
-				)
-			);
-		}
-		setShowFormModal(false);
-	};
+	const handleFormSubmit = async (formData, imageFile) => {
+		console.log("formDATAAA:", formData);
+		try {
+			const data = new FormData();
+			data.append("name", formData.name);
+			data.append("description", formData.description || "");
+			if (imageFile) data.append("image", imageFile);
+			if (modalType === "add") {
+				const res = await
+					axios.post(
+					`${import.meta.env.VITE_API_URL}/categories`,
+					data,
+					{
+						headers: {
+							"Content-Type": "multipart/form-data",
+							Authorization: `Bearer ${token}`,
+						},
+					}
+					)
+				
 
-	const handleDeleteConfirm = () => {
-		setCategories(
-			categories.filter((category) => category.id !== selectedCategory.id)
-		);
-		setShowDeleteModal(false);
+				console.log("res post cate", res.data.data);
+
+				if (res.data.status === "SUCCESS") {
+					const cateId = res.data.data.id;
+					if (imageFile) {
+						try {
+							await toast.promise(uploadImage(cateId, imageFile),
+								{
+									loading: "Đang upload...",
+									success: "Upload hình ảnh thành công!",
+									error: "Lỗi khi upload hình ảnh!",
+							})
+						} catch (err) {
+							console.error("Upload error:", err);
+							toast.error("Lỗi khi upload hình ảnh!");
+						}
+					} else {
+						toast.success("Thêm danh mục thành công!");
+					}
+					setShowFormModal(false);
+					getAllCategories(apiPage, itemsPerPage, searchQuery);
+				}
+			} else {
+				const res = await axios.put(
+					`${import.meta.env.VITE_API_URL}/categories/${formData.id}`,
+					data,
+					{
+						headers: {
+							"Content-Type": "multipart/form-data",
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+
+				console.log("res put cate: ", res);
+
+				if (res.data.status === "SUCCESS") {
+					if (imageFile) {
+						try {
+							const res = await uploadImage(formData.id, imageFile);
+							console.log('res upload ', res);
+							toast.success(
+								"Cập nhật danh mục và hình ảnh thành công!"
+							);
+						} catch (err) {
+							console.error("Upload error:", err);
+							toast.error("Lỗi khi upload hình ảnh!");
+						}
+					} else {
+						toast.success("Cập nhật danh mục thành công!");
+					}
+
+					setShowFormModal(false);
+					getAllCategories(apiPage, itemsPerPage, searchQuery);
+				}
+			}
+		} catch (err) {
+			console.error("Form submit error:", err);
+			toast.error(`LỖI: ${err.message}`);
+		}
+	};
+	const handleDeleteConfirm = async () => {
+		try {
+			const res = await axios.delete(
+				`${import.meta.env.VITE_API_URL}/categories/${
+					selectedCategory.id
+				}`,
+				{
+					headers: {
+						// Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			if (res.data.status == "SUCCESS") {
+				toast.success("Xóa danh mục thành công!");
+				setShowDeleteModal(false);
+				getAllCategories(apiPage, itemsPerPage, searchQuery);
+			}
+		} catch (err) {
+			toast.error(`Lỗi: ${err.message}`);
+		}
 	};
 
 	const handleExportExcel = () => {
-		exportCategoriesToExcel(filteredCategories);
+		exportCategoriesToExcel(allCate);
+	};
+
+	const handlePageChange = (page) => {
+		setCurrentPage(page);
+		getAllCategories(page - 1, itemsPerPage, searchQuery);
+	};
+
+	const handleItemsPerPageChange = (size) => {
+		setItemsPerPage(size);
+		setApiPage(0);
+		setCurrentPage(1);
+		getAllCategories(0, size, searchQuery);
+	};
+
+	const logout = () => {
+		localStorage.removeItem("accessToken");
+		window.location.reload();
 	};
 
 	return (
 		<LayoutAdmin>
 			<div className="flex-1 overflow-auto relative z-10">
-				<HeaderAdmin title={"Categories"} />
+				<HeaderAdmin title={"Quản lý danh mục"} />
 				<main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
 					<motion.div
 						initial={{ opacity: 0, x: 30 }}
@@ -122,23 +306,27 @@ const CategoryAdminPage = () => {
 					>
 						<CategoryFilters
 							searchQuery={searchQuery}
-							onSearchChange={setSearchQuery}
+							onSearchChange={handleSearchChange}
 							onExportExcel={handleExportExcel}
 							onAddCategory={handleAddCategory}
 						/>
 
 						<CategoryList
-							categories={sortedCategories}
+							categories={categories}
+							apiPage={apiPage}
 							currentPage={currentPage}
 							itemsPerPage={itemsPerPage}
-							totalItems={sortedCategories.length}
-							onPageChange={setCurrentPage}
-							onItemsPerPageChange={setItemsPerPage}
+							totalItems={totalItems}
+							totalPages={totalPages}
+							onPageChange={handlePageChange}
+							onItemsPerPageChange={handleItemsPerPageChange}
 							onViewCategory={handleViewCategory}
 							onEditCategory={handleEditCategory}
 							onDeleteCategory={handleDeleteCategory}
 							onSort={handleSort}
 							sortConfig={sortConfig}
+							hasNext={hasNext}
+							hasPrevious={hasPrevious}
 						/>
 
 						{showViewModal && selectedCategory && (
