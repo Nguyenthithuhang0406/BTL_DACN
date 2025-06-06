@@ -4,30 +4,53 @@ import React from "react";
 const CategoryViewModal = ({ category, onClose, onEdit }) => {
 	if (!category) return null;
 
+	const getImageUrl = () => {
+		if (category.imageUrl) {
+			return `${
+				import.meta.env.VITE_API_URL
+			}/images/category-images/${category.imageUrl.split("\\").pop()}`; // đường dẫn tuyệt đối
+		}
+		return `https://picsum.photos/200/300?grayscale`;
+	};
+
 	return (
-		<div className="fixed inset-0 bg-[#0000009e] bg-opacity-50 flex items-center justify-center z-50 p-4">
-			<div className="bg-white rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+		<div
+			className="fixed inset-0 bg-[#0000009e] bg-opacity-50 flex items-center justify-center z-50 p-4"
+			onClick={onClose}
+		>
+			<div
+				className="bg-white rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+				onClick={(e) => e.stopPropagation()}
+			>
 				<div className="flex justify-between items-center p-4 border-b">
-					<h3 className="text-lg font-semibold">Category Details</h3>
+					<h3 className="text-lg font-semibold">
+						Thông tin danh mục
+					</h3>
 					<button
 						onClick={onClose}
 						className="text-gray-400 hover:text-gray-600"
 					>
-						<X className="h-5 w-5" />
+						<X className="h-5 w-5 cursor-pointer" />
 					</button>
 				</div>
 				<div className="p-6">
 					<div className="flex items-center mb-6">
-						<div className="h-16 w-16 bg-orange-100 rounded-lg flex items-center justify-center text-4xl">
-							{category.icon || "📂"}
-						</div>
+						<img
+						className="h-24 w-24 border border-none rounded-xl"
+							src={category.imageUrl ? category.imageUrl : "https://picsum.photos/200/300?grayscale"}
+							alt={category.name}
+							onError={(e) => {
+								e.target.src =
+									"https://picsum.photos/200/300?grayscale"; // fallback image
+							}}
+						/>
 						<div className="ml-4">
 							<h2 className="text-xl font-semibold">
 								{category.name}
 							</h2>
 							<div className="flex items-center mt-1">
 								<span className="text-sm text-gray-500">
-									Order: {category.displayOrder}
+									Id: {category.id}
 								</span>
 							</div>
 						</div>
@@ -36,7 +59,7 @@ const CategoryViewModal = ({ category, onClose, onEdit }) => {
 					{category.description && (
 						<div className="mb-6">
 							<h4 className="text-sm font-medium text-gray-700 mb-2">
-								Description
+								Mô tả
 							</h4>
 							<p className="text-gray-600">
 								{category.description}
@@ -44,62 +67,18 @@ const CategoryViewModal = ({ category, onClose, onEdit }) => {
 						</div>
 					)}
 
-					{category.subcategories.length > 0 && (
-						<div className="mb-6">
-							<h4 className="text-sm font-medium text-gray-700 mb-2">
-								Subcategories
-							</h4>
-							<div className="grid grid-cols-2 gap-2">
-								{category.subcategories.map(
-									(subcategory, index) => (
-										<div
-											key={index}
-											className="bg-gray-50 px-3 py-2 rounded-lg text-sm"
-										>
-											{subcategory}
-										</div>
-									)
-								)}
-							</div>
-						</div>
-					)}
-
-					<div className="mt-6">
-						<h4 className="text-sm font-medium text-gray-700 mb-2">
-							Statistics
-						</h4>
-						<div className="grid grid-cols-2 gap-4">
-							<div className="bg-gray-50 p-3 rounded-lg">
-								<div className="text-sm text-gray-500">
-									Total Products
-								</div>
-								<div className="font-semibold">
-									{category.productCount || 0}
-								</div>
-							</div>
-							<div className="bg-gray-50 p-3 rounded-lg">
-								<div className="text-sm text-gray-500">
-									Last Updated
-								</div>
-								<div className="font-semibold">
-									{category.lastUpdated}
-								</div>
-							</div>
-						</div>
-					</div>
-
 					<div className="flex justify-end space-x-3 mt-6">
 						<button
 							onClick={onClose}
-							className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+							className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 cursor-pointer hover:bg-gray-50"
 						>
-							Close
+							Đóng
 						</button>
 						<button
 							onClick={() => onEdit(category)}
-							className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+							className="px-4 py-2 bg-orange-500 text-white rounded-lg cursor-pointer hover:bg-orange-600 duration-200"
 						>
-							Edit Category
+							Sửa danh mục
 						</button>
 					</div>
 				</div>
