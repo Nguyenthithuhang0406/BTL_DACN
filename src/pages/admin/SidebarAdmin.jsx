@@ -11,25 +11,25 @@ import { Link, useLocation } from "react-router-dom";
 
 const SIDEBAR_ITEMS = [
 	{
-		name: "Overview",
+		name: "Thống kê",
 		icon: BarChart2,
 		color: "#6366f1",
 		href: "/admin",
 	},
 	{
-		name: "Categories",
+		name: "Quản lý danh mục",
 		icon: TrendingUp,
 		color: "#8B5CF6",
 		href: "/admin/categories",
 	},
 	{
-		name: "Products",
+		name: "Quản lý sản phẩm",
 		icon: ShoppingBag,
 		color: "#EC4899",
 		href: "/admin/products",
 	},
 	{
-		name: "Orders",
+		name: "Quản lý đơn hàng",
 		icon: DollarSign,
 		color: "#10b981",
 		href: "/admin/orders",
