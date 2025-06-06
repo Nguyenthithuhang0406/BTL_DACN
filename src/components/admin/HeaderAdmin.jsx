@@ -9,7 +9,7 @@ const HeaderAdmin = ({title}) => {
 				</h1>
 				<div>
 					<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-						Logout
+						Đăng xuất
 					</button>
 				</div>
 			</div>
