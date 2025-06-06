@@ -4,9 +4,11 @@ import ProductPagination from "./ProductPagination";
 
 const ProductList = ({
 	products,
+	apiPage,
 	currentPage,
 	productsPerPage,
 	totalProducts,
+	totalPages,
 	onPageChange,
 	onProductsPerPageChange,
 	onViewProduct,
@@ -14,14 +16,12 @@ const ProductList = ({
 	onDeleteProduct,
 	onSort,
 	sortConfig,
+	hasNext,
+	hasPrevious,
 }) => {
 	const indexOfLastProduct = currentPage * productsPerPage;
 	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-	const currentProducts = products.slice(
-		indexOfFirstProduct,
-		indexOfLastProduct
-	);
-	const totalPages = Math.ceil(products.length / productsPerPage);
+	const currentProducts = products
 
 	return (
 		<div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
@@ -30,36 +30,36 @@ const ProductList = ({
 					<thead className="bg-gray-50">
 						<tr>
 							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Product
+								Tên sản phẩm
 							</th>
 							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Category
+								Mô tả
 							</th>
 							<th
 								onClick={() => onSort("price")}
-								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
+								className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
 							>
-								Price{" "}
+								Giá{" "}
 								{sortConfig.key === "price" &&
 									(sortConfig.direction === "asc"
 										? "↑"
 										: "↓")}
 							</th>
-							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Stock
+							<th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Tồn kho
 							</th>
-							<th
+							{/* <th
 								onClick={() => onSort("status")}
-								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
+								className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
 							>
-								Status{" "}
+								Trạng thái{" "}
 								{sortConfig.key === "status" &&
 									(sortConfig.direction === "asc"
 										? "↑"
 										: "↓")}
-							</th>
-							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Actions
+							</th> */}
+							<th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Hành động
 							</th>
 						</tr>
 					</thead>
@@ -86,7 +86,9 @@ const ProductList = ({
 				onItemsPerPageChange={onProductsPerPageChange}
 				indexOfFirstItem={indexOfFirstProduct}
 				indexOfLastItem={indexOfLastProduct}
-				itemName="products"
+				hasNext={hasNext}
+				hasPrevious={hasPrevious}
+				itemName="sản phẩm"
 			/>
 		</div>
 	);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import ImageUploader from "./ImageUploader";
-
+import {toast} from "react-hot-toast";
 const ProductFormModal = ({
 	isOpen,
 	onClose,
@@ -11,14 +11,13 @@ const ProductFormModal = ({
 }) => {
 	const [formData, setFormData] = useState(
 		initialData || {
-			id: `PRD-${Math.floor(1000 + Math.random() * 9000)}`,
+			id: "",
 			name: "",
 			category: "",
 			price: "",
 			stock: "",
 			status: "Active",
 			description: "",
-			sku: "",
 			variations: [],
 			tags: [],
 			images: [],
@@ -88,11 +87,15 @@ const ProductFormModal = ({
 
 		const priceNum = parseFloat(formData.price);
 		if (isNaN(priceNum) || priceNum <= 0) {
-			alert("Please enter a valid price.");
+			toast("Please enter a valid price.", {
+				icon:'⚠️'
+			});
 			return;
 		}
 		if (!formData.name.trim() || !formData.category.trim()) {
-			alert("Name and category are required.");
+			toast("Name and category are required.", {
+				icon:'⚠️'
+			});
 			return;
 		}
 
@@ -120,7 +123,7 @@ const ProductFormModal = ({
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 						<div>
 							<label className="block text-sm font-medium text-gray-700">
-								Product Name
+								Tên sản phẩm
 							</label>
 							<input
 								type="text"
@@ -133,7 +136,7 @@ const ProductFormModal = ({
 						</div>
 						<div>
 							<label className="block text-sm font-medium text-gray-700">
-								Category
+								Thuộc danh mục
 							</label>
 							<input
 								type="text"
@@ -146,7 +149,7 @@ const ProductFormModal = ({
 						</div>
 						<div>
 							<label className="block text-sm font-medium text-gray-700">
-								Price ($)
+								Giá tiền ($)
 							</label>
 							<input
 								type="number"
@@ -161,7 +164,7 @@ const ProductFormModal = ({
 						</div>
 						<div>
 							<label className="block text-sm font-medium text-gray-700">
-								Stock
+								Tồn kho
 							</label>
 							<input
 								type="number"
@@ -174,7 +177,7 @@ const ProductFormModal = ({
 						</div>
 						<div>
 							<label className="block text-sm font-medium text-gray-700">
-								Status
+								Trạng thái
 							</label>
 							<select
 								name="status"
@@ -185,14 +188,14 @@ const ProductFormModal = ({
 								<option value="Active">Active</option>
 								<option value="Low Stock">Low Stock</option>
 								<option value="Out of Stock">
-									Out of Stock
+									Hết hàng
 								</option>
-								<option value="Clearance">Clearance</option>
+								<option value="Clearance">Giải phóng đơn hàng</option>
 							</select>
 						</div>
 						<div>
 							<label className="block text-sm font-medium text-gray-700">
-								SKU
+								Mã sản phẩm (SKU)	
 							</label>
 							<input
 								type="text"
@@ -205,7 +208,7 @@ const ProductFormModal = ({
 					</div>
 					<div className="mt-6">
 						<label className="block text-sm font-medium text-gray-700">
-							Description
+							Mô tả 
 						</label>
 						<textarea
 							name="description"
@@ -225,7 +228,7 @@ const ProductFormModal = ({
 
 					<div className="mt-6">
 						<label className="block text-sm font-medium text-gray-700">
-							Variations
+							Thuộc tính sản phẩm (Variations)
 						</label>
 						<div className="flex gap-2 mt-1">
 							<input
@@ -242,7 +245,7 @@ const ProductFormModal = ({
 								onClick={handleAddVariation}
 								className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
 							>
-								Add
+								Thêm
 							</button>
 						</div>
 						<div className="mt-2 flex flex-wrap gap-2">
@@ -268,7 +271,7 @@ const ProductFormModal = ({
 
 					<div className="mt-6">
 						<label className="block text-sm font-medium text-gray-700">
-							Tags
+							Nhãn sản phẩm (Tags)
 						</label>
 						<div className="flex gap-2 mt-1">
 							<input
@@ -283,7 +286,7 @@ const ProductFormModal = ({
 								onClick={handleAddTag}
 								className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
 							>
-								Add
+								Thêm nhãn
 							</button>
 						</div>
 						<div className="mt-2 flex flex-wrap gap-2">
@@ -311,15 +314,15 @@ const ProductFormModal = ({
 							onClick={onClose}
 							className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
 						>
-							Cancel
+							Hủy bỏ
 						</button>
 						<button
 							type="submit"
 							className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
 						>
 							{formType === "add"
-								? "Add Product"
-								: "Save Changes"}
+								? "Thêm sản phẩm"
+								: "Lưu các thay đổi "}
 						</button>
 					</div>
 				</form>

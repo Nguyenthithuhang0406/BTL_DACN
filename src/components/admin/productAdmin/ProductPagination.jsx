@@ -1,3 +1,4 @@
+import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
 import React from "react";
 
 const ProductPagination = ({
@@ -9,8 +10,14 @@ const ProductPagination = ({
 	onItemsPerPageChange,
 	indexOfFirstItem,
 	indexOfLastItem,
+	hasPrevious,
+	hasNext,
+	apiPage,
 	itemName = "items",
 }) => {
+	console.log('totalPage: ', totalPages);
+	console.log('indexOfFirstItem: ', indexOfFirstItem);
+	console.log('indexOfLastItem: ', indexOfLastItem);
 	const getPaginationItems = () => {
 		const maxPagesToShow = 6;
 		const pages = [];
@@ -49,19 +56,18 @@ const ProductPagination = ({
 	return (
 		<div className="px-4 py-3 bg-gray-50 border-t border-gray-200 sm:px-6 flex items-center justify-between flex-wrap gap-3">
 			<div className="text-sm text-gray-700">
-				Showing{" "}
-				<span className="font-medium">{indexOfFirstItem + 1}</span> to{" "}
+				Hiển thị từ{" "}
+				<span className="font-medium">{indexOfFirstItem >= 0 ? indexOfFirstItem + 1 : " - "}</span> tới{" "}
 				<span className="font-medium">
-					{Math.min(indexOfLastItem, totalItems)}
+					{indexOfFirstItem >= 0 ? Math.min(indexOfLastItem, totalItems) : " - "}	
 				</span>{" "}
-				of <span className="font-medium">{totalItems}</span> {itemName}
+				trong tổng <span className="font-medium">{totalItems}</span> {itemName}
 			</div>
 
 			{/* Items Per Page Selector */}
 			<div className="flex items-center gap-2">
 				<label htmlFor="itemsPerPage" className="text-sm text-gray-700">
-					{itemName.charAt(0).toUpperCase() + itemName.slice(1)} per
-					page:
+					Giới hạn hiển thị {itemName} mỗi trang:
 				</label>
 				<select
 					id="itemsPerPage"
@@ -73,21 +79,20 @@ const ProductPagination = ({
 				>
 					<option value={5}>5</option>
 					<option value={10}>10</option>
-					<option value={20}>20</option>
 				</select>
 			</div>
 
 			<div className="flex space-x-2">
 				<button
 					onClick={() => onPageChange(currentPage - 1)}
-					disabled={currentPage === 1}
-					className={`px-3 py-1 rounded-md ${
+					disabled={hasPrevious == false }
+					className={`px-3 py-1 rounded-md cursor-pointer ${
 						currentPage === 1
 							? "text-gray-400 cursor-not-allowed"
 							: "text-gray-700 hover:bg-gray-200"
 					}`}
 				>
-					Previous
+					<ArrowBigLeftDash/>
 				</button>
 
 				{getPaginationItems().map((page, index) => (
@@ -96,7 +101,7 @@ const ProductPagination = ({
 						onClick={() =>
 							typeof page === "number" && onPageChange(page)
 						}
-						className={`px-3 py-1 rounded-md ${
+						className={`px-3 py-1 rounded-md cursor-pointer ${
 							page === currentPage
 								? "bg-orange-500 text-white"
 								: page === "..."
@@ -111,14 +116,15 @@ const ProductPagination = ({
 
 				<button
 					onClick={() => onPageChange(currentPage + 1)}
-					disabled={currentPage === totalPages}
-					className={`px-3 py-1 rounded-md ${
+					disabled={hasNext == false}
+					className={`px-3 py-1 rounded-md cursor-pointer ${
 						currentPage === totalPages
 							? "text-gray-400 cursor-not-allowed"
 							: "text-gray-700 hover:bg-gray-200"
 					}`}
 				>
-					Next
+					<ArrowBigRightDash/>
+
 				</button>
 			</div>
 		</div>

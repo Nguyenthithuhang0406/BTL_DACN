@@ -9,7 +9,7 @@ const ProductStatusFilter = ({
 	return (
 		<div className="w-full sm:w-auto flex flex-wrap gap-2">
 			<span className="text-sm font-medium text-gray-700 self-center mr-2">
-				Status:
+				Trạng thái:
 			</span>
 			<button
 				onClick={() => onFilterChange("All")}
@@ -31,7 +31,7 @@ const ProductStatusFilter = ({
 			>
 				Active ({statusCounts["Active"]})
 			</button>
-			<button
+			{/* <button
 				onClick={() => onFilterChange("Low Stock")}
 				className={`px-3 py-1 rounded-md text-sm ${
 					statusFilter === "Low Stock"
@@ -40,8 +40,8 @@ const ProductStatusFilter = ({
 				}`}
 			>
 				Low Stock ({statusCounts["Low Stock"]})
-			</button>
-			<button
+			</button> */}
+			{/* <button
 				onClick={() => onFilterChange("Out of Stock")}
 				className={`px-3 py-1 rounded-md text-sm ${
 					statusFilter === "Out of Stock"
@@ -50,8 +50,8 @@ const ProductStatusFilter = ({
 				}`}
 			>
 				Out of Stock ({statusCounts["Out of Stock"]})
-			</button>
-			<button
+			</button> */}
+			{/* <button
 				onClick={() => onFilterChange("Clearance")}
 				className={`px-3 py-1 rounded-md text-sm ${
 					statusFilter === "Clearance"
@@ -60,7 +60,7 @@ const ProductStatusFilter = ({
 				}`}
 			>
 				Clearance ({statusCounts["Clearance"]})
-			</button>
+			</button> */}
 		</div>
 	);
 };

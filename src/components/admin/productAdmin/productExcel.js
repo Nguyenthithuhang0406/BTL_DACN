@@ -13,8 +13,8 @@ export const exportProductsToExcel = (products, filename = 'Products_Export') =>
     'Description': product.description,
     'Rating': product.rating,
     'Last Updated': product.lastUpdated,
-    'Variations': product.variations.join(', '),
-    'Tags': product.tags.join(', ')
+    'Variations': product.variants?.join(', '),
+    // 'Tags': product.tags.join(', ')
   }));
 
   // Create worksheet
