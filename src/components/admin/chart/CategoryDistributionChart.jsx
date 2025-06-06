@@ -4,19 +4,19 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recha
 
 const CATEGORY_DATA = [
   {
-    name: "Electronis",
+    name: "Đồ thể thao",
     value: 4500,
   },
   {
-    name: "Clothing",
+    name: "Đồ lót",
     value: 3200,
   },
   {
-    name: "Books",
+    name: "Áo khoác",
     value: 2500,
   },
   {
-    name: "Sports",
+    name: "Quần short",
     value: 6000,
   },
 ];
@@ -32,7 +32,7 @@ const CategoryDistributionChart = () => {
       transition={{ delay: 0.3 }}
     >
       <h2 className="text-lg font-medium mb-4 text-black">
-        Category Distribution
+        Thống kê sản phẩm theo danh mục
       </h2>
       <div className="h-80">
         <ResponsiveContainer width={"100%"} height={"100%"}>
