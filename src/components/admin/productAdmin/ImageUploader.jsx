@@ -33,7 +33,7 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 	return (
 		<div className="mt-6">
 			<label className="block text-sm font-medium text-gray-700 mb-2">
-				Images (Max {maxImages})
+				Hình ảnh minh họa sản phẩm (Tối thiểu {maxImages})
 			</label>
 			<div
 				onDragOver={(e) => {
@@ -49,7 +49,7 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 				}`}
 			>
 				<p className="text-gray-500 mb-2">
-					Drag and drop images here or click to upload
+					Kéo thả hoặc nhấn chọn để tải hình ảnh
 				</p>
 				<input
 					type="file"
@@ -63,17 +63,17 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 					htmlFor="image-upload"
 					className="inline-block px-4 py-2 bg-orange-500 text-white rounded-lg cursor-pointer hover:bg-orange-600"
 				>
-					Upload Images
+					Tải hình ảnh lên
 				</label>
 				<p className="text-xs text-gray-500 mt-2">
-					Supported formats: JPG, PNG, WEBP
+					Hỗ trợ các định dạng: JPG, PNG, WEBP
 				</p>
 			</div>
 
 			{images.length > 0 && (
 				<div className="mt-4">
 					<h4 className="text-sm font-medium text-gray-700 mb-2">
-						Uploaded Images
+						Các hình ảnh
 					</h4>
 					<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
 						{images.map((image, index) => (
@@ -101,7 +101,7 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 
 			{images.length === 0 && (
 				<div className="mt-2 text-center text-sm text-gray-500">
-					No images uploaded. Default placeholder will be used.
+					Không có hình ảnh nào được tải lên, hình ảnh minh họa mặc định sẽ được sử dụng.
 				</div>
 			)}
 		</div>
