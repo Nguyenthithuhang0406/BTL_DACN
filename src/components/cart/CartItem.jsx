@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import React from "react";
 import { MdCancel } from "react-icons/md";
 import { FaCaretDown } from "react-icons/fa6";
 import { formatNumber } from "@/utils/function";
@@ -12,10 +12,10 @@ const CartItem = ({
   setSelectedProducts,
   selectedProducts,
 }) => {
-  const handleIncrease = (id) => {
+  const handleIncrease = (variantId) => {
     setListProducts((prev) => {
       return prev.map((product) =>
-        product.id === id
+        product.variantId === variantId
           ? { ...product, quantity: product.quantity + 1 }
           : product
       );
@@ -23,17 +23,17 @@ const CartItem = ({
 
     setSelectedProducts((prev) => {
       return prev.map((product) =>
-        product.id === id
+        product.variantId === variantId
           ? { ...product, quantity: product.quantity + 1 }
           : product
       );
     });
   };
 
-  const handleDecrease = (id) => {
+  const handleDecrease = (variantId) => {
     setListProducts((prev) => {
       return prev.map((product) =>
-        product.id === id && product.quantity > 1
+        product.variantId === variantId && product.quantity > 1
           ? { ...product, quantity: product.quantity - 1 }
           : product
       );
@@ -41,17 +41,19 @@ const CartItem = ({
 
     setSelectedProducts((prev) => {
       return prev.map((product) =>
-        product.id === id && product.quantity > 1
+        product.variantId === variantId && product.quantity > 1
           ? { ...product, quantity: product.quantity - 1 }
           : product
       );
     });
   };
 
-  const handleClickCheckbox = (id) => {
+  const handleClickCheckbox = (variantId) => {
     setSelectedProducts((prev) => {
       const newProducts = [...prev];
-      const index = newProducts.findIndex((product) => product.id === id);
+      const index = newProducts.findIndex(
+        (product) => product.variantId === variantId
+      );
       if (index === -1) {
         newProducts.push(product);
       } else {
@@ -61,10 +63,14 @@ const CartItem = ({
     });
   };
 
-  const handleClickDelete = (id) => {
-    setListProducts((prev) => prev.filter((product) => product.id !== id));
+  const handleClickDelete = (variantId) => {
+    setListProducts((prev) =>
+      prev.filter((product) => product.variantId !== variantId)
+    );
 
-    setSelectedProducts((prev) => prev.filter((product) => product.id !== id));
+    setSelectedProducts((prev) =>
+      prev.filter((product) => product.variantId !== variantId)
+    );
   };
 
   return (
@@ -72,46 +78,45 @@ const CartItem = ({
       <div className="card-item__left">
         <input
           type="checkbox"
-          checked={selectedProducts.some((p) => p.id === product.id)}
-          onChange={() => handleClickCheckbox(product.id)}
+          checked={selectedProducts?.some(
+            (p) => p.variantId === product.variantId
+          )}
+          onChange={() => handleClickCheckbox(product.variantId)}
         />
 
-        <img src={product.image[0]} alt="product" />
+        <img src={product.imageUrl} alt="product" />
 
         <div className="card-item__left-info">
-          <h3>{product.name}</h3>
-          <p>{product.type}</p>
+          <h3>{product.productName}</h3>
+          {product.attributes &&
+            product.attributes.map((attribute, index) => (
+              <p key={index}>
+                {attribute.type}: {attribute.value}
+              </p>
+            ))}
           <p className="price">
-            <span className="sale">
-              {formatNumber(product.price * (1 - product.discount / 100))} đ
-            </span>
-            -<span className="real">{formatNumber(product.price)} đ</span>
+            <span className="sale">{formatNumber(product.price)} đ</span>
+            {/* <span className="real">{formatNumber(product.price)} đ</span> */}
           </p>
           <div className="quantity">
-            <button onClick={() => handleDecrease(product.id)}>-</button>
+            <button onClick={() => handleDecrease(product.variantId)}>-</button>
             <span>{product.quantity}</span>
-            <button onClick={() => handleIncrease(product.id)}>+</button>
+            <button onClick={() => handleIncrease(product.variantId)}>+</button>
           </div>
           <p className="price__res">
-            {formatNumber(
-              product.quantity * product.price * (1 - product.discount / 100)
-            )}{" "}
-            đ
+            {formatNumber(product.quantity * product.price)} đ
           </p>
         </div>
       </div>
 
       <div className="card-item__right">
         <p className="price">
-          {formatNumber(
-            product.quantity * product.price * (1 - product.discount / 100)
-          )}{" "}
-          đ
+          {formatNumber(product.quantity * product.price)} đ
         </p>
         <div className="card-item__right-search">
           <MdCancel
             className="icon-cancel"
-            onClick={() => handleClickDelete(product.id)}
+            onClick={() => handleClickDelete(product.variantId)}
           />
           <div className="search">
             <p>Tìm kiếm sản phẩm tương tự</p>

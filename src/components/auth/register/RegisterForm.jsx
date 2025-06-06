@@ -1,11 +1,16 @@
 /* eslint-disable */
-import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { toast } from "react-toastify";
+import axios from "axios";
+
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
+import { registerValidationSchema } from "@/utils/validation/authValidation";
+import { register } from "@/api/authAPI/auth";
 import { FcGoogle } from "react-icons/fc";
 
 import "./RegisterForm.scss";
-import { registerValidationSchema } from "@/utils/validation/authValidation";
+
 const RegisterForm = ({ setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -18,8 +23,34 @@ const RegisterForm = ({ setIsLogin }) => {
     confirmPassword: "",
   };
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    const data = {
+      username: values.userName,
+      password: values.password,
+      email: values.email,
+      firstName: values.firstName,
+      lastName: values.lastName,
+    };
+
+    try {
+      await register(data);
+      toast.success("Đăng ký thành công. Mời bạn đăng nhập!");
+      setIsLogin(true);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        switch (error.response.status) {
+          case 500:
+            toast.error("Lỗi hệ thống");
+            break;
+          case 400:
+            toast.error("Dữ liệu không hợp lệ");
+            break;
+          default:
+            toast.error("Đã xảy ra lỗi, vui lòng kiểm tra lại kết nối!");
+        }
+      }
+      console.log(error);
+    }
   };
 
   return (

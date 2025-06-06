@@ -5,6 +5,7 @@ const initialState = {
   totalPrice: 0,
   loading: false,
   error: null,
+  quantityOfCart: 0,
 };
 
 const orderSlice = createSlice({
@@ -23,9 +24,12 @@ const orderSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    setQuantityOfCart: (state, action) => {
+      state.quantityOfCart = action.payload;
+    },
   },
 });
 
-export const { setOrderList, setPrice, setLoading, setError } =
+export const { setOrderList, setPrice, setLoading, setError, setQuantityOfCart } =
   orderSlice.actions;
 export default orderSlice.reducer;

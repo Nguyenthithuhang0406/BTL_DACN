@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setInputImage, setInputValue, setResult } from "@/store/searchSlice";
 import { readFileAsync } from "@/utils/readFile";
@@ -13,10 +13,28 @@ import { MdOutlineAccountCircle } from "react-icons/md";
 import { GrCart } from "react-icons/gr";
 
 import "./HeaderDesktop.scss";
+import { toast } from "react-toastify";
+import { getProductsInCart } from "@/api/cartAPI/cart";
+import { setQuantityOfCart } from "@/store/orderSlice";
+
 const HeaderDesktop = () => {
   const [inputText, setInputText] = useState("");
   const [isShow, setIsShow] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const childRef = useRef(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+      navigate("/auth");
+    }
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -177,9 +195,6 @@ const HeaderDesktop = () => {
     },
   ];
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       dispatch(setInputValue(inputText));
@@ -202,6 +217,29 @@ const HeaderDesktop = () => {
       console.log(error);
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    toast.success("Đăng xuất thành công");
+    setIsLogin(false);
+    navigate("/auth");
+  };
+
+  useEffect(() => {
+    const fetchProductOfCart = async () => {
+      try {
+        const response = await getProductsInCart();
+        // console.log("Sản phẩm trong giỏ hàng:", response.data.items);
+        dispatch(setQuantityOfCart(response.data.items.length));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProductOfCart();
+  }, []);
+
+  const quantityOfProducts = useSelector((state) => state.order.quantityOfCart);
 
   return (
     <div className="header-desktop">
@@ -250,7 +288,7 @@ const HeaderDesktop = () => {
             <MdOutlineAccountCircle className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Tài khoản</p>
           </div>
-          {isShow && (
+          {isShow && !isLogin && (
             <div
               ref={childRef}
               className="header-desktop__group-icon-item-child"
@@ -259,11 +297,25 @@ const HeaderDesktop = () => {
               <p onClick={() => navigate("/auth")}>Đăng nhập</p>
             </div>
           )}
+          {isShow && isLogin && (
+            <div
+              ref={childRef}
+              className="header-desktop__group-icon-item-child"
+            >
+              <p onClick={() => navigate("/profile")}>Trang cá nhân</p>
+              <p onClick={handleLogout}>Đăng xuất</p>
+            </div>
+          )}
           <div
-            className="header-desktop__group-icon-item"
+            className="header-desktop__group-icon-item relative"
             onClick={() => navigate("/cart")}
           >
             <GrCart className="header-desktop_group-i" />
+            {quantityOfProducts > 0 && (
+              <span className="text-red-500 bg-lime-50 w-[20px] h-[20px] rounded-full flex items-center justify-center absolute -top-2 -right-0 text-[14px]">
+                {quantityOfProducts}
+              </span>
+            )}
             <p className="header-desktop_group-p">Giỏ hàng</p>
           </div>
         </div>

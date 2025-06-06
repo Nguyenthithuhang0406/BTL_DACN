@@ -20,6 +20,8 @@ import Overview from "./pages/admin/Overview";
 import ProductAdminPage from "./pages/admin/ProductAdminPage";
 import OrderAdminPage from "./pages/admin/OrderAdminPage";
 import CategoryAdminPage from "./pages/admin/CategoryAdminPage";
+import { ToastContainer } from "react-toastify";
+import Profile from "./pages/profile/Profile";
 const App = () => {
 	useEffect(() => {
 		AOS.init({
@@ -28,75 +30,80 @@ const App = () => {
 		});
 	}, []);
 
-	const routes = useRoutes([
-		{
-			path: "/",
-			element: <Home />,
-		},
-		{
-			path: "/product/:id",
-			element: <DetailProduct />,
-		},
-		{
-			path: "/search",
-			element: <Search />,
-		},
-		{
-			path: "/cart",
-			element: <Cart />,
-		},
-		{
-			path: "/auth",
-			element: <Auth />,
-		},
-		{
-			path: "/productsByCategory/:categoryName",
-			element: <ProductsByCategory />,
-		},
-		{
-			path: "/contact",
-			element: <ContactPage />,
-		},
-		{
-			path: "/market-system",
-			element: <MarketSystemPage />,
-		},
-		{
-			path: "/order",
-			element: <Order />,
-		},
-		{
-			path: "/blog",
-			element: <BlogList />,
-		},
-		{
-			path: "/blog/:slug",
-			element: <BlogDetail />,
-		},
-		{
-			path: "/search-blog",
-			element: <SearchResultPage />,
-		},
-		{
-			path: "/admin/*",
-			element: <Overview />,
-		},
-		{
-			path: "/admin/products",
-			element: <ProductAdminPage />,
-		},
-		{
-			path: "/admin/orders",
-			element: <OrderAdminPage />,
-		},
-		{
-			path: "/admin/categories",
-			element: <CategoryAdminPage />,
-		},
-	]);
-	return (
-		<>
-			<Toaster
+  const routes = useRoutes([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "/product/:id",
+      element: <DetailProduct />,
+    },
+    {
+      path: "/search",
+      element: <Search />,
+    },
+    {
+      path: "/cart",
+      element: <Cart />,
+    },
+    {
+      path: "/auth",
+      element: <Auth />,
+	},
+	{
+      path: "/profile",
+      element: <Profile />,
+    },
+    {
+      path: "/productsByCategory/:categoryName",
+      element: <ProductsByCategory/>
+    },
+    {
+      path: "/contact",
+      element: <ContactPage/>
+    },
+    {
+      path: "/market-system",
+      element: <MarketSystemPage/>
+    },
+    {
+      path: "/order",
+      element: <Order/>
+    },
+    {
+      path: "/blog",
+      element: <BlogList/>
+    },
+    {
+      path: '/blog/:slug',
+      element:<BlogDetail/>
+    },
+    {
+      path: "/search-blog",
+      element: <SearchResultPage/>
+    },
+    {
+      path: "/admin/*",
+      element: <Overview/>
+    },
+    {
+      path: "/admin/products",
+      element: <ProductAdminPage/>
+    },
+    {
+      path: "/admin/orders",
+      element: <OrderAdminPage/>
+    },
+    {
+      path: "/admin/categories",
+      element: <CategoryAdminPage/>
+    }
+
+  ]);
+	return <>
+		<ToastContainer />
+		<Toaster
 				position="top-center"
 				reverseOrder={false}
 				toastOptions={{
@@ -104,9 +111,8 @@ const App = () => {
 				}}
 				limit={10}
 			/>
-			{routes}
-		</>
-	);
+		{routes}
+	</>;
 };
 
 export default App;
