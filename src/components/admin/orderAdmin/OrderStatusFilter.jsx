@@ -9,7 +9,7 @@ const OrderStatusFilter = ({
 	return (
 		<div className="w-full sm:w-auto flex flex-wrap gap-2">
 			<span className="text-sm font-medium text-gray-700 self-center mr-2">
-				Status:
+				Trạng thái:
 			</span>
 			<button
 				onClick={() => onFilterChange("All")}
