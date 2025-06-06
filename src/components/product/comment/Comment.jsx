@@ -95,6 +95,7 @@ const Comment = () => {
         };
 
         const response = await getAllProducts(data);
+        console.log("Product List Response:", response);
 
         const productList = response.data.content || [];
         
@@ -113,7 +114,7 @@ const Comment = () => {
             return {
               product: {
                 name: product?.name,
-                image: product?.image?.length > 0 ? product?.image : ["", ""],
+                image: product?.images?.length > 0 ? product?.images : ["", ""],
               },
               comments,
             };
@@ -129,6 +130,7 @@ const Comment = () => {
           (a, b) => b.comments.length - a.comments.length
         );
 
+        console.log("Filtered Reviews:", filteredReviews);
         setReviews(filteredReviews.slice(0, 5)); // Lấy 5 sản phẩm có đánh giá nhiều nhất
 
       } catch (error) {
@@ -153,7 +155,7 @@ const Comment = () => {
             {/* image */}
             <div className="swiper-reviews__item-image">
               <img
-                src={review.product.image[0]}
+                src={review.product.image[0].imageUrl}
                 alt={review.product.name}
                 className="swiper-reviews__item-img"
               />

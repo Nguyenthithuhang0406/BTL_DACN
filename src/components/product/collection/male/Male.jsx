@@ -101,7 +101,7 @@ const Male = () => {
           sortDirection: "asc",
           page: 0,
           size: 10,
-          category: "male",
+          category: "Áo sơ mi",
           status: "true",
         };
 

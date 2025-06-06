@@ -100,7 +100,7 @@ const Female = () => {
           sortDirection: "asc",
           page: 0,
           size: 10,
-          category: "male",
+          category: "Váy",
           status: "true",
         };
 
