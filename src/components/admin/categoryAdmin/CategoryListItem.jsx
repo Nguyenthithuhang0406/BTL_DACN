@@ -1,67 +1,71 @@
 import { Edit, Eye, Trash } from "lucide-react";
 import React from "react";
-
+import { motion } from "framer-motion";
 const CategoryListItem = ({ category, onView, onEdit, onDelete }) => {
+	// const getImageUrl = () => {
+	// 	if (category.imageUrl) {
+	// 		// Thay toàn bộ backslashes (\) bằng forward slashes (/)
+	// 		const pathWithSlashes = category.imageUrl.replace(/\\/g, "/");
+	// 		console.log("Path with slashes:", pathWithSlashes);
+	// 		return ``;
+	// 	}
+	// 	return "https://picsum.photos/200/300?grayscale"; // ảnh mặc định
+	// };
 	return (
-		<tr className="hover:bg-gray-50">
+		<motion.tr
+			initial={{ opacity: 0, y: -10 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.3 }}
+			// whileHover={{ scale: 1.02 }}
+			className="hover:bg-gray-50"
+		>
 			<td className="px-4 py-4 whitespace-nowrap">
 				<div className="flex items-center">
-					<div className="h-10 w-10 bg-orange-100 rounded-lg flex items-center justify-center text-xl">
-						{category.icon || "📂"}
-					</div>
+					<img
+						src={category.imageUrl}
+						className="h-10 w-10 border border-none rounded-xl"
+						alt={category.name}
+					/>
 					<div className="ml-4">
 						<div className="font-medium text-gray-900">
 							{category.name}
 						</div>
-						<div className="text-sm text-gray-500">
-							{category.subcategories.length > 0
-								? `${category.subcategories.length} subcategories`
-								: "No subcategories"}
-						</div>
 					</div>
 				</div>
 			</td>
 			<td className="px-4 py-4 whitespace-nowrap">
 				<div className="text-sm text-gray-500">
-					{category.displayOrder}
+					{category.description.length > 0
+						? category.description
+						: "Không có mô tả"}
 				</div>
-			</td>
-			<td className="px-4 py-4 whitespace-nowrap">
-				<div className="text-sm text-gray-500">
-					{category.productCount > 0
-						? `${category.productCount} products`
-						: "No products"}
-				</div>
-			</td>
-			<td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-				{category.lastUpdated}
 			</td>
 			<td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
 				<div className="flex space-x-2">
 					<button
 						onClick={() => onView(category)}
 						className="cursor-pointer text-blue-600 hover:text-blue-900"
-						title="View Details"
+						title="Xem chi tiết"
 					>
 						<Eye className="h-4 w-4" />
 					</button>
 					<button
 						onClick={() => onEdit(category)}
 						className="cursor-pointer text-orange-500 hover:text-orange-700"
-						title="Edit Category"
+						title="Sửa"
 					>
 						<Edit className="h-4 w-4" />
 					</button>
 					<button
 						onClick={() => onDelete(category)}
 						className="cursor-pointer text-red-500 hover:text-red-700"
-						title="Delete Category"
+						title="Xóa"
 					>
 						<Trash className="h-4 w-4" />
 					</button>
 				</div>
 			</td>
-		</tr>
+		</motion.tr>
 	);
 };
 

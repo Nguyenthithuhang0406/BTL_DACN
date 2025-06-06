@@ -4,9 +4,11 @@ import CategoryListItem from "./CategoryListItem";
 
 const CategoryList = ({
 	categories,
+	apiPage,
 	currentPage,
 	itemsPerPage,
 	totalItems,
+	totalPages,
 	onPageChange,
 	onItemsPerPageChange,
 	onViewCategory,
@@ -14,11 +16,14 @@ const CategoryList = ({
 	onDeleteCategory,
 	onSort,
 	sortConfig,
+	hasNext,
+	hasPrevious
 }) => {
 	const indexOfLastItem = currentPage * itemsPerPage;
 	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-	const currentItems = categories.slice(indexOfFirstItem, indexOfLastItem);
-	const totalPages = Math.ceil(categories.length / itemsPerPage);
+	const currentItems = categories;
+
+	
 
 	return (
 		<div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
@@ -30,37 +35,17 @@ const CategoryList = ({
 								onClick={() => onSort("name")}
 								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
 							>
-								Category Name{" "}
+								Tên danh mục{" "}
 								{sortConfig.key === "name" &&
 									(sortConfig.direction === "asc"
 										? "↑"
 										: "↓")}
 							</th>
-							<th
-								onClick={() => onSort("displayOrder")}
-								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
-							>
-								Display Order{" "}
-								{sortConfig.key === "displayOrder" &&
-									(sortConfig.direction === "asc"
-										? "↑"
-										: "↓")}
+							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Mô tả
 							</th>
 							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Products
-							</th>
-							<th
-								onClick={() => onSort("lastUpdated")}
-								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
-							>
-								Last Updated{" "}
-								{sortConfig.key === "lastUpdated" &&
-									(sortConfig.direction === "asc"
-										? "↑"
-										: "↓")}
-							</th>
-							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Actions
+								Thao tác
 							</th>
 						</tr>
 					</thead>
@@ -87,7 +72,9 @@ const CategoryList = ({
 				onItemsPerPageChange={onItemsPerPageChange}
 				indexOfFirstItem={indexOfFirstItem}
 				indexOfLastItem={indexOfLastItem}
-				itemName="categories"
+				hasNext={hasNext}
+				hasPrevious={hasPrevious}
+				itemName="danh mục"
 			/>
 		</div>
 	);
