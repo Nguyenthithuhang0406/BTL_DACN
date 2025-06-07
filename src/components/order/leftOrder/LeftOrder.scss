@@ -27,8 +27,11 @@
       gap: 10px;
 
       &-info {
+        width: 100%;
         font-size: 15px;
-
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         &-name {
           font-weight: 600;
         }
