@@ -19,26 +19,26 @@ const ProductsContainer = ({ categoryName }) => {
 
   useEffect(() => {
     const fetchProductByCategory = async () => {
-      const data = {
-        sortedBy: "createdAt",
-        sortDirection: "desc",
-        page: currentPage - 1,
-        size: pageSize,
-        category: categoryName,
-        status: "true",
-      };
+
       try {
+        const data = {
+          sortedBy: "createdDate",
+          sortDirection: "desc",
+          page: currentPage - 1,
+          size: pageSize,
+          category: categoryName,
+          status: "true",
+        };
+
         const response = await getAllProducts(data);
-        // console.log("Products by category response:", response);
         setProducts(response.data.content);
         setTotalProducts(response.data.totalElements);
       } catch (error) {
-        console.error("Lấy sản phẩm theo danh mục không thành công:", error);
+        console.log(error);
       }
     };
     fetchProductByCategory();
   }, [pageSize, currentPage, categoryName]);
-
 
   return (
     <div className="productsContainer">
