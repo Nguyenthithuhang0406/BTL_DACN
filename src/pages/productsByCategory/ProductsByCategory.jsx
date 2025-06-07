@@ -17,7 +17,7 @@ const ProductsByCategory = () => {
         <TitleRouter title={categoryName} />
         <CategoryHeader />
         <div className="productsByCategory__container">
-          <ProductsContainer />
+          <ProductsContainer categoryName={categoryName} />
           <MenuSidebar />
         </div>
       </div>
