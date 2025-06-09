@@ -1,12 +1,43 @@
 import HeaderAdmin from "@/components/admin/HeaderAdmin";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LayoutAdmin from "./LayoutAdmin";
 import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import StatCard from "@/components/admin/StatCard";
 import SaleOverviewChart from "@/components/admin/chart/SaleOverviewChart";
 import CategoryDistributionChart from "@/components/admin/chart/CategoryDistributionChart";
+import axios from "axios";
+
 const Overview = () => {
+  const [categoryData, setCategoryData] = useState([]);
+
+const getRandomValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getPastelColor = () => {
+  const r = Math.floor(Math.random() * 100 + 100).toString(16).padStart(2, '0');
+  const g = Math.floor(Math.random() * 100 + 100).toString(16).padStart(2, '0');
+  const b = Math.floor(Math.random() * 100 + 100).toString(16).padStart(2, '0');
+  return `#${r}${g}${b}`;
+};
+
+  const getAllCategory = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
+      const categories = res.data.data.content;
+      const newCategoryData = categories.map(category => ({
+        name: category.name,
+        value: getRandomValue(2000, 6000),
+        color: getPastelColor()
+      }));
+      setCategoryData(newCategoryData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+	useEffect(() => {
+		getAllCategory();
+	}, []);
+
 	return (
 		<LayoutAdmin>
 			<div className="flex-1 overflow-auto relative z-10">
@@ -44,9 +75,9 @@ const Overview = () => {
 						/>
 					</motion.div>
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-						<SaleOverviewChart />
-						<CategoryDistributionChart />
-					</div>
+            <SaleOverviewChart />
+            <CategoryDistributionChart data={categoryData} />
+          </div>
 				</main>
 			</div>
 		</LayoutAdmin>
