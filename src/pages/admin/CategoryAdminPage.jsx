@@ -9,7 +9,6 @@ import CategoryFormModal from "@/components/admin/categoryAdmin/CategoryFormModa
 import DeleteConfirmModal from "@/components/admin/categoryAdmin/DeleteConfirmModal";
 import CategoryList from "@/components/admin/categoryAdmin/CategoryList";
 import CategoryFilters from "@/components/admin/categoryAdmin/CategoryFilters";
-import { categoryData } from "@/components/admin/categoryAdmin/categoryData";
 import {
 	sortCategories,
 	exportCategoriesToExcel,
@@ -24,7 +23,7 @@ const CategoryAdminPage = () => {
 	const [modalType, setModalType] = useState("add");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
-	const [itemsPerPage, setItemsPerPage] = useState(5); // default items per page
+	const [itemsPerPage, setItemsPerPage] = useState(5); 
 	const [totalItems, setTotalItems] = useState(0);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [hasNext, setHasNext] = useState(true);
@@ -37,9 +36,10 @@ const CategoryAdminPage = () => {
 	const [sortDirection, setSortDirection] = useState("asc");
 
 	const [token, setToken] = useState(
-		"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJnaEZQT3RhMXhva0NVX3ZjU25Zc19TTEZMOXdrVl9aUnNVWU5nXzAtQzV3In0.eyJleHAiOjE3NDkxMzc0MjYsImlhdCI6MTc0OTEzNTYyNiwianRpIjoiY2I4MDQ2ODQtM2YzMC00MWRmLTg1MGYtMDFkNjRjMDUyODY3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9lY29tbWVyY2UiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNDIxNzU5NDUtODgxOS00MTU0LThlZTMtNWE1MDA1YTgzY2FiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWljcm8tc2VydmljZS1hcGkiLCJzZXNzaW9uX3N0YXRlIjoiZTU0MjY3NjAtYjRjMi00Y2FiLTk2MWMtY2U1ODVlMjQ4ZTBhIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1lY29tbWVyY2UiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiQURNSU4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJlNTQyNjc2MC1iNGMyLTRjYWItOTYxYy1jZTU4NWUyNDhlMGEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJhZG1pbiBhZG1pbjEyMyIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6ImFkbWluIiwiZmFtaWx5X25hbWUiOiJhZG1pbjEyMyIsImVtYWlsIjoidnRobjMwM0BnbWFpbC5jb20ifQ.lDmBMinDLgsTH906rTtboC3IM9wjm9DEtal3xn1K8Xeg9NTTs90V0ptN4rHS-VO79Aom-S9YxBgto3oA2DJS-yrjnQGTZ8Qs-pao-F7ilQx9I9n-pN8y87AWWmJ9lzSKjBbicH9REY3T87YKdFSJujXOEgvk-ymbYLNLH1JTjo4pbga6cfwlcQbJfK-9KcbdS-WFfjmlpU8eiP2PWP9wwpHlnXxjgTKnXR_f46upxS_XMby2H34Ij0LqX7SH9dU_6k2vjT1x6MprsjW41wEL70Ftg9BI4eZ0MKg6Z5d6krLWj48b6U7cE47IHv-iAz3CRfaxiioMHj9dxZ8uSgzKAg"
-	);
-
+			localStorage.getItem("accessToken")
+				? JSON.parse(localStorage.getItem("accessToken"))
+				: null
+		)
 	const getAllCategories = async (
 		page = 0,
 		size = itemsPerPage,
