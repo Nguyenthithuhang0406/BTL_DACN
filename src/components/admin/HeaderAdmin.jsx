@@ -1,6 +1,10 @@
 import React from 'react'
 
-const HeaderAdmin = ({title}) => {
+const HeaderAdmin = ({ title }) => {
+	const logout = () => {
+		localStorage.removeItem("accessToken");
+		window.location.reload();
+	}
   return (
     <header className="bg-[#FFFDD0] bg-opacity-50 backdrop-blur-md shadow-lg ">
 			<div className="max-w-7xl flex justify-between items-center mx-auto py-4 px-4 sm:px-6 lg:px-8">
@@ -8,7 +12,7 @@ const HeaderAdmin = ({title}) => {
 					{title}
 				</h1>
 				<div>
-					<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+					<button onClick={logout} className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
 						Đăng xuất
 					</button>
 				</div>
