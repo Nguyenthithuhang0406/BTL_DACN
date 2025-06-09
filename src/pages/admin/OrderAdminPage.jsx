@@ -7,7 +7,8 @@ import OrderFilters from "@/components/admin/orderAdmin/OrderFilters";
 import OrderList from "@/components/admin/orderAdmin/OrderList";
 import OrderViewModal from "@/components/admin/orderAdmin/OrderViewModal";
 import HeaderAdmin from "@/components/admin/HeaderAdmin";
-
+import axios from "axios";
+import {toast} from 'react-hot-toast'
 const OrderAdminPage = () => {
 	const [orders, setOrders] = useState(orderData);
 	const [showModal, setShowModal] = useState(false);
@@ -33,6 +34,16 @@ const OrderAdminPage = () => {
 	);
 
 	const sortedOrders = sortOrders(filteredOrders, sortConfig);
+
+	const getAllOrders = async () => {
+		try {
+			let url = `${import.meta.env.VITE_API_URL}/orders/all`
+			
+			
+		} catch (err) {
+			toast.error(`Lỗi: ${err.message} \n Nguyên nhân: ${err.response.statusText} `)
+		}
+	}
 
 	useEffect(() => {
 		setCurrentPage(1);
