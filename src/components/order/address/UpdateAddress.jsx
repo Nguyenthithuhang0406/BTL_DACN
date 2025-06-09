@@ -29,7 +29,11 @@ const UpdateAddress = ({ editAddress, setEditAddress }) => {
       try {
         const response = await getAddressesById(editAddress.id);
         setAddressDetail(response.data);
-        console.log("Address Detail:", response.data);
+        setNewAddress({
+          ...newAddress,
+          description: response.data.description || "",
+          phoneNumber: response.data.phoneNumber || "",
+        });
       } catch (error) {
         console.error("Error fetching address details:", error);
       }

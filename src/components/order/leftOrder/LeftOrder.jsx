@@ -15,6 +15,9 @@ const LeftOrder = ({
   setIsShowAddAddress,
   isShowAddAddress,
   setEditAddress,
+  setDeleteAddress,
+  isShowEditAddress,
+  isShowDeleteAddress,
 }) => {
   const [addresses, setAddresses] = useState([]);
   const fullName = localStorage.getItem("fullName");
@@ -34,7 +37,7 @@ const LeftOrder = ({
       }
     };
     fetchAddresses();
-  }, [isShowAddAddress]);
+  }, [isShowAddAddress, isShowEditAddress, isShowDeleteAddress]);
 
   return (
     <div className="leftOrder">
@@ -72,7 +75,15 @@ const LeftOrder = ({
                       })
                     }
                   />
-                  <ImBin className="text-red-500 text-[20px] cursor-pointer" />
+                  <ImBin
+                    onClick={(e) =>
+                      setDeleteAddress({
+                        id: address.id,
+                        isShowDeleteAddress: true,
+                      })
+                    }
+                    className="text-red-500 text-[20px] cursor-pointer"
+                  />
                 </div>
               </div>
             </div>

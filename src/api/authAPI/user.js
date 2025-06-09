@@ -132,3 +132,16 @@ export const updateAddress = async (address) => {
     throw new Error("Cập nhật địa chỉ không thành công");
   }
 };
+
+export const deleteAddress = async (id) => {
+  try {
+    const response = await requestWithToken(publicInstance, {
+      url: `/addresses/${id}`,
+      method: "DELETE",
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi xóa địa chỉ:", error);
+    throw new Error("Xóa địa chỉ không thành công");
+  }
+};
