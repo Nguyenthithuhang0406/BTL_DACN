@@ -18,6 +18,7 @@ const ProductList = ({
 	sortConfig,
 	hasNext,
 	hasPrevious,
+	onToggleActive
 }) => {
 	const indexOfLastProduct = currentPage * productsPerPage;
 	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -45,8 +46,9 @@ const ProductList = ({
 										? "↑"
 										: "↓")}
 							</th>
+							
 							<th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Tồn kho
+								Trạng thái hiển thị
 							</th>
 							{/* <th
 								onClick={() => onSort("status")}
@@ -71,6 +73,7 @@ const ProductList = ({
 								onView={onViewProduct}
 								onEdit={onEditProduct}
 								onDelete={onDeleteProduct}
+								onToggleActive={onToggleActive}
 							/>
 						))}
 					</tbody>
@@ -78,13 +81,14 @@ const ProductList = ({
 			</div>
 
 			<ProductPagination
+				contentProduct={products}
 				currentPage={currentPage}
 				totalPages={totalPages}
 				itemsPerPage={productsPerPage}
 				totalItems={totalProducts}
 				onPageChange={onPageChange}
 				onItemsPerPageChange={onProductsPerPageChange}
-				indexOfFirstItem={indexOfFirstProduct}
+				indexOfFirstItemProduct={indexOfFirstProduct}
 				indexOfLastItem={indexOfLastProduct}
 				hasNext={hasNext}
 				hasPrevious={hasPrevious}
