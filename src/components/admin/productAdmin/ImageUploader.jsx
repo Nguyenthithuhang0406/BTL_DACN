@@ -5,23 +5,23 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 	const [draggedOver, setDraggedOver] = useState(false);
 
 	const handleImageUpload = (files) => {
-		const fileArray = Array.from(files);
+  const fileArray = Array.from(files);
+  const remainingSlots = maxImages - images.length;
+  const filesToProcess = fileArray.slice(0, remainingSlots);
 
-		const remainingSlots = maxImages - images.length;
-		const filesToProcess = fileArray.slice(0, remainingSlots);
+  const imagePromises = filesToProcess.map((file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.readAsDataURL(file);
+    });
+  });
 
-		const imagePromises = filesToProcess.map((file) => {
-			return new Promise((resolve) => {
-				const reader = new FileReader();
-				reader.onload = (e) => resolve(e.target.result);
-				reader.readAsDataURL(file);
-			});
-		});
+  Promise.all(imagePromises).then((imageUrls) => {
+    onUpload(imageUrls, filesToProcess);
+  });
+};
 
-		Promise.all(imagePromises).then((imageUrls) => {
-			onUpload(imageUrls);
-		});
-	};
 
 	const handleDrop = (e) => {
 		e.preventDefault();
@@ -54,6 +54,7 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 				<input
 					type="file"
 					accept="image/*"
+					name="images"
 					multiple
 					onChange={(e) => handleImageUpload(e.target.files)}
 					className="hidden"
@@ -69,7 +70,6 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 					Hỗ trợ các định dạng: JPG, PNG, WEBP
 				</p>
 			</div>
-
 			{images.length > 0 && (
 				<div className="mt-4">
 					<h4 className="text-sm font-medium text-gray-700 mb-2">
@@ -91,7 +91,7 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 									onClick={() => onRemove(index)}
 									className="absolute top-2 right-2 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center"
 								>
-									<X className="h-4 w-4" />
+									<X className="h-4 w-4 cursor-pointer" />
 								</button>
 							</div>
 						))}

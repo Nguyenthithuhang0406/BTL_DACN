@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 
 const DeleteProductModal = ({ isOpen, onClose, onConfirm, product }) => {
   if (!isOpen || !product) return null;
+  console.log("product", product);
   
   return (
     <div className="fixed inset-0 bg-[#0000009e] bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -10,7 +11,7 @@ const DeleteProductModal = ({ isOpen, onClose, onConfirm, product }) => {
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Xác nhận xóa sản phẩm</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 cursor-pointer" />
           </button>
         </div>
         
@@ -22,7 +23,7 @@ const DeleteProductModal = ({ isOpen, onClose, onConfirm, product }) => {
           <div className="flex items-center p-3 bg-gray-50 rounded-lg">
             <div className="flex-shrink-0 h-12 w-12 rounded-lg overflow-hidden">
               <img 
-                src={product.image[0]} 
+                src={product.images[0].imageUrl} 
                 alt={product.name}
                 className="h-full w-full object-cover"
               />
@@ -37,15 +38,15 @@ const DeleteProductModal = ({ isOpen, onClose, onConfirm, product }) => {
         <div className="flex justify-end space-x-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 cursor-pointer hover:bg-gray-50"
           >
-            Cancel
+            Hủy
           </button>
           <button
             onClick={() => onConfirm(product.id)}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            className="px-4 py-2 bg-red-500 text-white rounded-lg cursor-pointer hover:bg-red-600"
           >
-            Delete
+            Xóa
           </button>
         </div>
       </div>
