@@ -9,89 +9,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { FaArrowRight } from "react-icons/fa";
 import { getAllProducts } from "@/api/productAPI/product";
+import { useNavigate } from "react-router-dom";
 
 const Male = () => {
-  // const listProduct = [
-  //   {
-  //     name: "Áo khoác da lộn nam 2 lớp",
-  //     image: [
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp3-2-c140d0a9-b56c-4166-8f5b-3da0c917eba6.jpg?v=1731513403483",
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp3-5-77cd757d-c5cb-4c38-afa9-ccd0c42b16d5.jpg?v=1731513403483",
-  //     ],
-  //     discount: 7,
-  //     price: 2000000,
-  //     count: 119,
-  //   },
-  //   {
-  //     name: "Áo polo nam phối màu ND008",
-  //     image: [
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp8-2-b6da4946-d566-436c-bb78-02b179755959.jpg?v=1731320140383",
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp8-5-05c1c474-ce3f-4eec-963e-23a6751e0953.jpg?v=1731320140383",
-  //     ],
-  //     discount: 25,
-  //     price: 600000,
-  //     count: 148,
-  //   },
-  //   {
-  //     name: "Váy liền nữ dáng dài, phối màu",
-  //     image: [
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp15.jpg?v=1731125521717",
-  //     ],
-  //     discount: 28,
-  //     price: 868000,
-  //     count: 98,
-  //   },
-  //   {
-  //     name: "Áo nỉ nữ phối lá cổ dáng relax",
-  //     image: [
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp10-2.jpg?v=1731125371523",
-  //     ],
-  //     discount: 17,
-  //     price: 686000,
-  //     count: 108,
-  //   },
-  //   {
-  //     name: "Áo khoác da lộn nam 2 lớp",
-  //     image: [
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp3-2-c140d0a9-b56c-4166-8f5b-3da0c917eba6.jpg?v=1731513403483",
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp3-5-77cd757d-c5cb-4c38-afa9-ccd0c42b16d5.jpg?v=1731513403483",
-  //     ],
-  //     discount: 7,
-  //     price: 2000000,
-  //     count: 119,
-  //   },
-  //   {
-  //     name: "Áo polo nam phối màu ND008",
-  //     image: [
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp8-2-b6da4946-d566-436c-bb78-02b179755959.jpg?v=1731320140383",
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp8-5-05c1c474-ce3f-4eec-963e-23a6751e0953.jpg?v=1731320140383",
-  //     ],
-  //     discount: 25,
-  //     price: 600000,
-  //     count: 148,
-  //   },
-  //   {
-  //     name: "Váy liền nữ dáng dài, phối màu",
-  //     image: [
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp15.jpg?v=1731125521717",
-  //     ],
-  //     discount: 28,
-  //     price: 868000,
-  //     count: 98,
-  //   },
-  //   {
-  //     name: "Áo nỉ nữ phối lá cổ dáng relax",
-  //     image: [
-  //       "https://bizweb.dktcdn.net/thumb/large/100/534/571/products/sp10-2.jpg?v=1731125371523",
-  //     ],
-  //     discount: 17,
-  //     price: 686000,
-  //     count: 108,
-  //   },
-  // ];
-
   const [listProduct, setListProduct] = useState([]);
   const [slidesPerView, setSlidesPerView] = useState(2);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -216,7 +139,7 @@ const Male = () => {
               </button>
             </div>
             <div className="male_product__button">
-              <button>
+              <button onClick={() => navigate("/productsByCategory/Áo sơ mi")}>
                 XEM TẤT CẢ <FaArrowRight />
               </button>
             </div>

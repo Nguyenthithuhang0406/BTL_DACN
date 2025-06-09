@@ -7,7 +7,7 @@ import ProductItem from "../../discountedProduct/productItem/ProductItem";
 import { Pagination } from "antd";
 import { getAllProducts } from "@/api/productAPI/product";
 
-const ProductsContainer = ({ categoryName }) => {
+const ProductsContainer = ({ price }) => {
   const [pageSize, setPageSize] = useState(12);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
@@ -19,15 +19,16 @@ const ProductsContainer = ({ categoryName }) => {
 
   useEffect(() => {
     const fetchProductByCategory = async () => {
-
       try {
         const data = {
           sortedBy: "createdDate",
           sortDirection: "desc",
           page: currentPage - 1,
           size: pageSize,
-          category: categoryName,
+          category: price.categoryName,
           status: "true",
+          minPrice: price.minPrice !== 0 ? price.minPrice : "",
+          maxPrice: price.maxPrice !== 0 ? price.maxPrice : "",
         };
 
         const response = await getAllProducts(data);
@@ -38,7 +39,7 @@ const ProductsContainer = ({ categoryName }) => {
       }
     };
     fetchProductByCategory();
-  }, [pageSize, currentPage, categoryName]);
+  }, [pageSize, currentPage, price]);
 
   return (
     <div className="productsContainer">

@@ -4,12 +4,17 @@ import CategoryHeader from "@/components/product/listProductByCategory/categoryH
 import MenuSidebar from "@/components/product/listProductByCategory/menuSidebar/MenuSidebar";
 import ProductsContainer from "@/components/product/listProductByCategory/productsContainer/ProductsContainer";
 import TitleRouter from "@/components/product/titleRouter/TitleRouter";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import "./ProductsByCategory.scss";
 const ProductsByCategory = () => {
   const categoryName = useParams().categoryName;
+  const [price, setPrice] = useState({
+    categoryName: categoryName,
+    minPrice: 0,
+    maxPrice: 0,
+  });
 
   return (
     <Layout>
@@ -17,8 +22,8 @@ const ProductsByCategory = () => {
         <TitleRouter title={categoryName} />
         <CategoryHeader />
         <div className="productsByCategory__container">
-          <ProductsContainer categoryName={categoryName} />
-          <MenuSidebar />
+          <ProductsContainer price={price} />
+          <MenuSidebar setPrice={setPrice}  />
         </div>
       </div>
     </Layout>

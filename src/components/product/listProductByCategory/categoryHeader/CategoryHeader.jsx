@@ -82,12 +82,12 @@ const CategoryHeader = () => {
         className="swiper-category__list"
       >
         {categorys.map((category, index) => (
-          <SwiperSlide className="swiper-category__item" key={index}>
-            <div
-              key={index}
-              className="category__item"
-              onClick={() => navigate(`/productsByCategory/${item.name}`)}
-            >
+          <SwiperSlide
+            className="swiper-category__item"
+            key={index}
+            onClick={() => navigate(`/productsByCategory/${category.name}`)}
+          >
+            <div key={index} className="category__item">
               <div className="category__item-img">
                 <img src={category.imageUrl} alt={category.name} />
               </div>
