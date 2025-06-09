@@ -47,20 +47,16 @@ export const exportProductsToExcel = (products, filename = 'Products_Export') =>
 
 
 export const getProductStatusCounts = (products) => {
-  const counts = {
+ const counts = {
     'Active': 0,
-    'Low Stock': 0,
-    'Out of Stock': 0,
-    'Clearance': 0
+    'Inactive': 0,
   };
-  
   products.forEach(product => {
-    if (counts[product.status] !== undefined) {
-      counts[product.status]++;
-    }
+    if (product.isActive === true) counts['Active']++;
+    if (product.isActive === false) counts['Inactive']++;
   });
-  
   return counts;
+  
 };
 
 
@@ -76,13 +72,11 @@ export const formatProductForSave = (formData, existingProduct = null) => {
     category: formData.category,
     price: `$${parseFloat(formData.price).toFixed(2)}`,
     stock: parseInt(formData.stock) || 0,
-    status: formData.status,
+    status: formData.isActive,
     image: productImages,
     description: formData.description,
-    sku: formData.sku,
     lastUpdated: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
-    rating: existingProduct ? existingProduct.rating : 0,
-    variations: formData.variations,
-    tags: formData.tags,
+    // rating: existingProduct ? existingProduct.rating : 0,
+    variants: formData.variants,
   };
 };
