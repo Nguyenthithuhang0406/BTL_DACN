@@ -23,6 +23,7 @@ import { ToastContainer } from "react-toastify";
 import Profile from "./pages/profile/Profile";
 import FollowingProducts from "./pages/followingProducts/FollowingProducts";
 import Payments from "./pages/payments/Payments";
+import References from "./pages/references/References";
 const App = () => {
   useEffect(() => {
     AOS.init({
@@ -107,6 +108,10 @@ const App = () => {
     {
       path: "/payments",
       element: <Payments />,
+    },
+    {
+      path: "/references",
+      element: <References />,
     },
   ]);
   return (
