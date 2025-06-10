@@ -21,6 +21,8 @@ import OrderAdminPage from "./pages/admin/OrderAdminPage";
 import CategoryAdminPage from "./pages/admin/CategoryAdminPage";
 import { ToastContainer } from "react-toastify";
 import Profile from "./pages/profile/Profile";
+import FollowingProducts from "./pages/followingProducts/FollowingProducts";
+import Payments from "./pages/payments/Payments";
 const App = () => {
   useEffect(() => {
     AOS.init({
@@ -37,6 +39,10 @@ const App = () => {
     {
       path: "/product/:id",
       element: <DetailProduct />,
+    },
+    {
+      path: "/followingProducts",
+      element: <FollowingProducts />,
     },
     {
       path: "/search",
@@ -97,6 +103,10 @@ const App = () => {
     {
       path: "/admin/categories",
       element: <CategoryAdminPage />,
+    },
+    {
+      path: "/payments",
+      element: <Payments />,
     },
   ]);
   return (

@@ -50,7 +50,9 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: space-between;
+    // justify-content: space-between;
+    justify-content: flex-start;
+    margin: auto;
     align-items: center;
     margin-bottom: 50px;
 
