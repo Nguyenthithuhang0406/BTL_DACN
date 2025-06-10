@@ -18,7 +18,7 @@ export const getOrderByOrderType = async (orderType) => {
   try {
     const response = await requestWithToken(publicInstance, {
       method: "GET",
-      url: `/orders${orderType ? `?orderType=${orderType}` : ""}`,
+      url: `/orders${orderType && `?orderType=${orderType}`}`,
     });
     return response.data;
   } catch (error) {
@@ -40,3 +40,16 @@ export const getConfirmedOrder = async (params) => {
     throw new Error("Lấy đơn hàng đã xác nhận không thành công");
   }
 };
+
+export const getReferenceOrder = async (reference) => {
+  try {
+    const response = await requestWithToken(publicInstance, {
+      method: "GET",
+      url: `/orders/reference?reference=${reference}`,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi ở lấy đơn hàng theo mã tham chiếu:", error);
+    throw new Error("Lấy đơn hàng theo mã tham chiếu không thành công");
+  }
+}
