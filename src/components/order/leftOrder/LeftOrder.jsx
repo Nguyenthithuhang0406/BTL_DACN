@@ -18,11 +18,13 @@ const LeftOrder = ({
   setDeleteAddress,
   isShowEditAddress,
   isShowDeleteAddress,
+  orderInformation,
+  setOrderInformation,
 }) => {
   const [addresses, setAddresses] = useState([]);
-  const fullName = localStorage.getItem("fullName");
-
   const [addressOrder, setAddressOrder] = useState([]);
+
+  const fullName = localStorage.getItem("fullName");
 
   useEffect(() => {
     const fetchAddresses = async () => {
@@ -39,6 +41,13 @@ const LeftOrder = ({
     fetchAddresses();
   }, [isShowAddAddress, isShowEditAddress, isShowDeleteAddress]);
 
+  const handleAddressSelection = (address) => {
+    setAddressOrder(address);
+    setOrderInformation({
+      ...orderInformation,
+      addressId: address.id,
+    });
+  };
   return (
     <div className="leftOrder">
       <h1>Địa chỉ nhận hàng</h1>
@@ -50,7 +59,7 @@ const LeftOrder = ({
                 type="radio"
                 name="address"
                 checked={addressOrder?.id === address?.id}
-                onClick={() => setAddressOrder(address)}
+                onClick={() => handleAddressSelection(address)}
               />
               <div className="leftOrder__address-item-info group">
                 <div>
@@ -104,7 +113,17 @@ const LeftOrder = ({
       <h1>Phương thức thanh toán</h1>
       <div className="leftOrder__payment">
         <div className="leftOrder__payment-item">
-          <input type="radio" name="payment" />
+          <input
+            type="radio"
+            name="payment"
+            checked={orderInformation.paymentMethod === "COD"}
+            onChange={() =>
+              setOrderInformation({
+                ...orderInformation,
+                paymentMethod: "COD",
+              })
+            }
+          />
           <div className="leftOrder__payment-item-info">
             <img src={cod} />
             <div className="leftOrder__payment-item-info-detail">
@@ -121,7 +140,17 @@ const LeftOrder = ({
           </div>
         </div>
         <div className="leftOrder__payment-item">
-          <input type="radio" name="payment" />
+          <input
+            type="radio"
+            name="payment"
+            checked={orderInformation.paymentMethod === "VN_PAY"}
+            onChange={() =>
+              setOrderInformation({
+                ...orderInformation,
+                paymentMethod: "VN_PAY",
+              })
+            }
+          />
           <div className="leftOrder__payment-item-info">
             <img src={vnpay} />
             <div className="leftOrder__payment-item-info-detail">
@@ -134,7 +163,17 @@ const LeftOrder = ({
           </div>
         </div>
         <div className="leftOrder__payment-item">
-          <input type="radio" name="payment" />
+          <input
+            type="radio"
+            name="payment"
+            checked={orderInformation.paymentMethod === "MOMO"}
+            onChange={() =>
+              setOrderInformation({
+                ...orderInformation,
+                paymentMethod: "MOMO",
+              })
+            }
+          />
           <div className="leftOrder__payment-item-info">
             <img src={momo} />
             <div className="leftOrder__payment-item-info-detail">

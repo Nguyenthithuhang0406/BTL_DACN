@@ -19,6 +19,13 @@ const Order = () => {
     id: null,
     isShowDeleteAddress: false,
   });
+  const [orderInformation, setOrderInformation] = useState({
+    paymentMethod: "COD",
+    addressId: null,
+    language: "vi",
+    bankCode: null,
+    items: [],
+  });
 
   return (
     <>
@@ -31,8 +38,13 @@ const Order = () => {
             setDeleteAddress={setDeleteAddress}
             isShowEditAddress={editAddress.isShowUpdateAddress}
             isShowDeleteAddress={deleteAddress.isShowDeleteAddress}
+            orderInformation={orderInformation}
+            setOrderInformation={setOrderInformation}
           />
-          <RightOrder />
+          <RightOrder
+            orderInformation={orderInformation}
+            setOrderInformation={setOrderInformation}
+          />
         </div>
       </Layout>
       {isShowAddAddress && (
