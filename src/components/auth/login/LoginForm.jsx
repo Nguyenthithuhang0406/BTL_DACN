@@ -12,6 +12,7 @@ import ForgotPassword from "../forgotPassword/ForgotPassword";
 import { login, loginWithGoogle } from "@/api/authAPI/auth";
 
 import "./LoginForm.scss";
+import { getMe } from "@/api/authAPI/user";
 const LoginForm = ({ setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFogotPassword, setIsForgotPassword] = useState(false);
@@ -29,8 +30,11 @@ const LoginForm = ({ setIsLogin }) => {
         password: values.password,
       };
       const response = await login(data);
+      const user = await getMe();
+      localStorage.setItem("fullName", user.data.fullName);
       toast.success("Đăng nhập thành công");
       navigate("/");
+      
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         switch (error.response.status) {
@@ -51,9 +55,7 @@ const LoginForm = ({ setIsLogin }) => {
   const handleLoginWithGoogle = async () => {
     try {
       const response = await loginWithGoogle();
-      window.open(
-        response.data
-      );
+      window.open(response.data);
     } catch (error) {
       console.log(error);
     }

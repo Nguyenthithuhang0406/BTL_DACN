@@ -1,8 +1,9 @@
 /* eslint-disable*/
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { MdOutlineAccountCircle } from "react-icons/md";
 import "./Information.scss";
+import { getMe } from "@/api/authAPI/user";
 
 const Infomation = () => {
   const [isEditting, setIsEditing] = useState(false);
@@ -13,6 +14,25 @@ const Infomation = () => {
     lastName: "Hang",
   });
   const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    const fetchUserInformation = async () => {
+      try {
+        const response = await getMe();
+        setInformation((prev) => ({
+          ...prev,
+          username: response.data.username || "abc",
+          firstName: response.data.fullName.split(" ")[0] || "Nguyen",
+          lastName:
+            response.data.fullName.split(" ").slice(1).join(" ") || "Hang",
+          email: response.data.email || "abc@gmail.com",
+        }));
+      } catch (error) {
+        console.log("Error fetching user information:", error);
+      }
+    };
+    fetchUserInformation();
+  }, []);
 
   const handleChangeAvatar = (e) => {
     const file = e.target.files[0];

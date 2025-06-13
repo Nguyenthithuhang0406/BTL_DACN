@@ -1,13 +1,15 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./RightOrder.scss";
 import { useSelector } from "react-redux";
 import { formatNumber } from "@/utils/function";
 import { GrFormPrevious } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
+import { createdOrder } from "@/api/orderAPI/order";
+import { toast } from "react-toastify";
 
-const RightOrder = () => {
+const RightOrder = ({ orderInformation, setOrderInformation }) => {
   const selectedProducts = useSelector((state) => state.order.orderList);
   const totalPrice = useSelector((state) => state.order.totalPrice);
   const [price, setPrice] = useState(totalPrice);
@@ -29,6 +31,29 @@ const RightOrder = () => {
     setPrice(
       status === "increase" ? price + product.price : price - product.price
     );
+  };
+
+  useEffect(() => {
+    setOrderInformation((prev) => ({
+      ...prev,
+      items: products.map((product) => ({
+        variantId: product.variantId,
+        quantity: product.quantity,
+      })),
+    }));
+  }, [selectedProducts]);
+
+  const handleOrder = async () => {
+    console.log("Updated order information:", orderInformation);
+    try {
+      const response = await createdOrder(orderInformation);
+      // toast.success("Đặt hàng thành công!");
+      if (response.data.payment.paymentUrl) {
+        window.location.href = response.data.payment.paymentUrl;
+      }
+    } catch (error) {
+      console.log("Error creating order:", error);
+    }
   };
 
   return (
@@ -96,7 +121,9 @@ const RightOrder = () => {
           </span>
           Quay lại giỏ hàng
         </p>
-        <button className="rightOrder__button-btn">Đặt hàng</button>
+        <button className="rightOrder__button-btn" onClick={handleOrder}>
+          Đặt hàng
+        </button>
       </div>
     </div>
   );
