@@ -3,16 +3,6 @@ import React from "react";
 
 const CategoryViewModal = ({ category, onClose, onEdit }) => {
 	if (!category) return null;
-
-	const getImageUrl = () => {
-		if (category.imageUrl) {
-			return `${
-				import.meta.env.VITE_API_URL
-			}/images/category-images/${category.imageUrl.split("\\").pop()}`; // đường dẫn tuyệt đối
-		}
-		return `https://picsum.photos/200/300?grayscale`;
-	};
-
 	return (
 		<div
 			className="fixed inset-0 bg-[#0000009e] bg-opacity-50 flex items-center justify-center z-50 p-4"
@@ -36,12 +26,16 @@ const CategoryViewModal = ({ category, onClose, onEdit }) => {
 				<div className="p-6">
 					<div className="flex items-center mb-6">
 						<img
-						className="h-24 w-24 border border-none rounded-xl"
-							src={category.imageUrl ? category.imageUrl : "https://picsum.photos/200/300?grayscale"}
+							className="h-24 w-24 border border-none rounded-xl"
+							src={
+								category.imageUrl
+									? category.imageUrl
+									: "https://picsum.photos/200/300?grayscale"
+							}
 							alt={category.name}
 							onError={(e) => {
 								e.target.src =
-									"https://picsum.photos/200/300?grayscale"; // fallback image
+									"https://picsum.photos/200/300?grayscale";
 							}}
 						/>
 						<div className="ml-4">

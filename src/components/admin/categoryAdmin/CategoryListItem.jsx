@@ -2,21 +2,11 @@ import { Edit, Eye, Trash } from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
 const CategoryListItem = ({ category, onView, onEdit, onDelete }) => {
-	// const getImageUrl = () => {
-	// 	if (category.imageUrl) {
-	// 		// Thay toàn bộ backslashes (\) bằng forward slashes (/)
-	// 		const pathWithSlashes = category.imageUrl.replace(/\\/g, "/");
-	// 		console.log("Path with slashes:", pathWithSlashes);
-	// 		return ``;
-	// 	}
-	// 	return "https://picsum.photos/200/300?grayscale"; // ảnh mặc định
-	// };
 	return (
 		<motion.tr
 			initial={{ opacity: 0, y: -10 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.3 }}
-			// whileHover={{ scale: 1.02 }}
 			className="hover:bg-gray-50"
 		>
 			<td className="px-4 py-4 whitespace-nowrap">

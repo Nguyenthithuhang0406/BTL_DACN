@@ -3,8 +3,6 @@ import React from "react";
 import OrderStatusFilter from "./OrderStatusFilter";
 
 const OrderFilters = ({
-	searchQuery,
-	onSearchChange,
 	statusFilter,
 	onStatusFilterChange,
 	onExportExcel,
@@ -13,19 +11,6 @@ const OrderFilters = ({
 }) => {
 	return (
 		<div className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center">
-			<div className="w-full sm:w-auto">
-				<div className="relative">
-					<input
-						type="text"
-						placeholder="Tìm kiếm đơn hàng..."
-						value={searchQuery}
-						onChange={(e) => onSearchChange(e.target.value)}
-						className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-					/>
-					<Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-				</div>
-			</div>
-
 			<OrderStatusFilter
 				statusFilter={statusFilter}
 				onFilterChange={onStatusFilterChange}

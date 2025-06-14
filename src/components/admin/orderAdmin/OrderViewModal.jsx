@@ -5,9 +5,22 @@ import { useState } from "react";
 import OrderStatusBadge from "./OrderStatusBadge";
 import OrderItemsGallery from "./OrderItemsGallery";
 
-const OrderViewModal = ({ order, onClose }) => {
-	const [activeTab, setActiveTab] = useState("details"); // 'details' or 'items'
+const OrderViewModal = ({ order, onClose, token }) => {
+	const [activeTab, setActiveTab] = useState("details");
+	const formatDateTime = (dateTime) => {
+		const date = new Date(dateTime + "Z");
+		const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+		const vnTime = new Date(utc + 7 * 60 * 60 * 1000);
 
+		const day = String(vnTime.getDate()).padStart(2, "0");
+		const month = String(vnTime.getMonth() + 1).padStart(2, "0");
+		const year = vnTime.getFullYear();
+		const hours = String(vnTime.getHours()).padStart(2, "0");
+
+		const minutes = String(vnTime.getMinutes()).padStart(2, "0");
+		const seconds = String(vnTime.getSeconds()).padStart(2, "0");
+		return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+	};
 	if (!order) return null;
 
 	return (
@@ -15,13 +28,13 @@ const OrderViewModal = ({ order, onClose }) => {
 			<div className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
 				<div className="flex justify-between items-center p-4 border-b">
 					<h3 className="text-lg font-semibold">
-						Đơn hàng #{order.id}
+						Đơn hàng #{order.reference}
 					</h3>
 					<button
 						onClick={onClose}
 						className="text-gray-400 hover:text-gray-600"
 					>
-						<X className="h-5 w-5" />
+						<X className="h-5 w-5 cursor-pointer" />
 					</button>
 				</div>
 
@@ -29,8 +42,8 @@ const OrderViewModal = ({ order, onClose }) => {
 					<button
 						className={`px-4 py-2 font-medium ${
 							activeTab === "details"
-								? "text-orange-600 border-b-2 border-orange-500"
-								: "text-gray-500 hover:text-gray-700"
+								? "text-orange-600 border-l-2 border-r-2 cursor-pointer"
+								: "text-gray-500 hover:text-gray-700 cursor-pointer"
 						}`}
 						onClick={() => setActiveTab("details")}
 					>
@@ -39,8 +52,8 @@ const OrderViewModal = ({ order, onClose }) => {
 					<button
 						className={`px-4 py-2 font-medium ${
 							activeTab === "items"
-								? "text-orange-600 border-b-2 border-orange-500"
-								: "text-gray-500 hover:text-gray-700"
+								? "text-orange-600 border-l-2 border-r-2 cursor-pointer"
+								: "text-gray-500 cursor-pointer hover:text-gray-700"
 						}`}
 						onClick={() => setActiveTab("items")}
 					>
@@ -70,24 +83,17 @@ const OrderViewModal = ({ order, onClose }) => {
 														<div className="text-gray-500">
 															Mã đơn hàng:
 														</div>
-														<div>{order.id}</div>
+														<div>
+															{order.reference}
+														</div>
 													</div>
 													<div className="grid grid-cols-2 gap-2">
 														<div className="text-gray-500">
 															Ngày đặt:
 														</div>
 														<div>
-															{new Date(
-																order.orderDate
-															).toLocaleDateString(
-																"en-US",
-																{
-																	year: "numeric",
-																	month: "long",
-																	day: "numeric",
-																	hour: "2-digit",
-																	minute: "2-digit",
-																}
+															{formatDateTime(
+																order.createdDate
 															)}
 														</div>
 													</div>
@@ -120,15 +126,17 @@ const OrderViewModal = ({ order, onClose }) => {
 												<div className="mt-2 space-y-2 text-sm">
 													<div className="grid grid-cols-2 gap-2">
 														<div className="text-gray-500">
-															Tên người bán:{" "}
+															Tên người bán :{" "}
 														</div>
 														<div>
-															{order.sellerName}
+															{order.sellerName
+																? order.sellerName
+																: "N/A"}
 														</div>
 													</div>
 													<div className="grid grid-cols-2 gap-2">
 														<div className="text-gray-500">
-															Tên cửa hàng:
+															Tên cửa hàng? :
 														</div>
 														<div>
 															{order.storeName ||
@@ -166,7 +174,7 @@ const OrderViewModal = ({ order, onClose }) => {
 														</div>
 														<div>
 															{order.shippingMethod ||
-																"Standard Delivery"}
+																"Giao hàng tiêu chuẩn"}
 														</div>
 													</div>
 													<div className="grid grid-cols-2 gap-2">
@@ -175,7 +183,7 @@ const OrderViewModal = ({ order, onClose }) => {
 														</div>
 														<div>
 															{order.shippingFee ||
-																"Free"}
+																"Miễn phí"}
 														</div>
 													</div>
 													<div className="grid grid-cols-2 gap-2">
@@ -247,22 +255,7 @@ const OrderViewModal = ({ order, onClose }) => {
 											</div>
 											<div>
 												{order.paymentMethod ||
-													"Credit Card"}
-											</div>
-										</div>
-										<div>
-											<div className="text-sm text-gray-500 mb-1">
-												Trạng thái thanh toán
-											</div>
-											<div
-												className={`px-2 py-1 text-xs inline-block rounded-full ${
-													order.paymentStatus ===
-													"Paid"
-														? "bg-green-100 text-green-800"
-														: "bg-yellow-100 text-yellow-800"
-												}`}
-											>
-												{order.paymentStatus || "Paid"}
+													"Thẻ thanht toán"}
 											</div>
 										</div>
 									</div>
@@ -280,8 +273,7 @@ const OrderViewModal = ({ order, onClose }) => {
 												Tổng tiền:
 											</span>
 											<span>
-												$
-												{order.subtotal ||
+												{order.totalAmount ||
 													order.items
 														.reduce(
 															(sum, item) =>
@@ -295,7 +287,8 @@ const OrderViewModal = ({ order, onClose }) => {
 																	item.quantity,
 															0
 														)
-														.toFixed(2)}
+														.toFixed(2)}{" "}
+												VND
 											</span>
 										</div>
 										<div className="flex justify-between">
@@ -303,27 +296,10 @@ const OrderViewModal = ({ order, onClose }) => {
 												Phí vận chuyển:
 											</span>
 											<span>
-												{order.shippingFee || "Free"}
+												{order.shippingFee ||
+													"Miễn phí"}
 											</span>
 										</div>
-										{order.discount && (
-											<div className="flex justify-between">
-												<span className="text-gray-600">
-													Giảm giá:
-												</span>
-												<span className="text-green-600">
-													-{order.discount}
-												</span>
-											</div>
-										)}
-										{order.tax && (
-											<div className="flex justify-between">
-												<span className="text-gray-600">
-													Thuế:
-												</span>
-												<span>{order.tax}</span>
-											</div>
-										)}
 										<div className="border-t pt-2 mt-2 flex justify-between font-semibold">
 											<span>Thành tiền:</span>
 											<span>{order.totalAmount}</span>
@@ -336,17 +312,17 @@ const OrderViewModal = ({ order, onClose }) => {
 						<OrderItemsGallery
 							items={order.items}
 							onClose={() => setActiveTab("details")}
+							token={token}
 						/>
 					)}
 				</div>
 
-				{/* Footer Actions */}
 				<div className="p-4 border-t flex justify-end">
 					<button
 						onClick={onClose}
-						className="px-4 py-2 bg-gray-200 rounded-lg text-gray-800 hover:bg-gray-300"
+						className="px-4 py-2 cursor-pointer bg-gray-200 rounded-lg text-gray-800 hover:bg-gray-300 duration-200"
 					>
-						Close
+						Đóng
 					</button>
 				</div>
 			</div>

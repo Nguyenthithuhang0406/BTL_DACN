@@ -17,13 +17,11 @@ const CategoryList = ({
 	onSort,
 	sortConfig,
 	hasNext,
-	hasPrevious
+	hasPrevious,
 }) => {
 	const indexOfLastItem = currentPage * itemsPerPage;
 	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 	const currentItems = categories;
-
-	
 
 	return (
 		<div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">

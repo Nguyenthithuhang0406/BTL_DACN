@@ -2,31 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const CATEGORY_DATA = [
-  {
-    name: "Đồ thể thao",
-    value: 4500,
-  },
-  {
-    name: "Đồ lót",
-    value: 3200,
-  },
-  {
-    name: "Áo khoác",
-    value: 2500,
-  },
-  {
-    name: "Quần short",
-    value: 6000,
-  },
-];
-
-const COLORS = ["#6366f1", "#8b5cf6", "#ec4899", "#10b981", "#f59e0b"];
-
-const CategoryDistributionChart = () => {
+const CategoryDistributionChart = ({ data }) => {
   return (
     <motion.div
-      className="bg-[#FFFDD0] bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 "
+      className="bg-[#FFFDD0] bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
@@ -38,7 +17,7 @@ const CategoryDistributionChart = () => {
         <ResponsiveContainer width={"100%"} height={"100%"}>
           <PieChart>
             <Pie
-              data={CATEGORY_DATA}
+              data={data}
               dataKey="value"
               cx={"50%"}
               cy={"50%"}
@@ -49,10 +28,10 @@ const CategoryDistributionChart = () => {
                 `${name} ${(percent * 100).toFixed(0)}%`
               }
             >
-              {CATEGORY_DATA.map((entry, index) => (
+              {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+                  fill={entry.color}
                 />
               ))}
             </Pie>

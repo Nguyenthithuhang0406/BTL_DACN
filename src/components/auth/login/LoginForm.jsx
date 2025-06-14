@@ -32,8 +32,13 @@ const LoginForm = ({ setIsLogin }) => {
       const response = await login(data);
       const user = await getMe();
       localStorage.setItem("fullName", user.data.fullName);
+      if(localStorage.getItem("roles").Contains("ADMIN")) {
+        navigate('/admin/*')
+      }else {
+        navigate("/");
+
+      }
       toast.success("Đăng nhập thành công");
-      navigate("/");
       
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

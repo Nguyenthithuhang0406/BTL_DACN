@@ -6,16 +6,19 @@ const OrderList = ({
 	currentPage,
 	ordersPerPage,
 	totalOrders,
+	totalPages,
 	onPageChange,
 	onOrdersPerPageChange,
 	onViewOrder,
-	onSort,
-	sortConfig,
+	hasNext,
+	hasPrevious,
+	token,
+	onStatusChange
 }) => {
 	const indexOfLastItem = currentPage * ordersPerPage;
-	const indexOfFirstItem = indexOfLastItem - ordersPerPage;
-	const currentOrders = orders.slice(indexOfFirstItem, indexOfLastItem);
-	const totalPages = Math.ceil(orders.length / ordersPerPage);
+	const indexOfFirstItemOrder = indexOfLastItem - ordersPerPage;
+	const currentOrders = orders;
+
 	return (
 		<div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
 			<div className="overflow-x-auto">
@@ -27,10 +30,6 @@ const OrderList = ({
 								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
 							>
 								Mã đơn hàng{" "}
-								{sortConfig.key === "id" &&
-									(sortConfig.direction === "asc"
-										? "↑"
-										: "↓")}
 							</th>
 							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 								Số lượng sản phẩm
@@ -40,33 +39,19 @@ const OrderList = ({
 								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
 							>
 								Thời gian đặt hàng{" "}
-								{sortConfig.key === "orderDate" &&
-									(sortConfig.direction === "asc"
-										? "↑"
-										: "↓")}
 							</th>
 							<th
 								onClick={() => onSort("totalAmount")}
 								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
 							>
 								Tổng tiền{" "}
-								{sortConfig.key === "totalAmount" &&
-									(sortConfig.direction === "asc"
-										? "↑"
-										: "↓")}
 							</th>
-							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Phí giao hàng
-							</th>
+
 							<th
 								onClick={() => onSort("status")}
 								className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
 							>
 								Trạng thái{" "}
-								{sortConfig.key === "status" &&
-									(sortConfig.direction === "asc"
-										? "↑"
-										: "↓")}
 							</th>
 							<th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 								Hành động
@@ -79,6 +64,8 @@ const OrderList = ({
 								key={order.id}
 								order={order}
 								onView={onViewOrder}
+								token={token}
+								onStatusChange={onStatusChange}
 							/>
 						))}
 					</tbody>
@@ -86,14 +73,17 @@ const OrderList = ({
 			</div>
 
 			<ProductPagination
+				contentOrder={orders}
 				currentPage={currentPage}
 				totalPages={totalPages}
 				itemsPerPage={ordersPerPage}
 				totalItems={totalOrders}
 				onPageChange={onPageChange}
 				onItemsPerPageChange={onOrdersPerPageChange}
-				indexOfFirstItem={indexOfFirstItem}
+				indexOfFirstItemOrder={indexOfFirstItemOrder}
 				indexOfLastItem={indexOfLastItem}
+				hasNext={hasNext}
+				hasPrevious={hasPrevious}
 				itemName="đơn hàng"
 			/>
 		</div>
