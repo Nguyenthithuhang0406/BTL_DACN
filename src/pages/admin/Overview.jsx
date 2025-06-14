@@ -9,30 +9,39 @@ import CategoryDistributionChart from "@/components/admin/chart/CategoryDistribu
 import axios from "axios";
 
 const Overview = () => {
-  const [categoryData, setCategoryData] = useState([]);
+	const [categoryData, setCategoryData] = useState([]);
 
-const getRandomValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-const getPastelColor = () => {
-  const r = Math.floor(Math.random() * 100 + 100).toString(16).padStart(2, '0');
-  const g = Math.floor(Math.random() * 100 + 100).toString(16).padStart(2, '0');
-  const b = Math.floor(Math.random() * 100 + 100).toString(16).padStart(2, '0');
-  return `#${r}${g}${b}`;
-};
+	const getRandomValue = (min, max) =>
+		Math.floor(Math.random() * (max - min + 1)) + min;
+	const getPastelColor = () => {
+		const r = Math.floor(Math.random() * 100 + 100)
+			.toString(16)
+			.padStart(2, "0");
+		const g = Math.floor(Math.random() * 100 + 100)
+			.toString(16)
+			.padStart(2, "0");
+		const b = Math.floor(Math.random() * 100 + 100)
+			.toString(16)
+			.padStart(2, "0");
+		return `#${r}${g}${b}`;
+	};
 
-  const getAllCategory = async () => {
-    try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
-      const categories = res.data.data.content;
-      const newCategoryData = categories.map(category => ({
-        name: category.name,
-        value: getRandomValue(2000, 6000),
-        color: getPastelColor()
-      }));
-      setCategoryData(newCategoryData);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+	const getAllCategory = async () => {
+		try {
+			const res = await axios.get(
+				`${import.meta.env.VITE_API_URL}/categories`
+			);
+			const categories = res.data.data.content;
+			const newCategoryData = categories.map((category) => ({
+				name: category.name,
+				value: getRandomValue(2000, 6000),
+				color: getPastelColor(),
+			}));
+			setCategoryData(newCategoryData);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
 	useEffect(() => {
 		getAllCategory();
@@ -75,9 +84,9 @@ const getPastelColor = () => {
 						/>
 					</motion.div>
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <SaleOverviewChart />
-            <CategoryDistributionChart data={categoryData} />
-          </div>
+						<SaleOverviewChart />
+						<CategoryDistributionChart data={categoryData} />
+					</div>
 				</main>
 			</div>
 		</LayoutAdmin>
