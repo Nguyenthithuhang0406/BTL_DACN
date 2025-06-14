@@ -4,7 +4,7 @@ import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 
 import "./MenuSidebar.scss";
 import { categorys } from "@/utils/const/Constant";
-const MenuSidebar = () => {
+const MenuSidebar = ({ setPrice }) => {
   const [opens, setOpens] = useState([]);
   const [isOpenPrice, setIsOpenPrice] = useState(true);
 
@@ -40,7 +40,18 @@ const MenuSidebar = () => {
             {opens.includes(item.id) && (
               <div className="menuSidebar__category-item-child">
                 {item.children.map((child) => (
-                  <p key={child.id}>{child.name}</p>
+                  <p
+                    key={child.id}
+                    onClick={() => {
+                      setPrice({
+                        categoryName: child.name,
+                        minPrice: 0,
+                        maxPrice: 0,
+                      });
+                    }}
+                  >
+                    {child.name}
+                  </p>
                 ))}
               </div>
             )}
@@ -62,23 +73,107 @@ const MenuSidebar = () => {
         {isOpenPrice && (
           <div>
             <div className="menuSidebar__price-item">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 0,
+                      maxPrice: 200000,
+                    }));
+                  } else {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 0,
+                      maxPrice: 0,
+                    }));
+                  }
+                }}
+              />
               <p>Giá dưới 200.000đ</p>
             </div>
             <div className="menuSidebar__price-item">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 200000,
+                      maxPrice: 500000,
+                    }));
+                  } else {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 0,
+                      maxPrice: 0,
+                    }));
+                  }
+                }}
+              />
               <p>200.000đ - 500.000đ</p>
             </div>
             <div className="menuSidebar__price-item">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 500000,
+                      maxPrice: 700000,
+                    }));
+                  } else {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 0,
+                      maxPrice: 0,
+                    }));
+                  }
+                }}
+              />
               <p>500.000đ - 700.000đ</p>
             </div>
             <div className="menuSidebar__price-item">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 700000,
+                      maxPrice: 1000000,
+                    }));
+                  } else {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 0,
+                      maxPrice: 0,
+                    }));
+                  }
+                }}
+              />
               <p>700.000đ - 1.000.000đ</p>
             </div>
             <div className="menuSidebar__price-item">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 1000000,
+                    }));
+                  } else {
+                    setPrice((prev) => ({
+                      ...prev,
+                      minPrice: 0,
+                      maxPrice: 0,
+                    }));
+                  }
+                }}
+              />
               <p>Giá trên 1.000.000đ</p>
             </div>
           </div>

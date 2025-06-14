@@ -6,10 +6,28 @@ import "./CategoryHeader.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
+import { getAllCategories } from "@/api/productAPI/category";
 
 const CategoryHeader = () => {
-  const categorys = listCategory;
+  const [categorys, setCategorys] = useState(listCategory);
   const [slidesPerView, setSlidesPerView] = useState(5);
+  useEffect(() => {
+    const getCategorys = async () => {
+      try {
+        const data = {
+          sortedBy: "createdAt",
+          sortDirection: "desc",
+          page: 0,
+          size: 10,
+        };
+        const response = await getAllCategories(data);
+        setCategorys(response.data.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCategorys();
+  }, []);
   const updateSlidesPerView = () => {
     const width = window.innerWidth;
     if (width > 1280) {
@@ -64,12 +82,16 @@ const CategoryHeader = () => {
         className="swiper-category__list"
       >
         {categorys.map((category, index) => (
-          <SwiperSlide className="swiper-category__item" key={index}>
+          <SwiperSlide
+            className="swiper-category__item"
+            key={index}
+            onClick={() => navigate(`/productsByCategory/${category.name}`)}
+          >
             <div key={index} className="category__item">
               <div className="category__item-img">
-                <img src={category.image} alt={category.title} />
+                <img src={category.imageUrl} alt={category.name} />
               </div>
-              <button className="category__item-btn">{category.title}</button>
+              <button className="category__item-btn">{category.name}</button>
             </div>
           </SwiperSlide>
         ))}

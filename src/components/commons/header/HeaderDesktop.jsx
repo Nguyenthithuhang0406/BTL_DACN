@@ -16,6 +16,7 @@ import "./HeaderDesktop.scss";
 import { toast } from "react-toastify";
 import { getProductsInCart } from "@/api/cartAPI/cart";
 import { setQuantityOfCart } from "@/store/orderSlice";
+import { searchProducts } from "@/api/productAPI/product";
 
 const HeaderDesktop = () => {
   const [inputText, setInputText] = useState("");
@@ -195,10 +196,15 @@ const HeaderDesktop = () => {
     },
   ];
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = async (e) => {
     if (e.key === "Enter") {
       dispatch(setInputValue(inputText));
-      dispatch(setResult(resultFake));
+      try {
+        const response = await searchProducts(inputText);
+        dispatch(setResult(response.data));
+      } catch (error) {
+        console.log(error);
+      }
       dispatch(setInputImage(""));
       navigate("/search");
       dispatch(setInputValue(""));
@@ -276,7 +282,7 @@ const HeaderDesktop = () => {
         <div className="header-desktop__group-icon">
           <div
             className="header-desktop__group-icon-item"
-            onClick={() => navigate(`/followingProducts/1`)}
+            onClick={() => navigate(`/followingProducts`)}
           >
             <AiOutlineHeart className="header-desktop_group-i" />
             <p className="header-desktop_group-p">Yêu thích</p>
