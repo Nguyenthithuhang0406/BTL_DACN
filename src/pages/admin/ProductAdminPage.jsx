@@ -34,10 +34,13 @@ const ProductAdminPage = () => {
 		direction: null,
 	});
 	const [statusFilter, setStatusFilter] = useState(true);
+	// const [token, setToken] = useState(
+	// 	localStorage.getItem("accessToken")
+	// 		? JSON.parse(localStorage.getItem("accessToken"))
+	// 		: null
+	// )
 	const [token, setToken] = useState(
-		localStorage.getItem("accessToken")
-			? JSON.parse(localStorage.getItem("accessToken"))
-			: null
+		"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJnaEZQT3RhMXhva0NVX3ZjU25Zc19TTEZMOXdrVl9aUnNVWU5nXzAtQzV3In0.eyJleHAiOjE3NDk5Mzk5MjEsImlhdCI6MTc0OTkzODEyMSwianRpIjoiOThiNjAyMDItN2VhMS00MDRkLWFiNzItMjJiZTQ5MDdmYTY5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9lY29tbWVyY2UiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNDIxNzU5NDUtODgxOS00MTU0LThlZTMtNWE1MDA1YTgzY2FiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWljcm8tc2VydmljZS1hcGkiLCJzZXNzaW9uX3N0YXRlIjoiNjg5M2EyZjMtN2JlNi00OGZjLWFjZmQtOTBkOTJlZWVkM2EwIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1lY29tbWVyY2UiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiQURNSU4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiI2ODkzYTJmMy03YmU2LTQ4ZmMtYWNmZC05MGQ5MmVlZWQzYTAiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJhZG1pbiBhZG1pbjEyMyIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6ImFkbWluIiwiZmFtaWx5X25hbWUiOiJhZG1pbjEyMyIsImVtYWlsIjoidnRobjMwM0BnbWFpbC5jb20ifQ.adN6CNecBru4WAAnejcGzh9o6MyWupc37-PZPNg61SO6Mzb6XvteYzxVQ4DacyiKDAbg_6v8d9gRAnVEbdGLFcruIoHuxnIwBPFcSGE3gnAFaLgIVC5cpQRRKyt2-yMpHoHVweBcQv2mZbGqHB9TJ7dkL_ydV-aaJRRMIMQY3vsiVHcD1YK8rICepFX5YZZOnRpQS8Jr3uHzMn8EsrI6TAL5Ds13d-YBBNsw6dBkfdCAQljmJBzE8mPBY5aZkwtLfTLaHrtaZlh1RwDHeVuiu1VBu4LFqJpjFhq8KpsLyjHbrlIagmOCO6gKYlJBUtAFl4Z5FvuITPJB20YesZsYuQ"
 	)
 
 	const filteredProducts = products.filter(
@@ -162,29 +165,6 @@ const ProductAdminPage = () => {
 		exportProductsToExcel(filteredProducts);
 	};
 
-
-	// const uploadProductImages = async (productId, imageFiles) => {
-	// 	const formData = new FormData();
-	// 	imageFiles.forEach((file) => {
-	// 		formData.append("images", file);
-	// 	});
-	// 	try {
-	// 		const res = await axios.put(
-	// 			`${import.meta.env.VITE_API_URL}/products/${productId}/upload`,
-	// 			formData,
-	// 			{
-	// 				headers: {
-	// 					"Content-Type": "multipart/form-data",
-	// 					Authorization: `Bearer ${token}`,
-	// 				},
-	// 			}
-	// 		);
-	// 		return res.data;
-	// 	} catch (error) {
-	// 		toast.error(`Lỗi: ${error.message} - Nguyên nhân: ${error.response.statusText} `);
-	// 	}
-	// };
-
 	const handleToggleActive = async (product) => {
 		try {
 			const res = await axios.put(
@@ -208,18 +188,23 @@ const handleFormSubmit = async (formData, imageFiles) => {
   formdata.append('name', formData.name);
   formdata.append('description', formData.description);
   formdata.append('price', formData.price);
-  formdata.append('stock', formData.stock);
   formdata.append('categoryId', formData.categoryId);
-	console.log('imageFile: ', imageFiles);
-// async function urlToFile(url, filename, mimeType){
-//   const res = await fetch(url);
-//   const blob = await res.blob();
-//   return new File([blob], filename, {type: mimeType});
-// }
-// const file = await urlToFile(imageFiles, 'old-image.jpg', 'image/jpeg');
-formdata.append('images', imageFiles);
 
-	console.log('formdata: ',formdata);
+  if (showModal === "edit" && formData.images && formData.images.length > 0) {
+    formData.images.forEach(url => {
+      formdata.append('existingImageUrls', url);
+    });
+  }
+
+  if (imageFiles && imageFiles.length > 0) {
+    imageFiles.forEach(file => {
+      formdata.append('images', file);
+    });
+  }
+
+  for(let pair of formdata.entries()) {
+    console.log(pair[0]+ ': ' + pair[1]);
+  }
 
   try {
     if (showModal === "add") {
@@ -227,8 +212,8 @@ formdata.append('images', imageFiles);
         `${import.meta.env.VITE_API_URL}/products`,
         formdata,
         {
-			headers: {
-			  'Content-type': 'multipart/form-data',
+          headers: {
+            'Content-type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
         }
@@ -239,8 +224,8 @@ formdata.append('images', imageFiles);
         `${import.meta.env.VITE_API_URL}/products/${formData.id}`,
         formdata,
         {
-			headers: {
-			'Content-type': 'multipart/form-data',
+          headers: {
+            'Content-type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
         }
@@ -254,6 +239,8 @@ formdata.append('images', imageFiles);
     console.log(err);
   }
 };
+
+
 	return (
 		<LayoutAdmin>
 			<div className="flex-1 overflow-auto relative z-10">
@@ -296,6 +283,7 @@ formdata.append('images', imageFiles);
 								product={selectedProduct}
 								onClose={() => setShowModal(null)}
 								onEdit={handleEditProduct}
+								token={token}
 							/>
 						)}
 

@@ -21,7 +21,7 @@ const VariantEditModal = ({
     variant, 
     productId,
     token,
-    onSuccess
+    reloadProduct
 }) => {
     console.log('Variant: ',variant);
 
@@ -157,7 +157,9 @@ const VariantEditModal = ({
               }
           )
             toast.success("Lưu thông tin thành công")
-            if (onSuccess) onSuccess()
+          if (res.data.status === "SUCCESS") {
+              reloadProduct();
+            }
             onClose()
         } catch (err) {
             toast.error(`Lỗi: ${err.message} - Nguyên nhân: ${err.response.statusText} `)

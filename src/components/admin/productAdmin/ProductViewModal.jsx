@@ -5,18 +5,14 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import VariantEditModal from "./variantAdmin/VariantEditModal";
 import DeleteVariantModal from "./variantAdmin/DeleteVariantModal";
-const ProductViewModal = ({ product, onClose, onEdit }) => {
+import VariantAddModal from "./variantAdmin/VariantAddModal";
+const ProductViewModal = ({ product, onClose, onEdit, token }) => {
 	if (!product) return null;
 	const [productView, setProductView] = useState([]);
 	const productId = product.id;
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedVariant, setSelectedVariant] = useState(null);
 	const [variantModalType, setVariantModalType] = useState(null);
-	const [token, setToken] = useState(
-			localStorage.getItem("accessToken")
-				? JSON.parse(localStorage.getItem("accessToken"))
-				: null
-		)
 	const getProductById = async () => {
 		try {
 			const res = await axios.get(
@@ -24,10 +20,14 @@ const ProductViewModal = ({ product, onClose, onEdit }) => {
 			);
 			console.log("res product view ", res.data.data);
 			setProductView(res.data.data);
-		} catch (err) {}
+		} catch (err) {
+			toast.error(
+				`Lỗi: ${err.message} \n Nguyên nhân: ${
+					err.response?.statusText || ""
+				}`
+			);
+		}
 	};
-
-	
 
 	useEffect(() => {
 		getProductById();
@@ -38,10 +38,10 @@ const ProductViewModal = ({ product, onClose, onEdit }) => {
 		setVariantModalType(null);
 		setSelectedVariant(null);
 	};
-
 	const handleAddVariant = () => {
-		
-	}
+		setSelectedVariant(null);
+		setVariantModalType("add");
+	};
 
 	const handleEditVariant = (variant) => {
 		setSelectedVariant(variant);
@@ -93,7 +93,7 @@ const ProductViewModal = ({ product, onClose, onEdit }) => {
 		const vnTime = new Date(utc + 7 * 60 * 60 * 1000);
 
 		const day = String(vnTime.getDate()).padStart(2, "0");
-		const month = String(vnTime.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+		const month = String(vnTime.getMonth() + 1).padStart(2, "0");
 		const year = vnTime.getFullYear();
 		const hours = String(vnTime.getHours()).padStart(2, "0");
 
@@ -105,8 +105,14 @@ const ProductViewModal = ({ product, onClose, onEdit }) => {
 	if (!productView) return null;
 
 	return (
-		<div className="fixed inset-0 bg-[#0000009e] bg-opacity-50 flex items-center justify-center p-4 overflow-auto z-10" onClick={onClose}>
-			<div className="bg-white rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+		<div
+			className="fixed inset-0 bg-[#0000009e] bg-opacity-50 flex items-center justify-center p-4 overflow-auto z-10"
+			onClick={onClose}
+		>
+			<div
+				className="bg-white rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+				onClick={(e) => e.stopPropagation()}
+			>
 				<div className="p-6">
 					<div className="flex justify-between items-center mb-6">
 						<h3 className="text-lg text-gray font-semibold">
@@ -249,10 +255,10 @@ const ProductViewModal = ({ product, onClose, onEdit }) => {
 							<div className="flex flex-wrap gap-2">
 								{productView.variants &&
 									productView.variants.length > 0 && (
-									<div className="mb-6">
-										<div className="flex items-center m-3 bg-green-500 w-fit rounded-full p-1 border border-green-500 hover:bg-white duration-200">
-											<Plus className=" text-white hover:text-orange-500 cursor-pointer duration-200 "  /> 
-										</div>
+										<div className="mb-6">
+											<div className="flex items-center m-3 bg-green-500 w-fit rounded-full p-1 border border-green-500 hover:bg-white duration-200" onClick={handleAddVariant}>
+												<Plus className=" text-white hover:text-orange-500 cursor-pointer duration-200 " />
+											</div>
 											<div className="overflow-x-auto">
 												<table className="min-w-full border text-sm">
 													<thead>
@@ -387,6 +393,15 @@ const ProductViewModal = ({ product, onClose, onEdit }) => {
 					</div>
 				</div>
 			</div>
+			{variantModalType === "add" && (
+				<VariantAddModal
+					isOpen={true}
+					onClose={handleCloseVariantModel}
+					productId={productView.id}
+					token={token}
+					reloadProduct={reloadProduct}
+				/>
+			)}
 			{variantModalType === "edit" && selectedVariant && (
 				<VariantEditModal
 					isOpen={true}
