@@ -5,19 +5,25 @@ import OrderStatusBadge from "./OrderStatusBadge";
 const OrderListItem = ({ order, onView }) => {
 	const itemsCount = order.items.length;
 
-	const formattedDate = new Date(order.orderDate).toLocaleDateString(
-		"en-US",
-		{
-			year: "numeric",
-			month: "short",
-			day: "numeric",
-		}
-	);
+	const formatDateTime = (dateTime) => {
+		const date = new Date(dateTime + "Z");
+		const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+		const vnTime = new Date(utc + 7 * 60 * 60 * 1000);
+
+		const day = String(vnTime.getDate()).padStart(2, "0");
+		const month = String(vnTime.getMonth() + 1).padStart(2, "0"); 
+		const year = vnTime.getFullYear();
+		const hours = String(vnTime.getHours()).padStart(2, "0");
+
+		const minutes = String(vnTime.getMinutes()).padStart(2, "0");
+		const seconds = String(vnTime.getSeconds()).padStart(2, "0");
+		return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+	};
 
 	return (
 		<tr className="hover:bg-gray-50">
 			<td className="px-4 py-4 whitespace-nowrap">
-				<div className="font-medium text-gray-900">{order.id}</div>
+				<div className="font-medium text-gray-900">{order.reference}</div>
 			</td>
 			<td className="px-4 py-4">
 				<div className="text-sm text-gray-900">
@@ -32,13 +38,10 @@ const OrderListItem = ({ order, onView }) => {
 				</div>
 			</td>
 			<td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-				{formattedDate}
+				{formatDateTime(order.createdDate)}
 			</td>
 			<td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
 				{order.totalAmount}
-			</td>
-			<td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-				{order.shippingFee ? order.shippingFee : "Free"}
 			</td>
 			<td className="px-4 py-4 whitespace-nowrap">
 				<OrderStatusBadge status={order.status} />
