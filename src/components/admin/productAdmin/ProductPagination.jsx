@@ -3,6 +3,7 @@ import React from "react";
 
 const ProductPagination = ({
 	contentProduct,
+	contentOrder,
 	currentPage,
 	totalPages,
 	itemsPerPage,
@@ -11,6 +12,7 @@ const ProductPagination = ({
 	onItemsPerPageChange,
 	indexOfFirstItem,
 	indexOfFirstItemProduct,
+	indexOfFirstItemOrder,
 	indexOfLastItem,
 	hasPrevious,
 	hasNext,
@@ -18,9 +20,10 @@ const ProductPagination = ({
 	itemName = "items",
 }) => {
 	console.log('totalPage: ', totalPages);
-	console.log('indexOfFirstItem: ', indexOfFirstItemProduct);
+	console.log('indexOfFirstItemProduct: ', indexOfFirstItemProduct);
 	console.log('indexOfLastItem: ', indexOfLastItem);
 	console.log('contentProduct:', contentProduct);
+	console.log('indexOfFirstItemOrder: ', indexOfFirstItemOrder);
 	const getPaginationItems = () => {
 		const maxPagesToShow = 6;
 		const pages = [];
@@ -60,9 +63,9 @@ const ProductPagination = ({
 		<div className="px-4 py-3 bg-gray-50 border-t border-gray-200 sm:px-6 flex items-center justify-between flex-wrap gap-3">
 			<div className="text-sm text-gray-700">
 				Hiển thị từ{" "}
-				<span className="font-medium">{indexOfFirstItem >= 0 || (indexOfFirstItemProduct >= 0 && contentProduct.length > 0)  ? (indexOfFirstItem + 1 || indexOfFirstItemProduct + 1) : " - "}</span> tới{" "}
+				<span className="font-medium">{indexOfFirstItem >= 0 || (indexOfFirstItemProduct >= 0 && contentProduct.length > 0) || (indexOfFirstItemOrder >= 0 && contentOrder.length > 0)  ? (indexOfFirstItem + 1 || indexOfFirstItemProduct + 1 || indexOfFirstItemOrder + 1	) : " - "}</span> tới{" "}
 				<span className="font-medium">
-					{indexOfFirstItem >= 0 || (indexOfFirstItemProduct >= 0 && contentProduct.length > 0) ? Math.min(indexOfLastItem, totalItems) : " - "}	
+					{indexOfFirstItem >= 0 || (indexOfFirstItemProduct >= 0 && contentProduct.length > 0) || (indexOfFirstItemOrder >= 0 && contentOrder.length > 0) ? Math.min(indexOfLastItem, totalItems) : " - "}	
 				</span>{" "}
 				trong tổng <span className="font-medium">{totalItems}</span> {itemName}
 			</div>

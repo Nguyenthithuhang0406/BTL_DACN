@@ -35,8 +35,8 @@ const ProductAdminPage = () => {
 	});
 	const [statusFilter, setStatusFilter] = useState(true);
 	const [token, setToken] = useState(
-		localStorage.getItem("token")
-			? JSON.parse(localStorage.getItem("token"))
+		localStorage.getItem("accessToken")
+			? JSON.parse(localStorage.getItem("accessToken"))
 			: null
 	)
 
@@ -108,7 +108,6 @@ const ProductAdminPage = () => {
 	}
 	const handlePageChange = (page) => {
 		setApiPage(page-1)
-		
 		setCurrentPage(page);
 		getAllProducts(page - 1, itemsPerPage, searchQuery);
 	};
