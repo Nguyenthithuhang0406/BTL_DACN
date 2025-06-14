@@ -6,14 +6,14 @@ import OrderStatusBadge from "./OrderStatusBadge";
 import OrderItemsGallery from "./OrderItemsGallery";
 
 const OrderViewModal = ({ order, onClose, token }) => {
-	const [activeTab, setActiveTab] = useState("details"); 
+	const [activeTab, setActiveTab] = useState("details");
 	const formatDateTime = (dateTime) => {
 		const date = new Date(dateTime + "Z");
 		const utc = date.getTime() + date.getTimezoneOffset() * 60000;
 		const vnTime = new Date(utc + 7 * 60 * 60 * 1000);
 
 		const day = String(vnTime.getDate()).padStart(2, "0");
-		const month = String(vnTime.getMonth() + 1).padStart(2, "0"); 
+		const month = String(vnTime.getMonth() + 1).padStart(2, "0");
 		const year = vnTime.getFullYear();
 		const hours = String(vnTime.getHours()).padStart(2, "0");
 
@@ -83,7 +83,9 @@ const OrderViewModal = ({ order, onClose, token }) => {
 														<div className="text-gray-500">
 															Mã đơn hàng:
 														</div>
-														<div>{order.reference}</div>
+														<div>
+															{order.reference}
+														</div>
 													</div>
 													<div className="grid grid-cols-2 gap-2">
 														<div className="text-gray-500">
@@ -127,7 +129,9 @@ const OrderViewModal = ({ order, onClose, token }) => {
 															Tên người bán :{" "}
 														</div>
 														<div>
-															{order.sellerName ? order.sellerName : "N/A"}
+															{order.sellerName
+																? order.sellerName
+																: "N/A"}
 														</div>
 													</div>
 													<div className="grid grid-cols-2 gap-2">
@@ -269,7 +273,6 @@ const OrderViewModal = ({ order, onClose, token }) => {
 												Tổng tiền:
 											</span>
 											<span>
-												
 												{order.totalAmount ||
 													order.items
 														.reduce(
@@ -284,7 +287,8 @@ const OrderViewModal = ({ order, onClose, token }) => {
 																	item.quantity,
 															0
 														)
-														.toFixed(2)} VND
+														.toFixed(2)}{" "}
+												VND
 											</span>
 										</div>
 										<div className="flex justify-between">
@@ -292,7 +296,8 @@ const OrderViewModal = ({ order, onClose, token }) => {
 												Phí vận chuyển:
 											</span>
 											<span>
-												{order.shippingFee || "Miễn phí"}
+												{order.shippingFee ||
+													"Miễn phí"}
 											</span>
 										</div>
 										<div className="border-t pt-2 mt-2 flex justify-between font-semibold">
@@ -306,8 +311,8 @@ const OrderViewModal = ({ order, onClose, token }) => {
 					) : (
 						<OrderItemsGallery
 							items={order.items}
-								onClose={() => setActiveTab("details")}
-								token={token}
+							onClose={() => setActiveTab("details")}
+							token={token}
 						/>
 					)}
 				</div>

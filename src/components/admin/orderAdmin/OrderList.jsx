@@ -12,8 +12,6 @@ const OrderList = ({
 	onViewOrder,
 	hasNext,
 	hasPrevious,
-	// onSort,
-	// sortConfig,
 }) => {
 	const indexOfLastItem = currentPage * ordersPerPage;
 	const indexOfFirstItemOrder = indexOfLastItem - ordersPerPage;

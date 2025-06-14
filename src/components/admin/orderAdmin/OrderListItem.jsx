@@ -11,7 +11,7 @@ const OrderListItem = ({ order, onView }) => {
 		const vnTime = new Date(utc + 7 * 60 * 60 * 1000);
 
 		const day = String(vnTime.getDate()).padStart(2, "0");
-		const month = String(vnTime.getMonth() + 1).padStart(2, "0"); 
+		const month = String(vnTime.getMonth() + 1).padStart(2, "0");
 		const year = vnTime.getFullYear();
 		const hours = String(vnTime.getHours()).padStart(2, "0");
 
@@ -23,7 +23,9 @@ const OrderListItem = ({ order, onView }) => {
 	return (
 		<tr className="hover:bg-gray-50">
 			<td className="px-4 py-4 whitespace-nowrap">
-				<div className="font-medium text-gray-900">{order.reference}</div>
+				<div className="font-medium text-gray-900">
+					{order.reference}
+				</div>
 			</td>
 			<td className="px-4 py-4">
 				<div className="text-sm text-gray-900">

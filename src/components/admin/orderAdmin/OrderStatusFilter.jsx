@@ -1,11 +1,6 @@
 import React from "react";
 
-const OrderStatusFilter = ({
-	statusFilter,
-	onFilterChange,
-	statusCounts,
-	totalCount,
-}) => {
+const OrderStatusFilter = ({ statusFilter, onFilterChange }) => {
 	return (
 		<div className="w-full sm:w-auto flex flex-wrap gap-2">
 			<span className="text-sm font-medium text-gray-700 self-center mr-2">
@@ -19,7 +14,7 @@ const OrderStatusFilter = ({
 						: "bg-gray-100 text-gray-700 hover:bg-gray-200"
 				}`}
 			>
-				ALL 
+				ALL
 			</button>
 			<button
 				onClick={() => onFilterChange("SHIPPED")}
@@ -29,7 +24,7 @@ const OrderStatusFilter = ({
 						: "bg-green-100 text-green-800 hover:bg-green-200"
 				}`}
 			>
-				SHIPPED 
+				SHIPPED
 			</button>
 			<button
 				onClick={() => onFilterChange("PAID")}
@@ -39,7 +34,7 @@ const OrderStatusFilter = ({
 						: "bg-blue-100 text-blue-800 hover:bg-blue-200"
 				}`}
 			>
-				PAID 
+				PAID
 			</button>
 			<button
 				onClick={() => onFilterChange("PENDING")}
@@ -49,7 +44,7 @@ const OrderStatusFilter = ({
 						: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
 				}`}
 			>
-				PENDING 
+				PENDING
 			</button>
 			<button
 				onClick={() => onFilterChange("CANCELED")}
@@ -59,7 +54,7 @@ const OrderStatusFilter = ({
 						: "bg-red-100 text-red-800 hover:bg-red-200"
 				}`}
 			>
-				CANCELLED 
+				CANCELLED
 			</button>
 		</div>
 	);

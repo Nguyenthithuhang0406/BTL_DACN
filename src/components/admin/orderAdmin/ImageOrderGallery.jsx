@@ -101,7 +101,6 @@ const ImageOrderGallery = ({ items, token }) => {
 										</span>
 										<div>{selectedItem.quantity}</div>
 									</div>
-									{/* Hiển thị attributes */}
 									{selectedItem.attributes &&
 										selectedItem.attributes.length > 0 && (
 											<div>
