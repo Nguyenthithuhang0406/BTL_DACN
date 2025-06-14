@@ -1,9 +1,12 @@
 import { Eye } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import OrderStatusBadge from "./OrderStatusBadge";
-
-const OrderListItem = ({ order, onView }) => {
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { motion } from "framer-motion";
+const OrderListItem = ({ order, onView, token, onStatusChange }) => {
 	const itemsCount = order.items.length;
+	const [status, setStatus] = useState(order.status);
 
 	const formatDateTime = (dateTime) => {
 		const date = new Date(dateTime + "Z");
@@ -20,8 +23,31 @@ const OrderListItem = ({ order, onView }) => {
 		return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 	};
 
+	const handleStatusChange = async (e) => {
+		const newStatus = e.target.value;
+		try {
+			await axios.put(
+				`${import.meta.env.VITE_API_URL}/orders/${
+					order.id
+				}?status=${newStatus}`,
+				{},
+				{ headers: { Authorization: `Bearer ${token}` } }
+			);
+			setStatus(newStatus);
+			toast.success("Cập nhật trạng thái thành công");
+			onStatusChange()
+		} catch (err) {
+			toast.error("Cập nhật trạng thái thất bại");
+		}
+	};
+
 	return (
-		<tr className="hover:bg-gray-50">
+		<motion.tr
+			initial={{ opacity: 0, y: -10 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.3 }}
+			// whileHover={{ scale: 1.02 }}
+			className="hover:bg-gray-50">
 			<td className="px-4 py-4 whitespace-nowrap">
 				<div className="font-medium text-gray-900">
 					{order.reference}
@@ -46,7 +72,8 @@ const OrderListItem = ({ order, onView }) => {
 				{order.totalAmount}
 			</td>
 			<td className="px-4 py-4 whitespace-nowrap">
-				<OrderStatusBadge status={order.status} />
+				<OrderStatusBadge  value={status}
+          onChange={handleStatusChange} />
 			</td>
 			<td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
 				<button
@@ -57,7 +84,7 @@ const OrderListItem = ({ order, onView }) => {
 					<Eye className="h-4 w-4" />
 				</button>
 			</td>
-		</tr>
+		</motion.tr>
 	);
 };
 

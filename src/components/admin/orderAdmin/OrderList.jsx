@@ -12,6 +12,8 @@ const OrderList = ({
 	onViewOrder,
 	hasNext,
 	hasPrevious,
+	token,
+	onStatusChange
 }) => {
 	const indexOfLastItem = currentPage * ordersPerPage;
 	const indexOfFirstItemOrder = indexOfLastItem - ordersPerPage;
@@ -62,6 +64,8 @@ const OrderList = ({
 								key={order.id}
 								order={order}
 								onView={onViewOrder}
+								token={token}
+								onStatusChange={onStatusChange}
 							/>
 						))}
 					</tbody>

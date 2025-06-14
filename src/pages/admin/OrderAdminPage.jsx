@@ -27,10 +27,13 @@ const OrderAdminPage = () => {
 
 	const statusCounts = getOrderStatusCounts(orders);
 
+	// const [token, setToken] = useState(
+	// 	localStorage.getItem("accessToken")
+	// 		? JSON.parse(localStorage.getItem("accessToken"))
+	// 		: null
+	// );
 	const [token, setToken] = useState(
-		localStorage.getItem("accessToken")
-			? JSON.parse(localStorage.getItem("accessToken"))
-			: null
+		"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJnaEZQT3RhMXhva0NVX3ZjU25Zc19TTEZMOXdrVl9aUnNVWU5nXzAtQzV3In0.eyJleHAiOjE3NDk5NDQ2MDksImlhdCI6MTc0OTk0MjgwOSwianRpIjoiZDVkZjI0ZTItYjRhZi00ZDU0LWFjMTItZmQ1MzEzMDZiMjI2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9lY29tbWVyY2UiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNDIxNzU5NDUtODgxOS00MTU0LThlZTMtNWE1MDA1YTgzY2FiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWljcm8tc2VydmljZS1hcGkiLCJzZXNzaW9uX3N0YXRlIjoiMzc4NTU5MjUtYTdmOC00ODJjLThhMGEtMzA5ODM2YjNjZDVjIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1lY29tbWVyY2UiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiQURNSU4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiIzNzg1NTkyNS1hN2Y4LTQ4MmMtOGEwYS0zMDk4MzZiM2NkNWMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJhZG1pbiBhZG1pbjEyMyIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6ImFkbWluIiwiZmFtaWx5X25hbWUiOiJhZG1pbjEyMyIsImVtYWlsIjoidnRobjMwM0BnbWFpbC5jb20ifQ.jHFtNBDdyLgjL9vVyYNURc-HMEbAQBPIyxpBxkzpjs6xMy6FPCvHYsf30NJ4FqT7hKYAwJVhIW9GU5OADCIbTibM9sRm-8sFAl6hKG4TIKxxVpoVezxB9ZGFHPHI6EgrL5w_6FT64CBUjwsmX4QGzewUZsUO9vx20tNNq3jBq5et3vSqL7EYO7Sr66rJcLGlMf0eSfxYkLExyBffWHt_VLSovmbNnpTuYzkj_i6wKWHg3a0YDMFM_VqeRWRjVRL8pGvSLktLFyaXkeHAoc7vpvZ6LE_jkIZAnesjoNBXpxxDgYoIA9s9BLhW4-YAwGkHZ4OQBf-h1nMIh-2REuy5cQ"
 	);
 
 	const getAllOrders = async (page = 0, size = itemsPerPage) => {
@@ -120,6 +123,8 @@ const OrderAdminPage = () => {
 							hasNext={hasNext}
 							hasPrevious={hasPrevious}
 							onViewOrder={handleViewOrder}
+							token={token}
+							onStatusChange={getAllOrders}
 						/>
 						{showModal && selectedOrder && (
 							<OrderViewModal

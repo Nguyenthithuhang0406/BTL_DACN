@@ -14,7 +14,7 @@ const OrderStatusFilter = ({ statusFilter, onFilterChange }) => {
 						: "bg-gray-100 text-gray-700 hover:bg-gray-200"
 				}`}
 			>
-				ALL
+				Tất cả
 			</button>
 			<button
 				onClick={() => onFilterChange("SHIPPED")}
@@ -24,7 +24,7 @@ const OrderStatusFilter = ({ statusFilter, onFilterChange }) => {
 						: "bg-green-100 text-green-800 hover:bg-green-200"
 				}`}
 			>
-				SHIPPED
+				Hoàn thành
 			</button>
 			<button
 				onClick={() => onFilterChange("PAID")}
@@ -34,7 +34,7 @@ const OrderStatusFilter = ({ statusFilter, onFilterChange }) => {
 						: "bg-blue-100 text-blue-800 hover:bg-blue-200"
 				}`}
 			>
-				PAID
+				Hoàn đơn
 			</button>
 			<button
 				onClick={() => onFilterChange("PENDING")}
@@ -44,7 +44,7 @@ const OrderStatusFilter = ({ statusFilter, onFilterChange }) => {
 						: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
 				}`}
 			>
-				PENDING
+				Đang giao
 			</button>
 			<button
 				onClick={() => onFilterChange("CANCELED")}
@@ -54,7 +54,7 @@ const OrderStatusFilter = ({ statusFilter, onFilterChange }) => {
 						: "bg-red-100 text-red-800 hover:bg-red-200"
 				}`}
 			>
-				CANCELLED
+				Hủy đơn
 			</button>
 		</div>
 	);
