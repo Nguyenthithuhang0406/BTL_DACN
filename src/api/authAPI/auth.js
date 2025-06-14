@@ -36,9 +36,10 @@ export const login = async (data) => {
         password,
       },
     });
-    const { accessToken, refreshToken } = response.data.data;
+    const { accessToken, refreshToken, role } = response.data.data;
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("role", role);
     return response.data;
   } catch (error) {
     console.log(error);
