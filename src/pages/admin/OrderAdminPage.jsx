@@ -23,16 +23,12 @@ const OrderAdminPage = () => {
 	const [hasNext, setHasNext] = useState(true);
 	const [hasPrevious, setHasPrevious] = useState(true);
 	const [searchQuery, setSearchQuery] = useState("");
-	const [sortConfig, setSortConfig] = useState({
-		key: "orderDate",
-		direction: "desc",
-	});
 	const [statusFilter, setStatusFilter] = useState("All");
 
 	const statusCounts = getOrderStatusCounts(orders);
 
 	const [token, setToken] = useState(
-		localStorage.getItem("accesToken")
+		localStorage.getItem("accessToken")
 			? JSON.parse(localStorage.getItem("accessToken"))
 			: null
 	);
@@ -41,11 +37,11 @@ const OrderAdminPage = () => {
 		try {
 			let url = `${
 				import.meta.env.VITE_API_URL
-				}/orders/all?page=${page}&size=${size}`;
+			}/orders/all?page=${page}&size=${size}`;
 			if (statusFilter === "All") {
-				url = url
+				url = url;
 			} else {
-				url += `&status=${statusFilter}`
+				url += `&status=${statusFilter}`;
 			}
 
 			const res = await axios.get(url, {
@@ -54,7 +50,6 @@ const OrderAdminPage = () => {
 				},
 			});
 			console.log("res order: ", res.data.data.content);
-
 			setOrders(res.data.data.content);
 			setTotalItems(res.data.data.totalElements);
 			setTotalPage(res.data.data.totalPages);
@@ -64,32 +59,26 @@ const OrderAdminPage = () => {
 			setCurrentPage(apiPage + 1);
 			setItemsPerPage(res.data.data.size);
 		} catch (err) {
-			toast.error(`Lỗi: ${err.message} \n Nguyên nhân: ${err} `);
+			toast.error(
+				`Lỗi: ${err.message} \n Nguyên nhân: ${err.response?.statusText} `
+			);
 		}
 	};
 
 	useEffect(() => {
 		getAllOrders(apiPage, itemsPerPage);
 	}, [apiPage, itemsPerPage, searchQuery, statusFilter]);
-
-	// const handleSort = (key) => {
-	// 	let direction = "asc";
-	// 	if (sortConfig.key === key && sortConfig.direction === "asc") {
-	// 		direction = "desc";
-	// 	}
-	// 	setSortConfig({ key, direction });
-	// };
 	const handlePageChange = (page) => {
-		setApiPage(page-1)
+		setApiPage(page - 1);
 		setCurrentPage(page);
 		getAllOrders(page - 1, itemsPerPage);
 	};
-	const handleItemsPerPageChange = (size) => { 
+	const handleItemsPerPageChange = (size) => {
 		setItemsPerPage(size);
 		setApiPage(0);
 		setCurrentPage(1);
 		getAllOrders(0, size, searchQuery);
-	}
+	};
 
 	const handleViewOrder = (order) => {
 		setSelectedOrder(order);
@@ -131,8 +120,6 @@ const OrderAdminPage = () => {
 							hasNext={hasNext}
 							hasPrevious={hasPrevious}
 							onViewOrder={handleViewOrder}
-							//   onSort={handleSort}
-							//   sortConfig={sortConfig}
 						/>
 						{showModal && selectedOrder && (
 							<OrderViewModal
