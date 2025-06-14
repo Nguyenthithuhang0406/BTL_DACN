@@ -6,8 +6,6 @@ const CategoryFilters = ({
 	onExportExcel,
 	onAddCategory,
 }) => {
-	
-
 	return (
 		<div className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center">
 			<div className="w-full sm:w-auto flex gap-3">

@@ -26,12 +26,16 @@ const CategoryViewModal = ({ category, onClose, onEdit }) => {
 				<div className="p-6">
 					<div className="flex items-center mb-6">
 						<img
-						className="h-24 w-24 border border-none rounded-xl"
-							src={category.imageUrl ? category.imageUrl : "https://picsum.photos/200/300?grayscale"}
+							className="h-24 w-24 border border-none rounded-xl"
+							src={
+								category.imageUrl
+									? category.imageUrl
+									: "https://picsum.photos/200/300?grayscale"
+							}
 							alt={category.name}
 							onError={(e) => {
 								e.target.src =
-									"https://picsum.photos/200/300?grayscale"; 
+									"https://picsum.photos/200/300?grayscale";
 							}}
 						/>
 						<div className="ml-4">
