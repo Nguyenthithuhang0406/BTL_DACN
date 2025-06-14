@@ -32,8 +32,8 @@ const LoginForm = ({ setIsLogin }) => {
       const response = await login(data);
       const user = await getMe();
       localStorage.setItem("fullName", user.data.fullName);
-      if(localStorage.getItem("role").Contains("ADMIN")) {
-        navigate('/admin')
+      if(localStorage.getItem("roles").Contains("ADMIN")) {
+        navigate('/admin/*')
       }else {
         navigate("/");
 
