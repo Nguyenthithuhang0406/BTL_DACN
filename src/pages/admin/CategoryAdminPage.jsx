@@ -10,7 +10,6 @@ import DeleteConfirmModal from "@/components/admin/categoryAdmin/DeleteConfirmMo
 import CategoryList from "@/components/admin/categoryAdmin/CategoryList";
 import CategoryFilters from "@/components/admin/categoryAdmin/CategoryFilters";
 import {
-	sortCategories,
 	exportCategoriesToExcel,
 } from "@/components/admin/categoryAdmin/categoryExcel";
 const CategoryAdminPage = () => {
@@ -23,7 +22,7 @@ const CategoryAdminPage = () => {
 	const [modalType, setModalType] = useState("add");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
-	const [itemsPerPage, setItemsPerPage] = useState(5); 
+	const [itemsPerPage, setItemsPerPage] = useState(5);
 	const [totalItems, setTotalItems] = useState(0);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [hasNext, setHasNext] = useState(true);
@@ -36,10 +35,10 @@ const CategoryAdminPage = () => {
 	const [sortDirection, setSortDirection] = useState("asc");
 
 	const [token, setToken] = useState(
-			localStorage.getItem("accessToken")
-				? JSON.parse(localStorage.getItem("accessToken"))
-				: null
-		)
+		localStorage.getItem("accessToken")
+			? JSON.parse(localStorage.getItem("accessToken"))
+			: null
+	);
 	const getAllCategories = async (
 		page = 0,
 		size = itemsPerPage,
@@ -53,12 +52,10 @@ const CategoryAdminPage = () => {
 			if (search && search.length > 0) {
 				url += `&searchKeyword=${encodeURIComponent(search)}`;
 			}
-			// console.log("url allall", url);
-			// console.log("search", search);
 			const res = await axios.get(url, {
 				header: {
 					Authorization: `Bearer ${token}`,
-				}
+				},
 			});
 			const resAll = await axios.get(urlAll);
 			console.log("res", res.data.data.content);
@@ -90,16 +87,6 @@ const CategoryAdminPage = () => {
 		description: "",
 		imageUrl: "",
 	});
-	// const filteredCategories = categories.filter(
-	// 	(category) =>
-	// 		category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-	// 		category.description
-	// 			?.toLowerCase()
-	// 			.includes(searchQuery.toLowerCase())
-	// );
-
-	// const sortedCategories = sortCategories(filteredCategories, sortConfig);
-
 	useEffect(() => {
 		setCurrentPage(0);
 	}, [searchQuery]);
@@ -112,15 +99,9 @@ const CategoryAdminPage = () => {
 		setSortConfig({ key, direction });
 	};
 
-
-
 	const uploadImage = async (categoryId, file) => {
 		const formData = new FormData();
 		formData.append("image", file);
-
-		console.log("formData: ", formData);
-		console.log("categoryId: ", categoryId);
-
 		try {
 			const res = await axios.put(
 				`${
@@ -176,8 +157,7 @@ const CategoryAdminPage = () => {
 			data.append("description", formData.description || "");
 			if (imageFile) data.append("image", imageFile);
 			if (modalType === "add") {
-				const res = await
-					axios.post(
+				const res = await axios.post(
 					`${import.meta.env.VITE_API_URL}/categories`,
 					data,
 					{
@@ -186,21 +166,19 @@ const CategoryAdminPage = () => {
 							Authorization: `Bearer ${token}`,
 						},
 					}
-					)
-				
-
-				console.log("res post cate", res.data.data);
-
+				);
 				if (res.data.status === "SUCCESS") {
 					const cateId = res.data.data.id;
 					if (imageFile) {
 						try {
-							await toast.promise(uploadImage(cateId, imageFile),
+							await toast.promise(
+								uploadImage(cateId, imageFile),
 								{
 									loading: "Đang upload...",
 									success: "Upload hình ảnh thành công!",
 									error: "Lỗi khi upload hình ảnh!",
-							})
+								}
+							);
 						} catch (err) {
 							console.error("Upload error:", err);
 							toast.error("Lỗi khi upload hình ảnh!");
@@ -222,14 +200,13 @@ const CategoryAdminPage = () => {
 						},
 					}
 				);
-
-				console.log("res put cate: ", res);
-
 				if (res.data.status === "SUCCESS") {
 					if (imageFile) {
 						try {
-							const res = await uploadImage(formData.id, imageFile);
-							console.log('res upload ', res);
+							const res = await uploadImage(
+								formData.id,
+								imageFile
+							);
 							toast.success(
 								"Cập nhật danh mục và hình ảnh thành công!"
 							);
@@ -246,7 +223,6 @@ const CategoryAdminPage = () => {
 				}
 			}
 		} catch (err) {
-			console.error("Form submit error:", err);
 			toast.error(`LỖI: ${err.message}`);
 		}
 	};
@@ -258,7 +234,6 @@ const CategoryAdminPage = () => {
 				}`,
 				{
 					headers: {
-						// Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
 						Authorization: `Bearer ${token}`,
 					},
 				}
@@ -287,11 +262,6 @@ const CategoryAdminPage = () => {
 		setApiPage(0);
 		setCurrentPage(1);
 		getAllCategories(0, size, searchQuery);
-	};
-
-	const logout = () => {
-		localStorage.removeItem("accessToken");
-		window.location.reload();
 	};
 
 	return (
