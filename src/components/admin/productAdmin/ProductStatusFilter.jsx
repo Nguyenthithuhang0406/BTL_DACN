@@ -1,9 +1,6 @@
 import React from "react";
 
-const ProductStatusFilter = ({
-	statusFilter,
-	onFilterChange,
-}) => {
+const ProductStatusFilter = ({ statusFilter, onFilterChange }) => {
 	return (
 		<div className="w-full sm:w-auto flex flex-wrap gap-2">
 			<span className="text-sm font-medium text-gray-700 self-center mr-2">
@@ -27,9 +24,8 @@ const ProductStatusFilter = ({
 						: "bg-gray-100 text-gray-800 hover:bg-gray-200"
 				}`}
 			>
-				Sản phẩm không hiển thị 
+				Sản phẩm không hiển thị
 			</button>
-			
 		</div>
 	);
 };

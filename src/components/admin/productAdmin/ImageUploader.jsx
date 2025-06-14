@@ -5,23 +5,22 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 	const [draggedOver, setDraggedOver] = useState(false);
 
 	const handleImageUpload = (files) => {
-  const fileArray = Array.from(files);
-  const remainingSlots = maxImages - images.length;
-  const filesToProcess = fileArray.slice(0, remainingSlots);
+		const fileArray = Array.from(files);
+		const remainingSlots = maxImages - images.length;
+		const filesToProcess = fileArray.slice(0, remainingSlots);
 
-  const imagePromises = filesToProcess.map((file) => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target.result);
-      reader.readAsDataURL(file);
-    });
-  });
+		const imagePromises = filesToProcess.map((file) => {
+			return new Promise((resolve) => {
+				const reader = new FileReader();
+				reader.onload = (e) => resolve(e.target.result);
+				reader.readAsDataURL(file);
+			});
+		});
 
-  Promise.all(imagePromises).then((imageUrls) => {
-    onUpload(imageUrls, filesToProcess);
-  });
-};
-
+		Promise.all(imagePromises).then((imageUrls) => {
+			onUpload(imageUrls, filesToProcess);
+		});
+	};
 
 	const handleDrop = (e) => {
 		e.preventDefault();
@@ -101,7 +100,8 @@ const ImageUploader = ({ images, onUpload, onRemove, maxImages = 4 }) => {
 
 			{images.length === 0 && (
 				<div className="mt-2 text-center text-sm text-gray-500">
-					Không có hình ảnh nào được tải lên, hình ảnh minh họa mặc định sẽ được sử dụng.
+					Không có hình ảnh nào được tải lên, hình ảnh minh họa mặc
+					định sẽ được sử dụng.
 				</div>
 			)}
 		</div>

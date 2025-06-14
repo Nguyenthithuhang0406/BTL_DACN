@@ -10,10 +10,7 @@ import ProductFilters from "@/components/admin/productAdmin/ProductFilters";
 import ProductList from "@/components/admin/productAdmin/ProductList";
 import ProductViewModal from "@/components/admin/productAdmin/ProductViewModal";
 import ProductFormModal from "@/components/admin/productAdmin/ProductFormModal";
-import {
-	exportProductsToExcel,
-
-} from "@/components/admin/productAdmin/productExcel";
+import { exportProductsToExcel } from "@/components/admin/productAdmin/productExcel";
 import DeleteProductModal from "@/components/admin/productAdmin/DeleteProductModal";
 const ProductAdminPage = () => {
 	const [products, setProducts] = useState([]);
@@ -38,18 +35,20 @@ const ProductAdminPage = () => {
 		localStorage.getItem("accessToken")
 			? JSON.parse(localStorage.getItem("accessToken"))
 			: null
-	)
-
-
-	const filteredProducts = products.filter(
-		(product) =>
-			(product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				product.id.toLowerCase().includes(searchQuery.toLowerCase())) &&
-			(statusFilter === "All" || product.status === statusFilter)
 	);
 
+	// const filteredProducts = products.filter(
+	// 	(product) =>
+	// 		(product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+	// 			product.id.toLowerCase().includes(searchQuery.toLowerCase())) &&
+	// 		(statusFilter === "All" || product.status === statusFilter)
+	// );
 
-	const getAllProducts = async (page = 0, size = itemsPerPage, search = "") => {
+	const getAllProducts = async (
+		page = 0,
+		size = itemsPerPage,
+		search = ""
+	) => {
 		try {
 			let url = `${
 				import.meta.env.VITE_API_URL
@@ -60,35 +59,37 @@ const ProductAdminPage = () => {
 			}
 			if (statusFilter == true) {
 				url += `&status=true`;
-			}else{
+			} else {
 				url += `&status=false`;
 			}
 			console.log("url allall", url);
 			console.log("search", search);
 			const res = await axios.get(url);
-			console.log("res product",res.data.data);
+			console.log("res product", res.data.data);
 			setProducts(res.data.data.content);
-			setAllProducts(res.data.data.content)
-			setHasNext(res.data.data.hasNext)
+			setAllProducts(res.data.data.content);
+			setHasNext(res.data.data.hasNext);
 			setHasPrevious(res.data.data.hasPrevious);
 			setTotalItems(res.data.data.totalElements);
 			setTotalPages(res.data.data.totalPages);
 			setApiPage(res.data.data.page);
 			setCurrentPage(apiPage + 1);
 			setItemsPerPage(res.data.data.size);
-			setAllProducts(res.data.data.content)
-			setIsActive(res.data.data.isActive)
+			setAllProducts(res.data.data.content);
+			setIsActive(res.data.data.isActive);
 		} catch (err) {
-			toast.error(`Lỗi: ${err.message} - Nguyên nhân: ${err.response.statusText} `)
+			toast.error(
+				`Lỗi: ${err.message} - Nguyên nhân: ${err.response.statusText} `
+			);
 			console.log(err);
 		}
-	 }
+	};
 
 	useEffect(() => {
 		getAllProducts(apiPage, itemsPerPage, searchQuery);
 	}, [apiPage, itemsPerPage, searchQuery, statusFilter]);
 
-	console.log('ttPages', totalPages);
+	console.log("ttPages", totalPages);
 
 	const handleSort = (key) => {
 		let direction = "asc";
@@ -99,25 +100,25 @@ const ProductAdminPage = () => {
 	};
 	const handleSearchChange = (e) => {
 		setSearchQuery(e);
-	}
+	};
 
-	const handleItemsPerPageChange = (size) => { 
+	const handleItemsPerPageChange = (size) => {
 		setItemsPerPage(size);
 		setApiPage(0);
 		setCurrentPage(1);
 		getAllProducts(0, size, searchQuery);
-	}
+	};
 	const handlePageChange = (page) => {
-		setApiPage(page-1)
+		setApiPage(page - 1);
 		setCurrentPage(page);
 		getAllProducts(page - 1, itemsPerPage, searchQuery);
 	};
-	
+
 	const handleStatusFilterChange = (newStatus) => {
 		setStatusFilter(newStatus);
 		setApiPage(0);
 		setCurrentPage(1);
-	}
+	};
 
 	const handleViewProduct = (product) => {
 		setSelectedProduct(product);
@@ -130,7 +131,6 @@ const ProductAdminPage = () => {
 	};
 
 	const handleEditProduct = (product) => {
-		
 		setSelectedProduct(product);
 		setShowModal("edit");
 	};
@@ -140,7 +140,7 @@ const ProductAdminPage = () => {
 		setShowModal("delete");
 	};
 
-	const handleDeleteProduct = async(id) => {
+	const handleDeleteProduct = async (id) => {
 		try {
 			await axios.delete(
 				`${import.meta.env.VITE_API_URL}/products/${id}`,
@@ -149,12 +149,14 @@ const ProductAdminPage = () => {
 						Authorization: `Bearer ${token}`,
 					},
 				}
-			)
+			);
 			toast.success("Xóa sản phẩm thành công");
 			setShowModal(null);
 			getAllProducts(apiPage, itemsPerPage, searchQuery);
 		} catch (err) {
-			toast.error(`Lỗi: ${err.message} - Nguyên nhân: ${err.response.statusText} `)
+			toast.error(
+				`Lỗi: ${err.message} - Nguyên nhân: ${err.response.statusText} `
+			);
 			console.log(err);
 		}
 	};
@@ -167,7 +169,7 @@ const ProductAdminPage = () => {
 		try {
 			const res = await axios.put(
 				`${import.meta.env.VITE_API_URL}/products/${product.id}/status`,
-				{}, 
+				{},
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -176,68 +178,76 @@ const ProductAdminPage = () => {
 			);
 			toast.success("Thay đổi trạng thái thành công!");
 			getAllProducts(apiPage, itemsPerPage, searchQuery);
-			
 		} catch (err) {
-			toast.error(`Lỗi: ${err.message} \n Nguyên nhân: ${err.response.statusText} `)
+			toast.error(
+				`Lỗi: ${err.message} \n Nguyên nhân: ${err.response.statusText} `
+			);
 		}
-	}
-const handleFormSubmit = async (formData, imageFiles) => {
-  const formdata = new FormData();
-  formdata.append('name', formData.name);
-  formdata.append('description', formData.description);
-  formdata.append('price', formData.price);
-  formdata.append('categoryId', formData.categoryId);
+	};
+	const handleFormSubmit = async (formData, imageFiles) => {
+		const formdata = new FormData();
+		formdata.append("name", formData.name);
+		formdata.append("description", formData.description);
+		formdata.append("price", formData.price);
+		formdata.append("categoryId", formData.categoryId);
 
-  if (showModal === "edit" && formData.images && formData.images.length > 0) {
-    formData.images.forEach(url => {
-      formdata.append('existingImageUrls', url);
-    });
-  }
+		if (
+			showModal === "edit" &&
+			formData.images &&
+			formData.images.length > 0
+		) {
+			formData.images.forEach((url) => {
+				formdata.append("existingImageUrls", url);
+			});
+		}
 
-  if (imageFiles && imageFiles.length > 0) {
-    imageFiles.forEach(file => {
-      formdata.append('images', file);
-    });
-  }
+		if (imageFiles && imageFiles.length > 0) {
+			imageFiles.forEach((file) => {
+				formdata.append("images", file);
+			});
+		}
 
-  for(let pair of formdata.entries()) {
-    console.log(pair[0]+ ': ' + pair[1]);
-  }
+		for (let pair of formdata.entries()) {
+			console.log(pair[0] + ": " + pair[1]);
+		}
 
-  try {
-    if (showModal === "add") {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/products`,
-        formdata,
-        {
-          headers: {
-            'Content-type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      toast.success("Thêm sản phẩm thành công");
-    } else if (showModal === "edit") {
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/products/${formData.id}`,
-        formdata,
-        {
-          headers: {
-            'Content-type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      toast.success("Cập nhật sản phẩm thành công");
-    }
-    setShowModal(null);
-    getAllProducts(apiPage, itemsPerPage, searchQuery);
-  } catch (err) {
-    toast.error(`Lỗi: ${err.message} \n Nguyên nhân: ${err.response?.statusText || ""}`);
-    console.log(err);
-  }
-};
-
+		try {
+			if (showModal === "add") {
+				await axios.post(
+					`${import.meta.env.VITE_API_URL}/products`,
+					formdata,
+					{
+						headers: {
+							"Content-type": "multipart/form-data",
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+				toast.success("Thêm sản phẩm thành công");
+			} else if (showModal === "edit") {
+				await axios.put(
+					`${import.meta.env.VITE_API_URL}/products/${formData.id}`,
+					formdata,
+					{
+						headers: {
+							"Content-type": "multipart/form-data",
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+				toast.success("Cập nhật sản phẩm thành công");
+			}
+			setShowModal(null);
+			getAllProducts(apiPage, itemsPerPage, searchQuery);
+		} catch (err) {
+			toast.error(
+				`Lỗi: ${err.message} \n Nguyên nhân: ${
+					err.response?.statusText || ""
+				}`
+			);
+			console.log(err);
+		}
+	};
 
 	return (
 		<LayoutAdmin>

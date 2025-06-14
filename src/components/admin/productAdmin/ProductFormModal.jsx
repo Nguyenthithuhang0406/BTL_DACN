@@ -58,7 +58,7 @@ const ProductFormModal = ({
 						images: product.images
 							? product.images.map((img) => img.imageUrl)
 							: [],
-						imagesFiles: [], 
+						imagesFiles: [],
 					});
 				} catch (err) {
 					toast.error("Không lấy được thông tin sản phẩm.");
@@ -171,7 +171,7 @@ const ProductFormModal = ({
 						</div>
 						<div>
 							<label className="block text-sm font-medium text-gray-700">
-								Giá tiền ($)
+								Giá tiền
 							</label>
 							<input
 								type="number"

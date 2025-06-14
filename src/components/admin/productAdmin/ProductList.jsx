@@ -18,11 +18,11 @@ const ProductList = ({
 	sortConfig,
 	hasNext,
 	hasPrevious,
-	onToggleActive
+	onToggleActive,
 }) => {
 	const indexOfLastProduct = currentPage * productsPerPage;
 	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-	const currentProducts = products
+	const currentProducts = products;
 
 	return (
 		<div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
@@ -46,20 +46,10 @@ const ProductList = ({
 										? "↑"
 										: "↓")}
 							</th>
-							
+
 							<th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 								Trạng thái hiển thị
 							</th>
-							{/* <th
-								onClick={() => onSort("status")}
-								className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
-							>
-								Trạng thái{" "}
-								{sortConfig.key === "status" &&
-									(sortConfig.direction === "asc"
-										? "↑"
-										: "↓")}
-							</th> */}
 							<th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 								Hành động
 							</th>
