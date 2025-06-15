@@ -32,10 +32,10 @@ const ProductAdminPage = () => {
 	});
 	const [statusFilter, setStatusFilter] = useState(true);
 	const [token, setToken] = useState(
-		localStorage.getItem("accessToken")
-			? JSON.parse(localStorage.getItem("accessToken"))
-			: null
-	);
+			localStorage.getItem("accessToken")
+				? (localStorage.getItem("accessToken"))
+				: null
+		);
 
 	// const filteredProducts = products.filter(
 	// 	(product) =>

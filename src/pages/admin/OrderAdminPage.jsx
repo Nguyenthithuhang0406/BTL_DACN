@@ -28,10 +28,10 @@ const OrderAdminPage = () => {
 	const statusCounts = getOrderStatusCounts(orders);
 
 	const [token, setToken] = useState(
-		localStorage.getItem("accessToken")
-			? JSON.parse(localStorage.getItem("accessToken"))
-			: null
-	);
+			localStorage.getItem("accessToken")
+				? (localStorage.getItem("accessToken"))
+				: null
+		);
 
 
 	const getAllOrders = async (page = 0, size = itemsPerPage) => {

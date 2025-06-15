@@ -1,11 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const HeaderAdmin = ({ title }) => {
+	const navigate = useNavigate();
 	const logout = () => {
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("refreshToken");
 		localStorage.removeItem("role");
-		window.location.reload();
+		// window.location.reload();
+		navigate("/auth");
 	};
 	return (
 		<header className="bg-[#FFFDD0] bg-opacity-50 backdrop-blur-md shadow-lg ">

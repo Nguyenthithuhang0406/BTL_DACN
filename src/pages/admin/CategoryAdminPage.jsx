@@ -36,7 +36,7 @@ const CategoryAdminPage = () => {
 
 	const [token, setToken] = useState(
 		localStorage.getItem("accessToken")
-			? JSON.parse(localStorage.getItem("accessToken"))
+			? (localStorage.getItem("accessToken"))
 			: null
 	);
 	const getAllCategories = async (
