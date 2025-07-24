@@ -94,3 +94,17 @@ export const loginWithGoogle = async () => {
     throw new Error("Đăng nhập không thành công");
   }
 };
+
+export const getCodeFromGoogle = async (code) => {
+  try {
+    const response = await request(publicInstance, {
+      url: `/auths/callback?code=${code}`,
+      method: "GET",
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Lấy mã từ Google không thành công");
+  }
+}

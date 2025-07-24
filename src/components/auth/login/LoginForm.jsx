@@ -59,7 +59,11 @@ const LoginForm = ({ setIsLogin }) => {
   const handleLoginWithGoogle = async () => {
     try {
       const response = await loginWithGoogle();
-      window.open(response.data);
+      if (response.status === "SUCCESS" && response.data) {
+        window.location.href = response.data;
+      } else {
+        console.error("Login failed", response);
+      }
     } catch (error) {
       console.log(error);
     }
