@@ -1,6 +1,7 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { FaCaretDown } from "react-icons/fa6";
 import { FaBars } from "react-icons/fa";
@@ -10,8 +11,45 @@ import { FaShoppingCart } from "react-icons/fa";
 import { FaCaretUp } from "react-icons/fa";
 
 import "./Menu.scss";
+import { toast } from "react-toastify";
 const Menu = () => {
   const navigate = useNavigate();
+  const quantityOfProducts = useSelector((state) => state.order.quantityOfCart);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isShow, setIsShow] = useState(false);
+
+  const childRef = useRef(null);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+      // navigate("/auth");
+    }
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (childRef.current && !childRef.current.contains(event.target)) {
+        setIsShow(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [childRef]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    toast.success("Đăng xuất thành công");
+    setIsLogin(false);
+    navigate("/auth");
+  };
   return (
     <>
       <div className="menu-desktop">
@@ -113,21 +151,53 @@ const Menu = () => {
       </div>
 
       <div className="menu-mobile">
-        <ul className="menu-mobile__list">
-          <li className="menu-mobile__item">
+        <ul className="menu-mobile__list relative">
+          <li className="menu-mobile__item flex flex-col items-center justify-center">
             <FaBars className="menu-mobile_item-icon" />
             <p className="menu-mobile_item-p">Menu</p>
           </li>
-          <li className="menu-mobile__item">
+          <li
+            className="menu-mobile__item flex flex-col items-center justify-center"
+            onClick={() => navigate(`/followingProducts`)}
+          >
             <IoHeart className="menu-mobile_item-icon" />
             <p className="menu-mobile_item-p">Yêu thích</p>
           </li>
-          <li className="menu-mobile__item">
+          <li
+            className="menu-mobile__item flex flex-col items-center justify-center"
+            onClick={() => setIsShow(!isShow)}
+          >
             <MdAccountCircle className="menu-mobile_item-icon" />
             <p className="menu-mobile_item-p">Tài khoản</p>
           </li>
-          <li className="menu-mobile__item">
+          {isShow && !isLogin && (
+            <div
+              ref={childRef}
+              className="absolute bottom-[50px] right-[15%] bg-white shadow-lg rounded-lg p-4 flex flex-col gap-2"
+            >
+              <p onClick={() => navigate("/auth")}>Đăng ký</p>
+              <p onClick={() => navigate("/auth")}>Đăng nhập</p>
+            </div>
+          )}
+          {isShow && isLogin && (
+            <div
+              ref={childRef}
+              className="absolute bottom-[50px] right-[15%] bg-white shadow-lg rounded-lg p-4 flex flex-col gap-2"
+            >
+              <p onClick={() => navigate("/profile")}>Trang cá nhân</p>
+              <p onClick={handleLogout}>Đăng xuất</p>
+            </div>
+          )}
+          <li
+            className="menu-mobile__item relative flex flex-col items-center justify-center"
+            onClick={() => navigate("/cart")}
+          >
             <FaShoppingCart className="menu-mobile_item-icon" />
+            {quantityOfProducts > 0 && (
+              <span className="text-red-500 bg-lime-50 min-w-[20px] h-[20px] rounded-full flex items-center justify-center absolute -top-2 right-0 text-[14px]">
+                {quantityOfProducts}
+              </span>
+            )}
             <p className="menu-mobile_item-p">Giỏ hàng</p>
           </li>
         </ul>

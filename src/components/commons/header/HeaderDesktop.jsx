@@ -318,7 +318,7 @@ const HeaderDesktop = () => {
           >
             <GrCart className="header-desktop_group-i" />
             {quantityOfProducts > 0 && (
-              <span className="text-red-500 bg-lime-50 w-[20px] h-[20px] rounded-full flex items-center justify-center absolute -top-2 -right-0 text-[14px]">
+              <span className="text-red-500 bg-lime-50 min-w-[20px] h-[20px] rounded-full flex items-center justify-center absolute -top-2 -right-0 text-[14px]">
                 {quantityOfProducts}
               </span>
             )}
