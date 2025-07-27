@@ -27,7 +27,7 @@ const OrderedItem = ({ item }) => {
         </div>
       </div>
       {item?.items?.map((product, index) => (
-        <div className="flex gap-4 items-center" key={index}>
+        <div className="flex gap-4 items-center mb-[20px]" key={index}>
           <img
             className="w-[100px] h-[100px] object-cover rounded-lg"
             src={
