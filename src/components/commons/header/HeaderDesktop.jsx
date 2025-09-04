@@ -33,7 +33,7 @@ const HeaderDesktop = () => {
       setIsLogin(true);
     } else {
       setIsLogin(false);
-      navigate("/auth");
+      // navigate("/auth");
     }
   }, []);
 
